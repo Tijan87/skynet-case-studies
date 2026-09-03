@@ -315,11 +315,11 @@ a.card:hover .arrow .a{transform:translateX(3px)}
 .phase{margin-top:clamp(2rem,4vw,3rem)}
 .phase + .phase{margin-top:clamp(1.5rem,3vw,2.25rem)}
 .phase .ph{display:flex;align-items:baseline;gap:14px;padding-bottom:.6rem;border-bottom:1px solid var(--line)}
-.phase .ph .num{font:500 var(--fs-label)/1 var(--mono);letter-spacing:.09em;color:var(--accent)}
-.phase .ph h3{font-size:1.05rem}
+.phase .ph .num{font:500 var(--fs-label)/1 var(--mono);letter-spacing:.09em;color:var(--accent);white-space:nowrap}
+.phase .ph h3{font-size:1.05rem;white-space:nowrap}
 .phase .ph .who{margin-left:auto;font-size:var(--fs-cap);color:var(--ink-3);text-align:right}
 .acc{border-bottom:1px solid var(--line)}
-.acc summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:2.6rem 1fr auto;gap:.5rem 1rem;align-items:start;padding:.95rem 0;color:var(--ink)}
+.acc summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:3.2rem 1fr auto;gap:.5rem 1rem;align-items:start;padding:.95rem 0;color:var(--ink)}
 .acc summary::-webkit-details-marker{display:none}
 .acc summary .i{font:500 var(--fs-label)/1.6 var(--mono);letter-spacing:.06em;color:var(--ink-3)}
 .acc summary .t{font-weight:500;line-height:1.45}
@@ -331,7 +331,7 @@ a.card:hover .arrow .a{transform:translateX(3px)}
 .acc .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
 .acc[open] .body{grid-template-rows:1fr}
 .acc .body > div{overflow:hidden}
-.acc .in{padding:0 0 1.1rem 2.6rem;display:grid;gap:.8rem;color:var(--ink-2)}
+.acc .in{padding:0 0 1.1rem 3.2rem;display:grid;gap:.8rem;color:var(--ink-2)}
 @media (min-width:800px){.acc .in{grid-template-columns:1.4fr 1fr;gap:1.5rem}}
 .acc .in p{font-size:var(--fs-cap);line-height:1.55}
 .acc .in dl{margin:0;display:grid;gap:.45rem;font-size:var(--fs-cap)}
