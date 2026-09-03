@@ -14,7 +14,8 @@ S2 = dict(
                "anything risky can ship. The whole thing runs on written rules that grew out of 112 documented runs, and every failure is kept."),
          metrics=[("112", "documented runs"), ("93", "of them declared complex"), ("4 days", "longest run, start to ship")],
          fn="Runs from 26 March to 1 September 2026, numbered 1 to 134 (22 numbers were skipped or abandoned). Complexity split 93 complex, 16 moderate, 1 simple, 2 unstated. Longest single session about 30 hours; longest calendar span 4 days (run 130). Measured " + DATE + ".",
-         first="grew", other=("Case study 1 · The system", "the-system.html")),
+         first="grew", other=("Case study 1 · The system", "the-system.html"),
+         ribbon=[("Understand", "", False, ""), ("Route", "", True, ""), ("Research and plan", "", False, ""), ("Implement", "", True, ""), ("Review", "", False, ""), ("Decide and verify", "", True, "")]),
 
     dict(id="grew", kind="growth",
          kicker="How it grew",
@@ -67,6 +68,7 @@ S2 = dict(
          kicker="Who reviews",
          h1="Different vendors, different questions, and a record of who caught what",
          lead=("Lane count is not lane diversity. The panel mixes three model lineages, two blind roles and deterministic scripts, and every lane is scored, so the ledger shows which ones earn their place."),
+         strip=[("Claude Opus", "#31d9ff", "plans, implements, reviews"), ("Claude Sonnet", "#31d9ff", "coordinates, fact-checks"), ("OpenAI Codex", "#a877ff", "bug hunter · external round"), ("xAI Grok", "#58e7ad", "independent bug hunter"), ("Data-flow tracer", "#7d8ba3", "blind to other findings"), ("Scripts", "#7d8ba3", "deterministic gates"), ("Me", "#f2f6ff", "scope, release, retirement")],
          cols=["Lane", "Role", "Independence", "In the ledger"],
          rows=[
             ("Claude Opus", "#31d9ff", "Plans, implements, and reviews plan, code and architecture; maximum effort on complex runs", "Same lineage as the coordinator, different roles and contexts", "The most frequent lane; 16 plan rounds once blessed a feature flag that did not exist"),
@@ -125,6 +127,7 @@ S2 = dict(
     dict(id="failures", kind="beforeafter",
          kicker="Failures → controls",
          h1="Six times something broke, and what exists because of it",
+         lead="Six real failures from the run ledger, and the permanent control each one produced. Two of the six were caught by me, not by any model.",
          items=[
             ("The AI reported “done”. The file was unchanged.", "Every claimed edit is proven by the recorded changes before any reviewer sees it.", "Run 31", "Apr 2026"),
             ("An agent declared a test tool “not installed” after one shell lookup. It was installed.", "A standing rule: never assert a tool is missing from one lookup; the check looks in every valid install location.", "4 Jun", "2026"),
@@ -138,6 +141,7 @@ S2 = dict(
     dict(id="scorecards", kind="scorecards",
          kicker="Scorecards",
          h1="Every run is graded, and so is every reviewer",
+         lead="After every run a separate command scores the run against a five-tier rubric and grades each reviewer lane, so the ledger shows which reviewers earn their place.",
          card_caption="One real scorecard · run 133 · 19 Aug 2026 · from the written progress review",
          rows=[("Coordinator gates", 11, 12, "one recorded as not run, never as passed"), ("Reviewer checks", 10, 10, ""),
                ("Security, UI, verification", 8, 8, ""), ("Harness patterns cited", 14, 14, "plus 3 new patterns added"),
@@ -174,6 +178,7 @@ S2 = dict(
     dict(id="gates", kind="gates",
          kicker="Where it stops",
          h1="A claim without evidence stops the run",
+         lead="Thirty-four catalogued gates. Each one turns a sentence an AI might say into a check a script performs, and blocks the run when the check fails.",
          gates=[("“I edited the file.”", "The recorded changes show nothing changed. The claim is false. Back to implementation."),
                 ("“The plan uses this piece of data.”", "That data does not exist in the database. Blocked before a line is written."),
                 ("Transaction-critical code, no record that the tests ran.", "No deploy. The test record must exist and match this run."),
@@ -193,6 +198,8 @@ S2 = dict(
     dict(id="economics", kind="points",
          kicker="Economics and endurance",
          h1="Two subscriptions and a thirty-dollar plan run all of it",
+         lead="One Claude Max subscription, one ChatGPT plan for Codex, one thirty-dollar Grok plan. Review cost is routed by risk rather than capped, and anything that can lose money always runs at full depth.",
+         visual="routing", more_label="How the cost is controlled",
          points=[
             "Claude runs on a single Max subscription: the coordinator, every specialist agent and every Claude review lane count against that one quota. OpenAI Codex runs on a ChatGPT plan; xAI Grok on a thirty-dollar monthly plan. Those are my bills, not figures from the repository.",
             "Review cost is routed, not capped. A lighter fork of the whole workflow saves 40 to 55 percent of Claude tokens on moderate work by dropping duplicate lanes, and it never drops the external round. Since July 2026 a deterministic policy picks the model and effort per lane by complexity. In the measured A/B, deep reviews used 84.8 percent fewer tokens and standard runs 57.5 percent fewer, with zero missed high or critical findings across three samples.",
@@ -204,6 +211,7 @@ S2 = dict(
     dict(id="measured", kind="tiles",
          kicker="Measured · " + DATE,
          h1="Measured, with the populations printed",
+         lead="Six numbers from the run ledger, the archives and git, each with the population it was counted on.",
          tiles=[
             ("112", "documented runs, numbered 1 to 134", "26 March to 1 September 2026, about one run every 1.4 days. 93 complex, 16 moderate, 1 simple."),
             ("235", "gap IDs recorded · 87 written into a step, gate, script or test", "36 open today. A gap leaves the open list only after three confirming runs."),

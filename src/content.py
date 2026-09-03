@@ -64,6 +64,7 @@ S1 = dict(
     dict(id="what", kind="four",
          kicker="What it does",
          h1="From a chat message to an on-chain trade, unattended",
+         lead="Four jobs, one dashboard. I choose which public signals to follow with my own funds; the system listens, ranks, executes inside fixed caps and contains the damage when something goes wrong.",
          cards=[
             ("Listen", "149", "sources watched: 63 groups, 86 wallets, 4 chains", "Every message and every wallet transaction, around the clock."),
             ("Rank", "17", "exit strategies replayed per source, per regime", "Every source scored by what each strategy would have done."),
@@ -74,6 +75,7 @@ S1 = dict(
     dict(id="infra", kind="infra",
          kicker="Infrastructure",
          h1="Two Hetzner servers, one encrypted tunnel, and the Solana blockchain",
+         lead="Analysis is heavy and chatty; execution has to be fast and quiet. So the brain and the hands live on separate machines, joined by an encrypted tunnel, and the hands keep closing positions even if the brain goes down.",
          feeds=[("Telegram", "63 groups, read as messages arrive"),
                 ("Birdeye price WebSocket", "15-second candles · 8 sharded connections"),
                 ("Helius wallet WebSocket", "every transaction of 86 tracked wallets"),
@@ -91,6 +93,7 @@ S1 = dict(
          kicker="The execution engine · built, not bought",
          h1="No trading library. The engine assembles the transaction itself.",
          lead="22 modules and 54,000 lines of Rust on their own server, doing one job: turn a verified signal into a landed Solana transaction and manage the exit.",
+         more_label="How the transaction is built and hardened",
          points=[
             "Exactly one compute-unit limit and one price, Jupiter's instructions verbatim, a validator tip from a 10-account pool, address lookup tables. Preflight off, zero retries, confirmation polled every 200 ms against a ~400 ms block.",
             "Solana gives a transaction 1,232 bytes, and a fresh pump.fun route does not fit. Seven constant venue accounts are pre-warmed into the engine's own lookup table, appended and never prepended, because prepending re-inflates every healthy route.",
@@ -102,6 +105,8 @@ S1 = dict(
     dict(id="data", kind="points",
          kicker="Real-time data",
          h1="The price provider caps a connection at 100 addresses. I needed 552.",
+         lead="So the live price feed is split across auto-scaling connections, placed by a stable hash so nothing moves on a restart, and every 15-second candle lands in a time-series database built for exactly this.",
+         more_label="How the feed is sharded",
          points=[
             "The feed is sharded across auto-scaling WebSocket connections, placed by SHA-256 hash so placement survives restarts. Python's built-in hash is salted per process and was rejected.",
             "The scaler acts on the busiest shard, not the average, with hysteresis and a dry run before any scale-down. An average of 77 can hide a shard at 85.",
@@ -112,6 +117,7 @@ S1 = dict(
     dict(id="controls", kind="controls",
          kicker="On-chain controls",
          h1="A trading key that cannot move the money",
+         lead="My funds sit in a program-owned account on Solana. The engine holds a separate trading key that can open and close positions inside limits the program enforces on every transaction, and can never withdraw.",
          points=[
             "My funds sit in a program-owned account on Solana. My wallet key is the only authority that can deposit, withdraw, pause, or revoke the trader.",
             "The engine holds a separate executor key that can only open and close positions, inside limits the program enforces on every transaction.",
@@ -126,6 +132,8 @@ S1 = dict(
     dict(id="intelligence", kind="points",
          kicker="Intelligence",
          h1="Every tracked source replayed through 17 strategies, nightly",
+         lead="Every source is scored by what each of 17 exit strategies would have done, across chains and market regimes, precomputed each night so every page loads instantly.",
+         more_label="How the replay works",
          points=[
             "300+ sources × 17 exit strategies × 5 chains × 4 market regimes, precomputed nightly so every page loads instantly.",
             "Any result can be re-rendered at operator-defined position sizes, seven market-cap tiers deep.",
@@ -137,6 +145,7 @@ S1 = dict(
     dict(id="failures", kind="beforeafter",
          kicker="Failures → controls",
          h1="The controls that exist because something broke",
+         lead="Three real failures, and the permanent check each one left behind. None of them can happen the same way twice.",
          items=[
             ("A guard that was too eager deleted 28 real wallet trades across four instruction shapes.",
              "A 7,150-cell differential corpus that asserts every improvement is consumed, run before any parser change ships.",
@@ -152,6 +161,7 @@ S1 = dict(
     dict(id="measured", kind="tiles",
          kicker="Measured on the production system · " + DATE,
          h1="Measured, with the populations printed",
+         lead="Six numbers from the live database, each with the population it was measured on.",
          tiles=[
             ("1,300", "confirmed trades", "2,843 on-chain signatures, verifiable on any explorer: 1,685 buys, 1,158 sells."),
             ("1.3 s", "median · all 1,303 timed trades", "927 ms on the enhanced path (n=117). 1,303 trades carry stage timings; 1,300 are confirmed round trips."),

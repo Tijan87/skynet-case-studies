@@ -374,6 +374,50 @@ a.card:hover .arrow .a{transform:translateX(3px)}
 .pane div.ln{white-space:pre-wrap;word-break:break-word;padding:.12rem 0}
 .pane .k{color:var(--accent)} .pane .g{color:var(--green)} .pane .v{color:var(--violet)} .pane .d{color:var(--ink-3)} .pane .r{color:var(--red)} .pane .w{color:var(--ink)}
 .pane + .cap{margin-top:.75rem}
+/* ===== v8: progressive disclosure ===== */
+details.more{margin-top:clamp(1.5rem,3vw,2.25rem)}
+details.more > summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font:500 var(--fs-label)/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:.6rem 0;min-height:40px;transition:color .15s var(--ease)}
+details.more > summary::-webkit-details-marker{display:none}
+details.more > summary:hover{color:var(--accent)}
+details.more > summary .c{width:22px;height:22px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;transition:transform .3s var(--ease),border-color .2s}
+details.more > summary .c::before{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translate(-1px,-1px)}
+details.more[open] > summary .c{transform:rotate(180deg)}
+details.more > summary .alt{display:none}
+details.more[open] > summary .alt{display:inline}
+details.more[open] > summary .def{display:none}
+details.more > .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+details.more[open] > .body{grid-template-rows:1fr}
+details.more > .body > div{overflow:hidden}
+details.more .inner{padding-top:1rem;display:grid;gap:clamp(1.25rem,2.5vw,2rem)}
+details.more .inner .metrics{margin-top:0}
+details.more .inner .note{margin-top:0;border-top:0;padding-top:0}
+details.more .inner .fn{margin-top:0}
+.summ{margin-top:1rem;color:var(--ink-2);max-inline-size:60ch}
+.lanes-strip{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5rem),1fr))}
+.lanes-strip .ln{border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.lanes-strip .ln b{display:flex;align-items:center;gap:8px;font-weight:500;color:var(--ink);font-size:.95rem}
+.lanes-strip .ln b i{width:8px;height:8px;border-radius:50%;flex:none}
+.lanes-strip .ln span{display:block;font-size:.8rem;color:var(--ink-3);margin-top:.35rem;line-height:1.4}
+details.phase-acc{border-top:1px solid var(--line)}
+details.phase-acc > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:baseline;padding:1rem 0}
+details.phase-acc > summary::-webkit-details-marker{display:none}
+details.phase-acc > summary .num{font:500 var(--fs-label)/1 var(--mono);letter-spacing:.09em;color:var(--accent);white-space:nowrap}
+details.phase-acc > summary h3{font-size:1.05rem}
+details.phase-acc > summary .who{font-size:var(--fs-cap);color:var(--ink-3);text-align:right}
+details.phase-acc > summary .cnt{font:500 .75rem/1 var(--mono);color:var(--ink-3);border:1px solid var(--line);border-radius:999px;padding:.35rem .6rem;white-space:nowrap}
+details.phase-acc[open] > summary .cnt{color:var(--accent);border-color:rgba(49,217,255,.35)}
+details.phase-acc > .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+details.phase-acc[open] > .body{grid-template-rows:1fr}
+details.phase-acc > .body > div{overflow:hidden}
+details.phase-acc .acc:first-child{border-top:1px solid var(--line)}
+@media (max-width:640px){details.phase-acc > summary{grid-template-columns:auto 1fr auto}details.phase-acc > summary .who{display:none}}
+@media (prefers-reduced-motion:reduce){details.more > .body,details.phase-acc > .body{transition:none}}
+@media print{details.more,details.phase-acc{open:true}details.more > .body,details.phase-acc > .body{grid-template-rows:1fr}}
+.shot{transition:transform .5s var(--ease)}
+.shot.tilt{transform:perspective(1600px) rotateX(3deg);transform-origin:50% 100%}
+.shot.tilt:hover{transform:perspective(1600px) rotateX(0deg) translateY(-4px)}
+@media (prefers-reduced-motion:reduce){.shot,.shot.tilt{transform:none;transition:none}}
+.ribbon{margin-top:clamp(2rem,4vw,3rem)}
 </style></head><body class="land"><div class="ground"></div><a class="skip" href="#content">Skip to content</a><nav class="nav" aria-label="Primary"><div class="wrap"><a class="brand" href="index.html"><b>Lukasz Rodzen</b><span class="x"> · case studies</span></a>
 <div class="tabs"><a href="index.html" class="on" aria-label="Home" aria-current=page><span class="num">Home</span><span class="lbl"></span></a><a href="the-system.html" class="" aria-label="Case study 1: The system"><span class="num">01</span><span class="lbl">The system</span></a><a href="how-i-ship.html" class="" aria-label="Case study 2: How I ship"><span class="num">02</span><span class="lbl">How I ship</span></a></div></div><div class="bar"></div></nav><main id="content"><section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv"><div class="kicker">Architect · AI delivery owner · Poland, remote</div></div><h1 class="rv">One person built a live trading system, then the workflow that ships it.</h1><p class="lead rv">I designed and operate an automated trading system that runs on Solana with my own funds, and the AI delivery workflow that ships every change to it. Two case studies: one for product and engineering readers, one for anyone hiring AI-native builders.</p><p class="cap rv" style="margin-top:1rem">Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.</p>
 <div class="actions rv"><a class="btn primary" href="the-system.html">01 · The system <span class="a">→</span></a><a class="btn" href="how-i-ship.html">02 · How I ship <span class="a">→</span></a></div></div></section>
@@ -413,8 +457,8 @@ document.documentElement.classList.add('js');
   }
   addEventListener('scroll', onScroll, {passive: true}); onScroll();
   addEventListener('beforeprint', all);
-  document.querySelectorAll('.expand-all').forEach(function(b){ b.addEventListener('click', function(){ var sec=b.closest('section'); var ds=[].slice.call(sec.querySelectorAll('details.acc')); var open=ds.some(function(d){return !d.open;}); ds.forEach(function(d){ d.open=open; }); b.textContent = open ? 'Collapse all' : 'Expand all steps'; }); });
-  addEventListener('beforeprint', function(){ [].slice.call(document.querySelectorAll('details.acc')).forEach(function(d){ d.open = true; }); });
+  document.querySelectorAll('.expand-all').forEach(function(b){ b.addEventListener('click', function(){ var sec=b.closest('section'); var ds=[].slice.call(sec.querySelectorAll('details.acc, details.phase-acc')); var open=ds.some(function(d){return !d.open;}); ds.forEach(function(d){ d.open=open; }); b.textContent = open ? 'Collapse all' : 'Expand every phase and step'; }); });
+  addEventListener('beforeprint', function(){ [].slice.call(document.querySelectorAll('details')).forEach(function(d){ d.open = true; }); });
 
 })();
 </script></body></html>
