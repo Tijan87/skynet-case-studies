@@ -2,6 +2,8 @@
 """Responsive, animated case-study site. Usage: python3 build_site.py [--links links.json] [--out DIR]"""
 import base64, html, json, os, sys
 import content as C
+import s2_v6
+C.S2 = s2_v6.S2
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "img") if os.path.isdir(os.path.join(HERE, "img")) else os.path.join(HERE, "..", "deck", "img")
@@ -47,6 +49,18 @@ def shot(name, cap):
     return f'<figure class="rv" style="margin:0"><div class="shot"><img src="{img_uri(name)}" alt="{E(cap)}"></div><figcaption class="cap">{E(cap)}</figcaption></figure>'
 
 # ------------------------------------------------------------------ svg figures
+def pane(lines, cap=None):
+    out = []
+    for ln in lines:
+        # markup: [k]..[/k] cyan, [g] green, [v] violet, [d] dim, [r] red, [w] white
+        t = E(ln)
+        for tag in ("k", "g", "v", "d", "r", "w"):
+            t = t.replace(f"[{tag}]", f'<span class="{tag}">').replace(f"[/{tag}]", "</span>")
+        out.append(f'<div class="ln">{t}</div>')
+    c = f'<p class="cap">{E(cap)}</p>' if cap else ""
+    return f'<div class="rv"><div class="pane"><div class="bar3"><i></i><i></i><i></i></div>{"".join(out)}</div>{c}</div>'
+
+
 def fig_bytes():
     W, H = 720, 200
     LIM = 1232
@@ -163,14 +177,13 @@ def r_cover(s, study):
     if s.get("shot"):
         right = shot(s["shot"], s["shot_caption"])
     elif s.get("runs"):
-        li = "".join(f'<li><span class="n">{E(n)}</span><span class="t">{E(t)}</span><span class="s">{E(sub)} · {E(d)}</span></li>' for n, d, t, sub in s["runs"])
-        right = f'<div class="rv"><div class="label">Recent change history · latest six of 134 runs</div><ul class="runs" style="margin-top:.9rem">{li}</ul><p class="cap" style="margin-top:.9rem">{E(s["runs_caption"])}</p></div>'
+        right = ""  # recent-runs list removed by request
     return f'''<section class="hero" id="{s["id"]}"><div class="glow"></div><div class="wrap" data-stagger>
 <div class="rv">{kicker(s["kicker"])}</div><h1 class="rv">{E(s["h1"])}</h1><p class="lead rv">{E(s["lead"])}</p>
 <div class="actions rv"><a class="btn primary" href="#{s["first"]}">Start reading <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
 </div></section>
 <section class="sec" style="border-top:0;padding-top:0"><div class="wrap">{stats(s["metrics"])}{fn(s.get("fn"))}
-<div style="margin-top:clamp(2.5rem,5vw,4rem)">{right}</div></div></section>'''
+{f'<div style="margin-top:clamp(2.5rem,5vw,4rem)">{right}</div>' if right else ""}</div></section>'''
 
 def r_journey(s):
     tl = "".join(f'<div class="m rv"><div class="d">{E(d)}</div><div class="t">{E(t)}</div></div>' for d, t in s["milestones"])
@@ -238,7 +251,10 @@ def r_close(s, study):
 </div></section>'''
 
 def r_growth(s):
-    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="fig">{fig_growth()}</div>{note(E(s["note"]))}</div></section>'
+    tl = ""
+    if s.get("milestones"):
+        tl = '<div class="tl" data-stagger>' + "".join(f'<div class="m rv"><div class="d">{E(d)}</div><div class="t">{E(t)}</div></div>' for d, t in s["milestones"]) + "</div>"
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="fig">{fig_growth()}</div>{tl}{note(E(s["note"]))}</div></section>'
 
 def r_loop(s):
     st = ""
@@ -288,6 +304,51 @@ def r_memory(s):
 RENDER = dict(journey=r_journey, four=r_four, infra=r_infra, points=r_points, controls=r_controls, beforeafter=r_beforeafter,
               tiles=r_tiles, growth=r_growth, loop=r_loop, reviewers=r_reviewers, knowledge=r_knowledge, scorecards=r_scorecards,
               gates=r_gates, memory=r_memory)
+
+# ------------------------------------------------------------------ v6 renderers (case study 2 rebuild)
+LANE_CLASS = {"Claude Opus": "opus", "Claude Sonnet": "opus", "OpenAI Codex": "codex", "xAI Grok": "grok", "script": "script", "me": "me", "Me": "me"}
+
+def r_steps(s):
+    out = []
+    for ph in s["phases"]:
+        items = ""
+        for st in ph["steps"]:
+            tags = "".join(f'<span class="tag {LANE_CLASS.get(w, "")}">{E(w)}</span>' for w in st.get("who", []))
+            dl = ""
+            if st.get("reads"): dl += f'<dt>Must read first</dt><dd>{E(st["reads"])}</dd>'
+            if st.get("leaves"): dl += f'<dt>Evidence left behind</dt><dd>{E(st["leaves"])}</dd>'
+            if st.get("block"): dl += f'<dt>Stops the run when</dt><dd class="block">{E(st["block"])}</dd>'
+            if st.get("mine"): dl += f'<dt>My decision</dt><dd class="me">{E(st["mine"])}</dd>'
+            items += ('<details class="acc rv"><summary><span class="i">' + E(st["id"]) + '</span><span class="t">' + E(st["title"]) + '<small>' + E(st.get("sub", "")) + '</small></span><span class="c" aria-hidden="true"></span></summary>'
+                      '<div class="body"><div><div class="in"><div><p>' + E(st["what"]) + '</p><div style="margin-top:.6rem">' + tags + '</div></div><dl>' + dl + '</dl></div></div></div></details>')
+        out.append(f'<div class="phase rv"><div class="ph"><span class="num">{E(ph["num"])}</span><h3>{E(ph["title"])}</h3><span class="who">{E(ph.get("who", ""))}</span></div>{items}</div>')
+    btn = '<div style="margin-top:clamp(1.5rem,3vw,2rem)"><button class="expand-all" type="button">Expand all steps</button></div>'
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}{btn}{"".join(out)}{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>'
+
+def r_flow(s):
+    bx = "".join(f'<div class="fx rv"><div class="label">{E(l)}</div><h3>{E(t)}</h3><p>{E(p)}</p><span class="ar"></span></div>' for l, t, p in s["boxes"])
+    pts = f'<div style="margin-top:clamp(2rem,4vw,3rem)">{points(s["points"])}</div>' if s.get("points") else ""
+    pn = f'<div style="margin-top:clamp(2rem,4vw,3rem)">{pane(s["pane"], s.get("pane_cap"))}</div>' if s.get("pane") else ""
+    cls = " c3" if len(s["boxes"]) == 6 else ""
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="flow{cls}" data-stagger>{bx}</div>{pts}{pn}{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>'
+
+def r_matrix(s):
+    th = "".join(f"<th>{E(c)}</th>" for c in s["cols"])
+    tr = ""
+    for row in s["rows"]:
+        name, col, *cells = row
+        tr += f'<tr><td><span class="dot" style="background:{col}"></span>{E(name)}</td>' + "".join(f"<td>{E(c)}</td>" for c in cells) + "</tr>"
+    pts = f'<div style="margin-top:clamp(2rem,4vw,3rem)">{points(s["points"])}</div>' if s.get("points") else ""
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="tablewrap rv"><table class="matrix"><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div>{pts}{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>'
+
+def r_funnel(s):
+    fr = "".join(f'<div class="fr"><span class="n">{E(n)}</span><div class="b"><i style="--w:{p}%"></i></div><span class="l">{E(l)}</span></div>' for n, l, p in s["rows"])
+    pn = pane(s["pane"], s.get("pane_cap")) if s.get("pane") else ""
+    return (f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}'
+            f'<div class="grid2"><div class="rv"><div class="funnel">{fr}</div></div><div>{points(s["points"])}</div></div>'
+            f'<div style="margin-top:clamp(2rem,4vw,3rem)">{pn}</div>{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>')
+
+RENDER.update(dict(steps=r_steps, flow=r_flow, matrix=r_matrix, funnel=r_funnel))
 
 # ------------------------------------------------------------------ page chrome
 LINKS = {"index.html": "index.html", "the-system.html": "the-system.html", "how-i-ship.html": "how-i-ship.html"}

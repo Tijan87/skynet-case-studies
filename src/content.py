@@ -18,8 +18,8 @@ LANDING = dict(
     lead=("I designed and operate an automated trading system that runs on Solana with my own funds, and the AI delivery workflow that ships every change to it. "
           "Two case studies: one for product and engineering readers, one for anyone hiring AI-native builders."),
     boundary="Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.",
-    stats=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution"), ("134", "documented delivery runs")],
-    fn="2,843 on-chain signatures behind the trades, verifiable on any explorer. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Runs from 26 March to 1 September 2026. Measured " + DATE + ".",
+    stats=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution"), ("112", "documented delivery runs")],
+    fn="2,843 on-chain signatures behind the trades, verifiable on any explorer. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured " + DATE + ".",
     cards=[
         dict(n="01", title="The system", who="for product and engineering readers", href="the-system.html", accent="cyan",
              text=("A production system that turns public market signals into capped, auditable trades in about 1.3 seconds, with my own funds only. "
@@ -27,8 +27,8 @@ LANDING = dict(
              nums=[("1.3 s", "median from signal to landed trade"), ("2,843", "on-chain signatures, verifiable")]),
         dict(n="02", title="How I ship", who="for anyone hiring AI-native builders", href="how-i-ship.html", accent="green",
              text=("Six stages. Five model reviews on every plan, up to seven on every code change, then a separately run review. Fail-closed gates. "
-                   "A memory loop that turns failures into rules: 134 runs, 235 recorded gaps, and the controls they produced."),
-             nums=[("134", "documented runs"), ("235", "recorded gaps, 87 now rules")]),
+                   "A memory loop that turns failures into rules: 112 runs, 235 recorded gaps, and the controls they produced."),
+             nums=[("112", "documented runs"), ("235", "recorded gaps, 87 now rules")]),
     ],
 )
 
@@ -58,7 +58,7 @@ S1 = dict(
             ("Feb 2026", "Specialist sub-agents: research, plan, implement, audit, verify."),
             ("Mar 2026", "First confirmed on-chain trade."),
             ("Jun 2026", "On-chain program live on mainnet."),
-            ("Sep 2026", "Three codebases, 134 documented workflow runs, my own funds in production."),
+            ("Sep 2026", "Three codebases, 112 documented workflow runs, my own funds in production."),
          ],
          note="The delivery loop is its own case study. This one is about what it produced."),
     dict(id="what", kind="four",
@@ -172,8 +172,7 @@ S1 = dict(
 )
 
 # ---------------------------------------------------------------- case study 2
-GROWTH = [("2025-11-26", 284), ("2025-12", 1920), ("2026-01", 4679), ("2026-02", 5386), ("2026-04", 5779),
-          ("2026-05", 9300), ("2026-06", 10320), ("2026-07", 10700), ("2026-09", 11009)]
+GROWTH = [("2025-11-26", 284), ("2025-11-30", 1162), ("2025-12", 4533), ("2026-01", 5302), ("2026-02", 5386), ("2026-03", 5386), ("2026-04", 6292), ("2026-05", 10307), ("2026-06", 10405), ("2026-07", 10700), ("2026-08", 10837), ("2026-09-03", 11009)]
 GROWTH_FLAGS = [("2025-11-26", "born, 284 lines"), ("2026-02-22", "sub-agents"), ("2026-03-27", "skills, Codex lanes, progress reviews"),
                 ("2026-05-05", "the workflow audits itself"), ("2026-07-12", "dynamic model routing"), ("2026-09-03", "run 134")]
 
@@ -185,9 +184,9 @@ S2 = dict(
          kicker="Case study 2 of 2 · how I ship",
          h1="AI models build every change. Nothing ships until I approve it.",
          lead=("One typed sentence becomes research, a plan, an implementation, five model reviews on the plan and up to seven on the code, a separately run review, "
-               "a gated deployment and a written record. 134 documented runs. Every recorded failure kept."),
-         metrics=[("134", "documented runs"), ("235", "recorded gaps"), ("121", "runs with a written scorecard")],
-         fn="Runs from 26 March to 1 September 2026. 87 of the 235 gaps are written into a step, gate, script or test; 36 remain open. Measured " + DATE + ".",
+               "a gated deployment and a written record. 112 documented runs. Every recorded failure kept."),
+         metrics=[("112", "documented runs"), ("235", "recorded gaps"), ("121", "written progress reviews")],
+         fn="Runs from 26 March to 1 September 2026, numbered 1 to 134 (22 numbers were skipped or abandoned). 87 of the 235 gaps are written into a step, gate, script or test; 36 remain open. Measured " + DATE + ".",
          first="why", other=("Case study 1 · The system", "the-system.html"),
          runs=[("134", "1 Sep 2026", "Named sizing presets per tracked wallet", "3 days · 26 review findings, all validated at source"),
                ("133", "19 Aug 2026", "One-window wallet view, replay and live split", "shipped"),
@@ -268,7 +267,7 @@ S2 = dict(
                    ("xAI Grok", "independent bug hunter, added July 2026 after the Gemini lane was retired"),
                    ("Data-flow tracer", "checks the promised data path at plan time and again in the code; 30 passes recorded, up to 35 of 35 assertions")],
          note="A “no” is a gap by definition. It gets an ID, a severity and a suggested fix, and the next run is checked for it.",
-         metrics=[("121", "runs with a written scorecard"), ("5", "lineages graded per run"), ("30", "data-flow passes · up to 35/35")]),
+         metrics=[("121", "written progress reviews"), ("5", "lineages graded per run"), ("30", "data-flow passes · up to 35/35")]),
     dict(id="gates", kind="gates",
          kicker="Where it stops",
          h1="A claim without evidence stops the run",
@@ -293,16 +292,16 @@ S2 = dict(
               ("designed", "a deploy-sequencing gate: populate before you enforce"),
               ("proven", "a text check shows the gate in the workflow file; the next run fires it"),
               ("retired", "removed from the open list after three confirming runs")],
-         metrics=[("196", "run archives since Dec 2025"), ("252", "archived handovers"), ("235", "recorded gaps, 36 still open")],
-         fn="196 archives since December 2025. The run tracker with its scorecards starts on 26 March 2026, which is why it counts 134 runs.",
+         metrics=[("201", "run archives since Dec 2025"), ("678", "archived handover files"), ("235", "recorded gaps, 36 still open")],
+         fn="201 archives since December 2025. The run tracker with its scorecards starts on 26 March 2026: 112 runs, numbered 1 to 134.",
          note="From the handover rules, verbatim: “The handover is a hypothesis about state. Verification commands are proof.” Automated checks execute the tests; model reviewers interpret the evidence; I own the release decision."),
     dict(id="measured", kind="tiles",
          kicker="Measured · " + DATE,
          h1="Measured, with the populations printed",
          tiles=[
-            ("134", "documented runs · 112 with a full retrospective", "26 March to 1 September 2026. Fifty of them declared complex, which forces the deepest route."),
+            ("112", "documented runs, numbered 1 to 134", "26 March to 1 September 2026, about one run every 1.4 days. 93 complex, 16 moderate, 1 simple."),
             ("235", "gaps recorded · 87 written into a step, gate, script or test", "36 still open today. A gap leaves the open list only after three confirming runs."),
-            ("121", "runs scored by a written progress review", "Each scores gates fired, reviewer checks, skills used, harness patterns cited."),
+            ("121", "written progress reviews", "Each scores gates fired, reviewer checks, skills used, harness patterns cited."),
             ("45", "runs where the separate review found something all internal reviews missed", "Of 52 runs that record the field; 7 record that it did not."),
             ("30", "data-flow verifications recorded as passed", "Up to 35 of 35 assertions."),
             ("−84.8%", "tokens on deep reviews after routing", "Zero missed HIGH or CRITICAL findings across three A/B samples; −57.5% on standard runs. Transaction-critical work never routes cheaper."),
