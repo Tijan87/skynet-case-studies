@@ -85,7 +85,7 @@ def fig_stages():
         s += f'<rect x="{lx}" y="{y+2}" width="{w:.1f}" height="18" rx="3" fill="{col}"{" opacity=.55" if "Not" in n else ""}/>'
         s += f'<text x="{lx+w+8:.1f}" y="{y+15}" font-size="12" fill="#f2f6ff" font-family="JetBrains Mono,monospace">{ms} ms</text>'
     s += "</svg>"
-    return f'<div class="fig rv">{s}<div class="cap">One production trade, stage by stage · 1,024 ms end to end · latest confirmed trade. 31 ms of the engine\'s own work; 621 ms waiting for the chain.</div></div>'
+    return f'<div class="fig rv">{s}<div class="cap">One production trade, stage by stage · 1,024 ms end to end, of which 292 ms is not instrumented per stage · latest confirmed trade. 31 ms of the engine\'s own work; 621 ms waiting for the chain.</div></div>'
 
 def fig_cube():
     s = '''<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The replay cube: sources by strategies by chains by regimes">
@@ -104,7 +104,7 @@ def fig_cube():
 <text x="330" y="222"><tspan fill="#f2f6ff" font-size="26">6.2M</tspan> precomputed rows</text>
 <text x="330" y="252" fill="#6b7a94">17,820 tasks · about 25 minutes · every night</text>
 </g></svg>'''
-    return f'<div class="fig rv">{s}<div class="cap">The replay cube · one cell per source × strategy × chain × regime</div></div>'
+    return f'<div class="fig rv">{s}<div class="cap">The replay cube · one cell per source × strategy × chain × regime · 6.2M rows, refilled by 17,820 replay tasks a night</div></div>'
 
 def fig_journey():
     data = json.load(open(JOURNEY))
@@ -170,7 +170,7 @@ def r_cover(s, study):
 <div class="actions rv"><a class="btn primary" href="#{s["first"]}">Start reading <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
 </div></section>
 <section class="sec" style="border-top:0;padding-top:0"><div class="wrap">{stats(s["metrics"])}{fn(s.get("fn"))}
-<div class="grid2" style="margin-top:clamp(2.5rem,5vw,4rem)">{who()}{right}</div></div></section>'''
+<div style="margin-top:clamp(2.5rem,5vw,4rem)">{right}</div></div></section>'''
 
 def r_journey(s):
     tl = "".join(f'<div class="m rv"><div class="d">{E(d)}</div><div class="t">{E(t)}</div></div>' for d, t in s["milestones"])
@@ -199,8 +199,9 @@ def r_points(s, accent="cyan"):
     elif s.get("visual") == "stages": vis = fig_stages()
     elif s.get("visual") == "cube": vis = fig_cube()
     elif s.get("shot"): vis = shot(s["shot"], s["shot_caption"])
+    body = f'<div class="grid2"><div>{points(s["points"])}</div><div>{vis}</div></div>' if vis else points(s["points"])
     return f'''<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}
-<div class="grid2"><div>{points(s["points"])}</div><div>{vis}</div></div>{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>'''
+{body}{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>'''
 
 def r_controls(s):
     keys = ""
@@ -318,7 +319,7 @@ def meta(title, desc, current):
 def page(title, body, current, desc, cls=""):
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">{meta(title, desc, current)}
-<meta name="color-scheme" content="dark"><meta name="theme-color" content="#05080f">
+<meta name="color-scheme" content="dark"><meta name="theme-color" content="#05080f"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2331d9ff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>{CSS}</style></head><body class="{cls}"><div class="ground"></div>{nav(current)}<main id="content">{body}</main>{footer()}<script>{JS}</script></body></html>'''

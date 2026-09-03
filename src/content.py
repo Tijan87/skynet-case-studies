@@ -7,7 +7,8 @@ CONTACT = "[ADD LINKEDIN / EMAIL]"
 CONTACT_HTML = "[ADD LINKEDIN / EMAIL]"  # becomes <a href=mailto:..> and a profile link once supplied
 LOCATION = "Poland · remote"
 OPMODEL = ("I own the architecture, the acceptance criteria, the controls, the release decision and production verification. "
-           "AI models generate the implementation; I am accountable for the result.")
+           "AI models write the implementation inside a delivery workflow I built; I review the evidence, adjudicate their disagreements "
+           "and sign every deploy. Nothing ships that I have not reviewed and accepted.")
 BOUNDARY = ("And I will tell you where the boundary is: the changes I would not make this way, "
             "and who I would bring in instead.")
 
@@ -48,7 +49,7 @@ S1 = dict(
     dict(id="journey", kind="journey",
          kicker="How it was built",
          h1="From a Grok chat window to a two-server operation in sixteen months",
-         lead="Commits per month from git across the three repositories. 821 lines of code in April 2025; 368,000 by September 2026.",
+         lead="Commits per month from git across the three repositories, April 2025 to September 2026. One file at the start; three codebases and an on-chain program at the end.",
          milestones=[
             ("Apr 2025", "One 1,295-line Python file, written in a Grok web chat. I had never opened an IDE."),
             ("Jul 2025", "Dashboard. Continuous tracking begins."),
@@ -79,7 +80,7 @@ S1 = dict(
                 ("Market data", "Nansen · DefiLlama · CoinGecko · CoinMarketCap")],
          brain=("Finland · the brain · Python", ["Detection and queues · 8 workers, 5-layer dedup", "TimescaleDB · 28 GB · 12M rows",
                 "Replay and sizing engine · nightly, 17 strategies", "Regime classifier · 27 signals, daily",
-                "Dashboard · 202 endpoints", "Role-isolated views · fail-closed scoping"]),
+                "Operator dashboard · 202 endpoints"]),
          hands=("Nuremberg · the hands · Rust", ["Signal subscriber · verify, dedupe, fan out", "Jupiter routing · hand-built transactions",
                 "Helius Sender · ~1 s to confirmation", "Position monitor · prices decoded on-chain",
                 "Two lanes · main wallet · program-owned account", "Controls · kill switch, caps, breakers"]),
@@ -106,19 +107,18 @@ S1 = dict(
             "The scaler acts on the busiest shard, not the average, with hysteresis and a dry run before any scale-down. An average of 77 can hide a shard at 85.",
             "Every 15-second candle lands in TimescaleDB. The hot read runs 230× faster through a continuous aggregate.",
          ],
-         shot="shards.webp", shot_caption="Operator home · WebSocket shards per chain, live",
          metrics=[("8", "shards live"), ("552", "contracts on the feed"), ("12M", "candle rows in TimescaleDB")],
          note="Still open, and written down: the feed is certified for today's load, not for 1,500 contracts. The docs say so, and they list the defects that block the next step."),
     dict(id="controls", kind="controls",
          kicker="On-chain controls",
          h1="A trading key that cannot move the money",
          points=[
-            "The funds sit in a program-owned account on Solana. The owner's wallet key is the only authority that can deposit, withdraw, pause, or revoke the trader.",
+            "My funds sit in a program-owned account on Solana. My wallet key is the only authority that can deposit, withdraw, pause, or revoke the trader.",
             "The engine holds a separate executor key that can only open and close positions, inside limits the program enforces on every transaction.",
             "Router instructions arrive as opaque account lists, so they are constrained rather than trusted: capped at 64 accounts, every writable account allowlisted, only two route discriminators accepted.",
          ],
-         keys=[("Owner key", ["Deposit", "Withdraw", "Pause", "Revoke the executor"], "green"),
-               ("Executor key", ["Open positions", "Close positions"], "cyan")],
+         keys=[("My wallet key", ["Deposit", "Withdraw", "Pause", "Revoke the trading key"], "green"),
+               ("Trading key, held by the engine", ["Open positions", "Close positions"], "cyan")],
          forbidden="cannot withdraw · ever",
          rules=["0.5 SOL per trade", "2 SOL per day", "lamports spent and tokens sold counted separately",
                 "10 Token-2022 extensions rejected", "transfer fee capped at 200 bps", "the account pays its own fees from a separate counter"],
@@ -163,10 +163,10 @@ S1 = dict(
          note="371K implementation lines and 5,066 commits across three repositories were generated under the delivery workflow. They measure the workflow's output, not me."),
     dict(id="close", kind="close",
          kicker="See it running",
-         h1="Slides are claims. The system is proof.",
-         lead="Two live sessions, no preparation on my side. Bring your own questions.",
-         sessions=[("The product, live", "Any page of the running system, including areas I have not prepared: the feed, the engine, the on-chain controls, and the data behind every number here."),
-                   ("The workflow, live", "A real task taken through the delivery loop while you watch: research, plan, AI implementation, separate review lanes, my go / no-go, verification in production.")],
+         h1="The system is the proof.",
+         lead="Two things I can show live in an interview.",
+         sessions=[("The product, live", "Any page of the running system: the feed, the engine, the on-chain controls, and the data behind every number here."),
+                   ("The workflow, live", "A real task taken through the delivery loop: research, plan, AI implementation, separate review lanes, my go / no-go, verification in production.")],
          next=("Case study 2 · How I ship", "how-i-ship.html")),
     ],
 )
@@ -245,9 +245,9 @@ S2 = dict(
     dict(id="knowledge", kind="knowledge",
          kicker="What the reviewers are given",
          h1="Official references first, and proof they were used",
-         columns=[("22 reference skills", "Vendor documentation, packaged", ["Solana program safety", "Anchor testing", "Jupiter integration", "Helius streaming", "Raydium · Orca · Meteora · pump.fun", "Token-2022 rules", "Security checklists", "Postgres patterns"]),
-                  ("Live documentation servers", "Read before any integration decision", ["Solana Foundation docs", "Helius docs", "Jupiter docs", "Nansen data", "Vendor GitHub sources"]),
-                  ("3 testing harnesses · 4,763 lines", "Known failure patterns, one per past incident", ["Data validation · 14 patterns, 14 satisfied", "On-chain program · 43 patterns", "Execution engine · 46 patterns, 28 enforced", "Grows after every run"])],
+         columns=[("22 reference skills", "Official vendor documentation, packaged for the models", ["Solana program safety", "Anchor testing", "Jupiter integration", "Helius streaming"]),
+                  ("Live documentation servers", "Read before any integration decision", ["Solana Foundation docs", "Helius docs", "Jupiter docs", "Vendor GitHub sources"]),
+                  ("3 testing harnesses", "Known failure patterns, one per past incident", ["Data validation · 14 patterns", "On-chain program · 43 patterns", "Execution engine · 46 patterns", "Grows after every run"])],
          points=[
             "Citing a reference is not applying it. A seven-checkpoint chain follows each skill from the plan, through the implementation, to the reviewer's compliance table, with file and line citations at each step.",
             "A review that does not cite the harness patterns it consulted is rejected and re-run. The pattern list is read automatically; nobody hand-counts it.",
@@ -300,7 +300,7 @@ S2 = dict(
          kicker="Measured · " + DATE,
          h1="Measured, with the populations printed",
          tiles=[
-            ("134", "documented runs · 112 with a full retrospective", "26 March to 1 September 2026. Analytics 70 · execution engine 17 · on-chain program 7 · cross-repo 9. Fifty declared complex."),
+            ("134", "documented runs · 112 with a full retrospective", "26 March to 1 September 2026. Fifty of them declared complex, which forces the deepest route."),
             ("235", "gaps recorded · 87 written into a step, gate, script or test", "36 still open today. A gap leaves the open list only after three confirming runs."),
             ("121", "runs scored by a written progress review", "Each scores gates fired, reviewer checks, skills used, harness patterns cited."),
             ("45", "runs where the separate review found something all internal reviews missed", "Of 52 runs that record the field; 7 record that it did not."),
@@ -311,7 +311,7 @@ S2 = dict(
                "Multiple AI reviewers are not an independent security audit; where money or security is at stake the boundary is a human specialist.")),
     dict(id="close", kind="close",
          kicker="See it running",
-         h1="Slides are claims. The archive and the system are the evidence.",
+         h1="The archive and the system are the evidence.",
          lead="In an interview I can walk through one archived change and one live product flow: the evidence, the release decision, the result, and the limits of this approach.",
          sessions=[("One archived change, end to end", "A real run from the archive: the request, the plan, the review decisions and fix rounds, the separate review's verdict, my release decision, and what production showed afterwards."),
                    ("One live product flow", "The system this loop built, running: a signal arriving, the engine executing, the record it leaves, and the numbers behind case study 1.")],
