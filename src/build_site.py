@@ -501,14 +501,14 @@ def r_steps(s):
             items += ('<details class="acc"><summary><span class="i">' + E(st_["id"]) + '</span><span class="t">' + E(st_["title"]) + '<small>' + E(st_.get("sub", "")) + '</small></span><span class="c" aria-hidden="true"></span></summary>'
                       '<div class="body"><div><div class="in"><div><p>' + E(st_["what"]) + '</p><div style="margin-top:.6rem">' + tags + '</div></div><dl>' + dl + '</dl></div></div></div></details>')
         n = len(ph["steps"])
-        out.append(f'<details class="phase-acc rv"><summary><span class="num">{E(ph["num"])}</span><h3>{E(ph["title"])}</h3><span class="who">{E(ph.get("who", ""))}</span><span class="cnt">{n} steps</span></summary><div class="body"><div>{items}</div></div></details>')
+        out.append(f'<details class="phase-acc rv"><summary><span class="num">{E(ph["num"])}</span><h3>{E(ph["title"])}</h3><span class="owner">{E(ph.get("who", ""))}</span><span class="cnt">{n} steps</span></summary><div class="body"><div>{items}</div></div></details>')
     ribbon = fig_loop(s["ribbon"]) if s.get("ribbon") else ""
     btn = '<div style="margin:clamp(1.5rem,3vw,2rem) 0 .5rem"><button class="expand-all" type="button">Expand every phase and step</button></div>'
     return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head8(s)}{ribbon}{btn}{"".join(out)}{metrics(s.get("metrics"))}{more(notes(s), "About the numbering")}</div></section>'
 
 def fig_routing():
-    rows = [("Legacy: every lane at maximum", 100, "#7d8ba3", "13.4M tokens · the control run"), ("Standard runs after routing", 42.5, "#31d9ff", "−57.5%"), ("Deep reviews after routing", 15.2, "#a877ff", "−84.8%"), ("Money-moving work", 100, "#58e7ad", "never routed cheaper")]
-    W, lx, bw = 720, 250, 360; H = 34 * len(rows) + 10
+    rows = [("Before routing: every lane at maximum", 100, "#7d8ba3", "13.4M tokens"), ("Standard runs after routing", 42.5, "#31d9ff", "−57.5%"), ("Deep reviews after routing", 15.2, "#a877ff", "−84.8%"), ("Money-moving work, always", 100, "#58e7ad", "full depth")]
+    W, lx, bw = 720, 270, 320; H = 34 * len(rows) + 10
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Review cost before and after routing">'
     for i, (n, pct, col, lab) in enumerate(rows):
         y = i * 34 + 6; w = pct / 100 * bw
