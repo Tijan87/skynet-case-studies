@@ -1,6 +1,7 @@
 # Content for the responsive case-study site. Every number is the verified figure from
 # .claude/future_plans/2026-09-03_builder_case_study_v2.md and the deck-2 copy doc (3 Sep 2026).
 DATE = "3 September 2026"
+SKILLS = "anchor-test-harness birdeye data-accuracy-check design-system-audit frontend-design helius helius-phantom integrating-jupiter meteora orca owasp-security postgres-patterns pumpfun raydium rust-skills safe-solana-builder solana-dev squads ui-ux-pro-max vulnhunter web-design-guidelines".split()
 NAME = "Lukasz Rodzen"
 ROLE = "architect · release owner · operator"
 CONTACT = "[ADD LINKEDIN / EMAIL]"
@@ -70,6 +71,7 @@ S1 = dict(
             ("Execute", "1.3 s", "median, all 1,303 timed trades", "A Rust engine on its own server builds the transaction itself and manages the exit."),
             ("Contain", "4", "fail-closed control layers", "Kill switch, per-trade and daily caps, circuit breakers."),
          ],
+         shot="pipeline2.webp", shot_caption="Operator home · detection → queue → execution, live · kill switch idle",
          note="I choose which public signals to follow with my own funds. Execution stays inside fixed caps, and every step is observable on one dashboard."),
     dict(id="infra", kind="infra",
          kicker="Infrastructure",
@@ -96,7 +98,7 @@ S1 = dict(
             "Solana gives a transaction 1,232 bytes, and a fresh pump.fun route does not fit. Seven constant venue accounts are pre-warmed into the engine's own lookup table, appended and never prepended, because prepending re-inflates every healthy route.",
             "Exit prices are decoded from the pool's own bytes on-chain, 8 venues at exact byte offsets, with the router only as fallback. Signals cross the tunnel HMAC-signed with a freshness window and an idempotency cache, so a duplicate message is designed never to become a duplicate buy.",
          ],
-         visual="stages",
+         visual="stages", visual2="bytes",
          metrics=[("1,245", "test functions in the engine"), ("8", "pool layouts decoded on-chain"), ("≤10", "slots landing target")],
          fn="Every control fails closed: kill switch on entries, a 30 SOL cap enforced in three independent places, sizing that refuses on a missing SOL/USD price, a sell circuit breaker at three retries. 32K lines of tests."),
     dict(id="data", kind="points",
@@ -107,6 +109,7 @@ S1 = dict(
             "The scaler acts on the busiest shard, not the average, with hysteresis and a dry run before any scale-down. An average of 77 can hide a shard at 85.",
             "Every 15-second candle lands in TimescaleDB. The hot read runs 230× faster through a continuous aggregate.",
          ],
+         shot="tracked_cards.webp", shot_caption="Operator home · tracked contracts: total, on the feed, stopped",
          metrics=[("8", "shards live"), ("552", "contracts on the feed"), ("12M", "candle rows in TimescaleDB")],
          note="Still open, and written down: the feed is certified for today's load, not for 1,500 contracts. The docs say so, and they list the defects that block the next step."),
     dict(id="controls", kind="controls",
@@ -132,6 +135,7 @@ S1 = dict(
             "The market-regime label is validated on 21,345 real outcomes (z = 4.07, p < 0.0001). Caveat kept: 183 of 407 labeled days are backfilled with a simpler classifier, so this validates the labeling concept, not retroactive production accuracy.",
          ],
          visual="cube",
+         shots=[("jobs.webp", "Operator home · nightly and hourly background jobs, live"), ("regime_gauge.webp", "The regime gauge · 2 September 2026")],
          metrics=[("17", "exit strategies"), ("6.2M", "precomputed rows"), ("27", "regime signals")],
          fn="The replay table carries five chain values; today's 40,908 tracked contracts sit on four of them. 17,820 tasks a night, about 25 minutes."),
     dict(id="failures", kind="beforeafter",
@@ -253,6 +257,8 @@ S2 = dict(
             "A review that does not cite the harness patterns it consulted is rejected and re-run. The pattern list is read automatically; nobody hand-counts it.",
             "Community snippets are treated as untrusted. One shipped the wrong byte offsets for a trading venue; official sources are now a hard gate.",
          ],
+         pane=["[d].claude/skills/ · directory listing[/d]"] + ["  ".join(f"[k]{x}[/k]" if x in ("safe-solana-builder","integrating-jupiter","anchor-test-harness") else x for x in SKILLS[i:i+3]) for i in range(0, len(SKILLS), 3)] + ["[d]21 of 22 shown · one skill name is withheld because it names a product area not covered here[/d]"],
+         pane_cap="The reference skills the models read before an integration decision, as they sit on disk.",
          metrics=[("7", "checkpoints on skill use, per run"), ("14/14", "data patterns satisfied on the last run")]),
     dict(id="scorecards", kind="scorecards",
          kicker="Scorecards",
@@ -278,6 +284,13 @@ S2 = dict(
                 ("The external brief contains a server address.", "Hard block. The brief never leaves the machine."),
                 ("Fewer than four of five reviewers finished.", "Deployment blocked. A thinner panel is not a panel."),
                 ("The external verdict is not back yet.", "Wait. There is no timeout. The point of the gate is the independent opinion.")],
+         pane=["[d].claude/commands/audit-task.md · four of the 34 gates, shortened[/d]",
+               "[v]Step 8.6[/v]  Live-execution gate, stage A: detect write + datetime trigger files; dry-run first; [r]HARD BLOCK[/r] on dry-run failure  [d](Run 46)[/d]",
+               "[v]Step 8.7[/v]  Schema validation gate: every <alias>.<column> in the SQL diff is checked against the live schema; [r]HARD BLOCK[/r] on missing columns  [d](Run 47)[/d]",
+               "[v]Step 8.8[/v]  Static linter gate: lint every changed Python file; [r]HARD BLOCK[/r] on unused plan-named variables  [d](Run 47)[/d]",
+               "[v]Step 9A.1.5[/v]  Prompt gate: fires before every external auditor handoff; [r]HARD BLOCKs[/r] on a dirty brief",
+               "[d]…[/d]  [w]\"Zero insertions or deletions means the implementer's claim is false.\"[/w]"],
+         pane_cap="From the workflow file, lightly shortened. Each gate carries the run that needed it.",
          metrics=[("34", "catalogued gates"), ("144", "“hard block” markers in the workflow file")],
          note="Each gate is traceable to the run that needed it. The rule inside the file, verbatim: “Zero insertions or deletions means the implementer's claim is false.”"),
     dict(id="memory", kind="memory",
@@ -293,6 +306,12 @@ S2 = dict(
               ("designed", "a deploy-sequencing gate: populate before you enforce"),
               ("proven", "a text check shows the gate in the workflow file; the next run fires it"),
               ("retired", "removed from the open list after three confirming runs")],
+         pane=["[d]AUDIT_TASK_RUN_TRACKER.md · the G-127a thread, shortened[/d]",
+               "[k]Run 127[/k]  New gaps: [w]G-127a[/w] (availability unaudited) — [g]SHIPPED[/g]: release-condition column now mandatory",
+               "[k]Run 128[/k]  [w]G-128g[/w]: the release-condition column covers the CONTROL (can the user act?) but not the SIGNAL (does the surface claim to be finished when it isn't?) — MEDIUM. Direct successor to G-127a.",
+               "[k]Ledger rule[/k]  Active gaps only. Verified gaps are removed after 3 runs of confirmation.",
+               "[k]Run 134[/k]  Wallet sizing lens + named presets (ANALYTICS, COMPLEX, trace_required, external_audit_required) — [g]SHIPPED + DEPLOYED + OPERATOR-CONFIRMED LIVE[/g] — 2026-09-01"],
+         pane_cap="From the run tracker, verbatim apart from shortening.",
          metrics=[("196", "run archives since Dec 2025"), ("252", "archived handovers"), ("235", "recorded gaps, 36 still open")],
          fn="196 archives since December 2025. The run tracker with its scorecards starts on 26 March 2026, which is why it counts 134 runs.",
          note="From the handover rules, verbatim: “The handover is a hypothesis about state. Verification commands are proof.” Automated checks execute the tests; model reviewers interpret the evidence; I own the release decision."),
