@@ -34,7 +34,7 @@ def stats(ms):
     return '<div class="stats" data-stagger>' + "".join(f'<div class="stat rv"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in ms) + "</div>"
 
 def who(cls="who"):
-    return f'<div class="{cls} rv"><div><h3>{E(C.NAME)}</h3><div class="role">{E(C.ROLE)}</div><div class="contact">{C.CONTACT_HTML} · {E(C.LOCATION)}</div></div><p>{E(C.OPMODEL)}</p></div>'
+    return f'<div class="{cls} rv"><div><div class="name">{E(C.NAME)}</div><div class="role">{E(C.ROLE)}</div><div class="contact">{C.CONTACT_HTML} · {E(C.LOCATION)}</div></div><p>{E(C.OPMODEL)}</p></div>'
 
 def head(s, accent="cyan"):
     lead = f'<p class="lead rv">{E(s["lead"])}</p>' if s.get("lead") else ""
@@ -68,7 +68,7 @@ def fig_bytes():
     s += bar(110, fresh, "fresh pump.fun route · no lookup table · overflows", True)
     s += f'<line x1="{lim_x:.1f}" x2="{lim_x:.1f}" y1="8" y2="150" stroke="#ff8f8f" stroke-dasharray="3 4"/>'
     s += f'<text x="{lim_x-4:.1f}" y="168" text-anchor="end" font-size="11" fill="#ff8f8f" font-family="JetBrains Mono,monospace">1,232-byte wire limit</text>'
-    s += f'<text x="{W}" y="168" text-anchor="end" font-size="11" fill="#6b7a94" font-family="JetBrains Mono,monospace">→ over</text>'
+    s += f'<text x="{W}" y="168" text-anchor="end" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">→ over</text>'
     s += "</svg>"
     return f'<div class="fig rv">{s}<div class="cap">Illustrative composition. Each account referenced through a lookup table costs 1 byte instead of 32.</div></div>'
 
@@ -115,7 +115,7 @@ def fig_journey():
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Commits per month across three repositories">'
     for t in range(0, mx + 1, 200):
         y = H - B - t * sc
-        s += f'<line x1="{L}" x2="{W}" y1="{y:.1f}" y2="{y:.1f}" stroke="rgba(255,255,255,.06)"/><text x="{L-6}" y="{y+4:.1f}" text-anchor="end" font-size="10" fill="#6b7a94" font-family="JetBrains Mono,monospace">{t}</text>'
+        s += f'<line x1="{L}" x2="{W}" y1="{y:.1f}" y2="{y:.1f}" stroke="rgba(255,255,255,.06)"/><text x="{L-6}" y="{y+4:.1f}" text-anchor="end" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{t}</text>'
     for i, d in enumerate(data):
         x = L + i * gw + 2; w = gw - 4; y = H - B
         for key, col in (("analytics_c", "#31d9ff"), ("engine_c", "#a877ff"), ("program_c", "#58e7ad")):
@@ -124,7 +124,7 @@ def fig_journey():
                 s += f'<rect x="{x:.1f}" y="{y-h:.1f}" width="{w:.1f}" height="{max(h-1.5,0):.1f}" rx="2" fill="{col}"/>'
                 y -= h
         if i % 2 == 0:
-            s += f'<text x="{x+w/2:.1f}" y="{H-B+16}" text-anchor="middle" font-size="10" fill="#6b7a94" font-family="JetBrains Mono,monospace">{d["m"][2:4]}·{d["m"][5:]}</text>'
+            s += f'<text x="{x+w/2:.1f}" y="{H-B+16}" text-anchor="middle" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{d["m"][2:4]}·{d["m"][5:]}</text>'
     s += "</svg>"
     leg = '<div class="legend"><span><i style="background:#31d9ff"></i>Analytics · Python</span><span><i style="background:#a877ff"></i>Execution engine · Rust</span><span><i style="background:#58e7ad"></i>On-chain program · Anchor</span></div>'
     return f'<div class="fig rv">{s}{leg}<div class="cap">Commits per month, from git across the three repositories · Apr 2025 to Sep 2026</div></div>'
@@ -142,7 +142,7 @@ def fig_growth():
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lines in the workflow file over time">'
     s += '<defs><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#31d9ff" stop-opacity=".25"/><stop offset="1" stop-color="#31d9ff" stop-opacity="0"/></linearGradient></defs>'
     for v in (0, 4000, 8000, 12000):
-        s += f'<line x1="{L}" x2="{W}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="rgba(255,255,255,.06)"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end" font-size="10" fill="#6b7a94" font-family="JetBrains Mono,monospace">{v//1000}k</text>'
+        s += f'<line x1="{L}" x2="{W}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="rgba(255,255,255,.06)"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{v//1000}k</text>'
     path = " ".join(f'{"M" if i==0 else "L"}{X(t):.1f},{Y(v):.1f}' for i, (t, v) in enumerate(pts))
     area = path + f' L{X(pts[-1][0]):.1f},{Y(0):.1f} L{X(pts[0][0]):.1f},{Y(0):.1f} Z'
     s += f'<path d="{area}" fill="url(#ga)"/><path d="{path}" fill="none" stroke="#31d9ff" stroke-width="2" stroke-linejoin="round"/>'
@@ -153,7 +153,7 @@ def fig_growth():
         s += f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{Y(0):.1f}" y2="{22 if up else 60}" stroke="rgba(255,255,255,.14)" stroke-dasharray="2 3"/>'
         s += f'<text x="{x+4:.1f}" y="{18 if up else 56}" font-size="10" fill="#a7b4c9" font-family="JetBrains Mono,monospace">{E(k[:7])} · {E(lab)}</text>'
     for k, lab in (("2025-12-01", "Dec 25"), ("2026-03-01", "Mar 26"), ("2026-06-01", "Jun 26"), ("2026-09-01", "Sep 26")):
-        s += f'<text x="{X(ts(k)):.1f}" y="{H-8}" text-anchor="middle" font-size="10" fill="#6b7a94" font-family="JetBrains Mono,monospace">{lab}</text>'
+        s += f'<text x="{X(ts(k)):.1f}" y="{H-8}" text-anchor="middle" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{lab}</text>'
     s += "</svg>"
     return f'<div class="fig rv">{s}<div class="cap">Lines in the workflow file, from git · growth is rules added after failures, not features</div></div>'
 
@@ -293,21 +293,35 @@ LINKS = {"index.html": "index.html", "the-system.html": "the-system.html", "how-
 
 def nav(current):
     def tab(href, num, lbl):
-        on = " on" if href == current else ""
-        return f'<a href="{LINKS[href]}" class="{on.strip()}"><span class="num">{num}</span><span class="lbl">{lbl}</span></a>'
-    return f'''<nav class="nav"><div class="wrap"><a class="brand" href="{LINKS["index.html"]}"><b>{E(C.NAME)}</b><span class="x"> · case studies</span></a>
+        on = href == current
+        al = {"index.html": "Home", "the-system.html": "Case study 1: The system", "how-i-ship.html": "Case study 2: How I ship"}[href]
+        return f'<a href="{LINKS[href]}" class="{"on" if on else ""}" aria-label="{al}"{" aria-current=page" if on else ""}><span class="num">{num}</span><span class="lbl">{lbl}</span></a>'
+    return f'''<a class="skip" href="#content">Skip to content</a><nav class="nav" aria-label="Primary"><div class="wrap"><a class="brand" href="{LINKS["index.html"]}"><b>{E(C.NAME)}</b><span class="x"> · case studies</span></a>
 <div class="tabs">{tab("index.html", "Home", "")}{tab("the-system.html", "01", "The system")}{tab("how-i-ship.html", "02", "How I ship")}</div></div><div class="bar"></div></nav>'''
 
 def footer():
     return f'''<footer class="foot"><div class="wrap"><p>Specified, reviewed and released by {E(C.NAME)}. Implemented by AI models under the delivery workflow in case study 2. Numbers measured on the production system, the run archive and git, {E(C.DATE)}. Replay and simulation figures are analytical outputs, not returns.</p><p>{C.CONTACT_HTML} · {E(C.LOCATION)} · NELLAI · 2026</p></div></footer>'''
 
+BASE = None  # public base URL, e.g. https://tijan87.github.io/skynet-case-studies ; set with --base-url
+INDEX = True  # --index removes the noindex robots meta
+
+def meta(title, desc, current):
+    m = "" if INDEX else '<meta name="robots" content="noindex">'
+    if BASE:
+        url = BASE.rstrip("/") + "/" + ("" if current == "index.html" else current)
+        m += (f'<link rel="canonical" href="{url}"><meta property="og:type" content="website"><meta property="og:url" content="{url}">'
+              f'<meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}">'
+              f'<meta property="og:image" content="{BASE.rstrip("/")}/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+              f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(title)}"><meta name="twitter:description" content="{E(desc)}"><meta name="twitter:image" content="{BASE.rstrip("/")}/og.png">')
+    return m
+
 def page(title, body, current, desc, cls=""):
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{E(title)}</title><meta name="description" content="{E(desc)}"><meta name="robots" content="noindex">
+<title>{E(title)}</title><meta name="description" content="{E(desc)}">{meta(title, desc, current)}
 <meta name="color-scheme" content="dark"><meta name="theme-color" content="#05080f">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>{CSS}</style></head><body class="{cls}"><div class="ground"></div>{nav(current)}<main>{body}</main>{footer()}<script>{JS}</script></body></html>'''
+<style>{CSS}</style></head><body class="{cls}"><div class="ground"></div>{nav(current)}<main id="content">{body}</main>{footer()}<script>{JS}</script></body></html>'''
 
 def study_page(S):
     parts = []
@@ -324,8 +338,8 @@ def landing():
     cards = ""
     for c in L["cards"]:
         nums = "".join(f'<div><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in c["nums"])
-        cards += f'''<a class="card rv" href="{LINKS[c["href"]]}"><div class="label">Case study {c["n"]} · {E(c["who"])}</div><h3>{E(c["title"])}</h3><p>{E(c["text"])}</p><div class="nums">{nums}</div><span class="arrow">Read <span class="a">→</span></span></a>'''
-    body = f'''<section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p>
+        cards += f'''<a class="card rv" href="{LINKS[c["href"]]}"><div class="label">Case study {c["n"]} · {E(c["who"])}</div><h2>{E(c["title"])}</h2><p>{E(c["text"])}</p><div class="nums">{nums}</div><span class="arrow">Open case study {c["n"][-1]} <span class="a">→</span></span></a>'''
+    body = f'''<section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv" style="margin-top:1rem">{E(L["boundary"])}</p>
 <div class="actions rv"><a class="btn primary" href="{LINKS["the-system.html"]}">01 · The system <span class="a">→</span></a><a class="btn" href="{LINKS["how-i-ship.html"]}">02 · How I ship <span class="a">→</span></a></div></div></section>
 <section class="sec"><div class="wrap">{stats(L["stats"])}{fn(L["fn"])}</div></section>
 <section class="sec"><div class="wrap">{who()}</div></section>
@@ -337,10 +351,22 @@ def main():
     a = sys.argv[1:]
     if "--out" in a: out = a[a.index("--out") + 1]
     if "--links" in a: links = json.load(open(a[a.index("--links") + 1]))
+    global BASE, INDEX
+    if "--base-url" in a: BASE = a[a.index("--base-url") + 1]
+    INDEX = "--index" in a
     if links: LINKS.update(links)
     os.makedirs(out, exist_ok=True)
     pages = {"index.html": landing(), "the-system.html": study_page(C.S1), "how-i-ship.html": study_page(C.S2)}
+    art = "--artifact" in a
     for n, h in pages.items():
+        if art:  # the Artifact host wraps the page in its own document skeleton: keep head bits + body inner only
+            head = h[h.index("<title>"):h.index("</head>")]
+            body = h[h.index("<body"):]
+            body = body[body.index(">") + 1:]
+            cls = "land" if 'class="land"' in h else ""
+            body = body[:body.rindex("</body>")]
+            h = head + f'<div class="{cls}">' + body + "</div>"
+            h = h.replace('href="index.html"', f'href="{LINKS["index.html"]}"')
         open(os.path.join(out, n), "w").write(h)
         print(n, len(h) // 1024, "KB")
 

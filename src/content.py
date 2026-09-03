@@ -6,27 +6,28 @@ ROLE = "architect · release owner · operator"
 CONTACT = "[ADD LINKEDIN / EMAIL]"
 CONTACT_HTML = "[ADD LINKEDIN / EMAIL]"  # becomes <a href=mailto:..> and a profile link once supplied
 LOCATION = "Poland · remote"
-OPMODEL = ("I lead the architecture, the rules the system must satisfy, and every release decision. "
-           "I do not hand-write the code: AI models do, inside a workflow I designed and supervise.")
+OPMODEL = ("I own the architecture, the acceptance criteria, the controls, the release decision and production verification. "
+           "AI models generate the implementation; I am accountable for the result.")
 BOUNDARY = ("And I will tell you where the boundary is: the changes I would not make this way, "
             "and who I would bring in instead.")
 
 LANDING = dict(
-    kicker="AI-native delivery · Solana · live on mainnet",
+    kicker="Architect · AI delivery owner · Poland, remote",
     h1="One person built a live trading system, then the workflow that ships it.",
-    lead=("Two case studies. Pick the one that matches the role, or read both in order. "
-          "Every number is measured on the production system, the run archive or git."),
-    stats=[("16", "months, one architect"), ("1,300", "confirmed trades on-chain"), ("927 ms", "median trade execution"), ("134", "documented delivery runs")],
-    fn="Trades: 2,843 on-chain signatures, verifiable on any explorer. 927 ms is the median on the enhanced path (n=117); 1,277 ms across all 1,303 timed trades. Runs: 26 March to 1 September 2026. Measured " + DATE + ".",
+    lead=("I designed and operate an automated trading system that runs on Solana with my own funds, and the AI delivery workflow that ships every change to it. "
+          "Two case studies: one for product and engineering readers, one for anyone hiring AI-native builders."),
+    boundary="Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.",
+    stats=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution"), ("134", "documented delivery runs")],
+    fn="2,843 on-chain signatures behind the trades, verifiable on any explorer. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Runs from 26 March to 1 September 2026. Measured " + DATE + ".",
     cards=[
         dict(n="01", title="The system", who="for product and engineering readers", href="the-system.html", accent="cyan",
-             text=("Telegram calls and tracked wallets in. A custom Rust engine that lands a trade in about a second. "
-                   "On-chain limits a trading key cannot bypass. Two servers, three codebases, sixteen months."),
-             nums=[("~1 s", "from signal to landed trade"), ("40,908", "contracts tracked, 4 chains")]),
+             text=("A production system that turns public market signals into capped, auditable trades in about 1.3 seconds, with my own funds only. "
+                   "Two servers, a custom Rust engine, and on-chain limits a trading key cannot bypass."),
+             nums=[("1.3 s", "median from signal to landed trade"), ("2,843", "on-chain signatures, verifiable")]),
         dict(n="02", title="How I ship", who="for anyone hiring AI-native builders", href="how-i-ship.html", accent="green",
-             text=("Six stages. Seven model reviews per change, then a separately run review. Fail-closed gates. "
+             text=("Six stages. Five model reviews on every plan, up to seven on every code change, then a separately run review. Fail-closed gates. "
                    "A memory loop that turns failures into rules: 134 runs, 235 recorded gaps, and the controls they produced."),
-             nums=[("7", "model reviews per change"), ("235", "recorded gaps, 87 now rules")]),
+             nums=[("134", "documented runs"), ("235", "recorded gaps, 87 now rules")]),
     ],
 )
 
@@ -39,9 +40,9 @@ S1 = dict(
          kicker="Case study 1 of 2 · the system",
          h1="One person. Two servers. A live trading system with my own money on-chain.",
          lead=("SKYNET turns Telegram calls and tracked wallets into ranked strategies and executes them on Solana "
-               "in about a second, from a Rust engine I specified, had built, tested and hardened."),
-         metrics=[("16", "months, one architect"), ("1,300", "confirmed trades on-chain"), ("927 ms", "median trade execution")],
-         fn="2,843 on-chain signatures behind the 1,300 trades: 1,685 buys, 1,158 sells. 927 ms is the median on the enhanced path (n=117); 1,277 ms across all 1,303 timed trades. Measured " + DATE + ".",
+               "in about 1.3 seconds, from a Rust engine I specified, had built, tested and hardened."),
+         metrics=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution")],
+         fn="2,843 on-chain signatures behind the 1,300 trades: 1,685 buys, 1,158 sells. 1.3 s is the median across all 1,303 timed trades (1,300 of them confirmed round trips); 927 ms on the enhanced path (n=117). Measured " + DATE + ".",
          first="journey", other=("Case study 2 · How I ship", "how-i-ship.html"),
          shot="health.webp", shot_caption="Operator home · live services, host vitals and database"),
     dict(id="journey", kind="journey",
@@ -56,7 +57,7 @@ S1 = dict(
             ("Feb 2026", "Specialist sub-agents: research, plan, implement, audit, verify."),
             ("Mar 2026", "First confirmed on-chain trade."),
             ("Jun 2026", "On-chain program live on mainnet."),
-            ("Sep 2026", "Three codebases, 134 documented workflow runs, real funds in production."),
+            ("Sep 2026", "Three codebases, 134 documented workflow runs, my own funds in production."),
          ],
          note="The delivery loop is its own case study. This one is about what it produced."),
     dict(id="what", kind="four",
@@ -65,10 +66,10 @@ S1 = dict(
          cards=[
             ("Listen", "149", "sources watched: 63 groups, 86 wallets, 4 chains", "Every message and every wallet transaction, around the clock."),
             ("Rank", "17", "exit strategies replayed per source, per regime", "Every source scored by what each strategy would have done."),
-            ("Execute", "~1 s", "median, enhanced path (n=117)", "A Rust engine on its own server builds the transaction itself and manages the exit."),
+            ("Execute", "1.3 s", "median, all 1,303 timed trades", "A Rust engine on its own server builds the transaction itself and manages the exit."),
             ("Contain", "4", "fail-closed control layers", "Kill switch, per-trade and daily caps, circuit breakers."),
          ],
-         note="I choose what to follow. The system does the rest, and every step is observable on one dashboard."),
+         note="I choose which public signals to follow with my own funds. Execution stays inside fixed caps, and every step is observable on one dashboard."),
     dict(id="infra", kind="infra",
          kicker="Infrastructure",
          h1="Two Hetzner servers, one encrypted tunnel, and the Solana blockchain",
@@ -131,7 +132,8 @@ S1 = dict(
             "The market-regime label is validated on 21,345 real outcomes (z = 4.07, p < 0.0001). Caveat kept: 183 of 407 labeled days are backfilled with a simpler classifier, so this validates the labeling concept, not retroactive production accuracy.",
          ],
          visual="cube",
-         metrics=[("17", "exit strategies"), ("6.2M", "precomputed rows"), ("27", "regime signals")]),
+         metrics=[("17", "exit strategies"), ("6.2M", "precomputed rows"), ("27", "regime signals")],
+         fn="The replay table carries five chain values; today's 40,908 tracked contracts sit on four of them. 17,820 tasks a night, about 25 minutes."),
     dict(id="failures", kind="beforeafter",
          kicker="Failures → controls",
          h1="The controls that exist because something broke",
@@ -152,7 +154,7 @@ S1 = dict(
          h1="Measured, with the populations printed",
          tiles=[
             ("1,300", "confirmed trades", "2,843 on-chain signatures, verifiable on any explorer: 1,685 buys, 1,158 sells."),
-            ("927 ms", "median · enhanced path · n=117", "1,277 ms median across all 1,303 timed trades. Both populations, always."),
+            ("1.3 s", "median · all 1,303 timed trades", "927 ms on the enhanced path (n=117). 1,303 trades carry stage timings; 1,300 are confirmed round trips."),
             ("40,908", "contracts tracked · 4 chains", "SOL 34,215 · BSC 3,060 · ETH 2,870 · Base 763"),
             ("12.3M", "rows in TimescaleDB", "28 GB · 95 tables"),
             ("1,245", "engine test functions", "32K lines of tests"),
@@ -182,12 +184,12 @@ S2 = dict(
     dict(id="cover", kind="cover",
          kicker="Case study 2 of 2 · how I ship",
          h1="AI models build every change. Nothing ships until I approve it.",
-         lead=("One typed sentence becomes research, a plan, an implementation, seven model reviews, a separately run review, "
+         lead=("One typed sentence becomes research, a plan, an implementation, five model reviews on the plan and up to seven on the code, a separately run review, "
                "a gated deployment and a written record. 134 documented runs. Every recorded failure kept."),
          metrics=[("134", "documented runs"), ("235", "recorded gaps"), ("121", "runs with a written scorecard")],
          fn="Runs from 26 March to 1 September 2026. 87 of the 235 gaps are written into a step, gate, script or test; 36 remain open. Measured " + DATE + ".",
          first="why", other=("Case study 1 · The system", "the-system.html"),
-         runs=[("134", "1 Sep 2026", "Named sizing presets per wallet", "3 days · 26 review findings, all validated at source"),
+         runs=[("134", "1 Sep 2026", "Named sizing presets per tracked wallet", "3 days · 26 review findings, all validated at source"),
                ("133", "19 Aug 2026", "One-window wallet view, replay and live split", "shipped"),
                ("132", "17 Aug 2026", "Wallet ledger accuracy", "verified in production"),
                ("131", "14 Aug 2026", "Heavy computation moved out of the web server", "2,623 s → 329 s"),
@@ -210,8 +212,8 @@ S2 = dict(
             ("Route", "By complexity. Money, schema or security forces the deep route and cannot be downgraded.", True, "Complexity score and the route decision, logged by name"),
             ("Research and plan", "An AI planner writes the plan; every database table, column and file it names is checked to exist.", False, "The plan, with every named table, column and file checked to exist"),
             ("Implement", "AI models write the code. The recorded changes prove each claimed edit actually happened.", True, "Recorded code changes per claimed edit; database-structure and code-quality checks"),
-            ("Review", "Five model reviews on the plan, five on the code, then a separately run review by a different vendor's model.", False, "Five written review decisions per phase; the separate review's decision and receipts"),
-            ("Decide and verify", "I approve the deploy, watch it for ten minutes, then test it with my own hands.", True, "Deploy receipt, ten-minute monitor log, my sign-off"),
+            ("Review", "Five model reviews on the plan, up to seven on the code, then a separately run review by a different vendor's model.", False, "Five written review decisions per phase; the separate review's decision and receipts"),
+            ("Decide and verify", "I approve the release, monitor production for ten minutes, then run the documented smoke test myself. Automated checks gate the deploy.", True, "Deploy receipt, ten-minute monitor log, my sign-off"),
          ],
          routes=[("Simple", "about 15 minutes"), ("Moderate", "60 to 90 minutes"), ("Complex", "2 to 3 hours, up to days with fix rounds")],
          note="Eight checkpoints support those three decisions. Every override is logged by name; the two that touch security or isolation are refused outright."),
@@ -222,9 +224,9 @@ S2 = dict(
             ("The AI reported “done”. The file was unchanged.", "Every claimed edit is proven by the recorded changes before any reviewer sees it.", "Run 31", "Apr 2026"),
             ("An agent declared a test tool “not installed” after one shell lookup. It was installed.", "A standing rule: never assert a tool is missing from one lookup; the check looks in every valid install location.", "4 Jun", "2026"),
             ("A handover said the tests passed. The test record showed three failures, on transaction-critical code.", "Pass or fail is derived by a script from the test record, never from prose.", "Run 108", "Jul 2026"),
-            ("Twelve external rounds said yes. The deploy locked every user out for an hour: a refusal shipped before its data existed.", "A deploy-sequencing gate: populate before you enforce. Plans carry a release condition per feature.", "Run 127", "Aug 2026"),
+            ("Twelve external rounds said yes. The deploy locked the whole dashboard out for an hour: a refusal shipped before its data existed.", "A deploy-sequencing gate: populate before you enforce. Plans carry a release condition per feature.", "Run 127", "Aug 2026"),
             ("The safety test was green because its inputs were chosen where old and new code agree.", "Widened to 25 cases it went red: 28 production cases would have been handled wrongly. That corpus is now a gate.", "Run 132", "Aug 2026"),
-            ("Eleven review rounds read the code; nobody opened the page. The feature would have refused every user.", "One live round trip through the real screen before reviewers are dispatched. Caught before release by the first test that did.", "Run 134", "Sep 2026"),
+            ("Eleven review rounds read the code; nobody opened the page. The feature would have refused every request.", "One live round trip through the real screen before reviewers are dispatched. Caught before release by the first test that did.", "Run 134", "Sep 2026"),
          ],
          note="From the run tracker, verbatim: “Every single one was found by widening the check, never by re-reading the same layer harder.”"),
     dict(id="reviewers", kind="reviewers",
@@ -238,7 +240,8 @@ S2 = dict(
          lanes=[("Plan review · 5 lanes", ["Opus plan auditor", "Opus architecture reviewer", "OpenAI Codex", "xAI Grok", "Orchestrator verdict"]),
                 ("Code review · 5 lanes + 2", ["Opus code auditor", "Opus architecture reviewer", "OpenAI Codex", "xAI Grok", "Orchestrator verdict", "Data-flow tracer · blind to other findings", "Validator · removes invented references"]),
                 ("Separate round · a different vendor's model", ["Four specialist reviews plus a synthesis: bugs, architecture, verification, security", "A block sends the work back to plan revision", "A finding cannot be dismissed without a receipt"])],
-         metrics=[("5", "model reviews per phase"), ("26", "reviewer and builder roles"), ("28", "checks before a brief leaves")]),
+         metrics=[("5", "model reviews on every plan"), ("7", "reviews on every code change"), ("28", "checks before a brief leaves")],
+         fn="Multiple AI reviewers are not an independent security audit. Where money or security is at stake, the boundary is a human specialist."),
     dict(id="knowledge", kind="knowledge",
          kicker="What the reviewers are given",
          h1="Official references first, and proof they were used",
@@ -285,12 +288,13 @@ S2 = dict(
                 ("Rule", "the fix is written into the workflow; a text check confirms it was added, later runs test whether it works"),
                 ("Archive", "plan, code changes, review decisions and file fingerprints are frozen; the architecture document is rewritten from the code")],
          gap_caption="The life of one gap · G-127a · run 127 · 4 Aug 2026",
-         gap=[("found", "a refusal shipped before its data existed; every user locked out for an hour"),
+         gap=[("found", "a refusal shipped before its data existed; the whole dashboard locked out for an hour"),
               ("recorded", "G-127a, severity HIGH, suggested fix, in the run tracker"),
               ("designed", "a deploy-sequencing gate: populate before you enforce"),
               ("proven", "a text check shows the gate in the workflow file; the next run fires it"),
               ("retired", "removed from the open list after three confirming runs")],
          metrics=[("196", "run archives since Dec 2025"), ("252", "archived handovers"), ("235", "recorded gaps, 36 still open")],
+         fn="196 archives since December 2025. The run tracker with its scorecards starts on 26 March 2026, which is why it counts 134 runs.",
          note="From the handover rules, verbatim: “The handover is a hypothesis about state. Verification commands are proof.” Automated checks execute the tests; model reviewers interpret the evidence; I own the release decision."),
     dict(id="measured", kind="tiles",
          kicker="Measured · " + DATE,
