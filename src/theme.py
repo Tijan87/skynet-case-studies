@@ -307,47 +307,6 @@ a.card:hover .arrow .a{transform:translateX(3px)}
   :root{--fs-cap:.9375rem}
   .stage .ev b,.gate .lab,.ba .lab,.gaplife li b,.ba .when,.rules .lab,.key .no,.pill{font-size:.75rem}
 }
-/* ===== premium layer (v5): depth, gradient numerals, hairlines, wire, panes ===== */
-.stat .n,.tile .n,.pick .nums .n{background:linear-gradient(120deg,#ffffff 0%,#c9f3ff 55%,#d9ccff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.card{position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:.55;
-  background:linear-gradient(120deg,rgba(168,119,255,.5),rgba(49,217,255,.55) 50%,rgba(88,231,173,.4));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;transition:opacity .25s var(--ease)}
-.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.035),transparent 38%)}
-a.card:hover::before{opacity:.95}
-.node,.key,.gaplife{position:relative;overflow:hidden}
-.sec{position:relative}
-.sec > .wrap{position:relative}
-.sec::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(55% 40% at 12% 0%,rgba(49,217,255,.055),transparent 60%)}
-.sec:nth-of-type(even)::before{background:radial-gradient(50% 40% at 88% 8%,rgba(168,119,255,.055),transparent 60%)}
-.hero .glow2{position:absolute;top:-10%;right:-10%;width:min(70vw,700px);aspect-ratio:1;pointer-events:none;z-index:-1;background:radial-gradient(circle,rgba(168,119,255,.10),transparent 62%);filter:blur(70px);opacity:0;animation:glow-in 1.4s var(--ease) .5s forwards}
-.wire{position:fixed;left:calc(var(--gutter)/2 - .5px);top:0;height:100vh;width:1px;pointer-events:none;z-index:5;opacity:.75;
-  background:linear-gradient(180deg,var(--violet),var(--accent) 55%,var(--green));transform-origin:0 0;transform:scaleY(var(--p,0))}
-@supports (animation-timeline:scroll(root block)){@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}.wire{animation:growY linear;animation-timeline:scroll(root block)}}
-@media (max-width:900px){.wire{display:none}}
-.shot img{width:100%;height:auto}
-.shot{position:relative;transition:transform .5s var(--ease),box-shadow .5s var(--ease);box-shadow:0 50px 120px -50px rgba(49,217,255,.28),0 30px 80px -30px rgba(0,0,0,.9)}
-.shot::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:.7;z-index:2;
-  background:linear-gradient(120deg,rgba(168,119,255,.6),rgba(49,217,255,.6) 50%,rgba(88,231,173,.45));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.shot.tilt{transform:perspective(1600px) rotateX(3deg);transform-origin:50% 100%}
-.shot.tilt:hover{transform:perspective(1600px) rotateX(0deg) translateY(-4px)}
-.shot:not(.tilt):hover{transform:translateY(-3px)}
-.figs{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));margin-top:clamp(2rem,4vw,3rem);align-items:start}
-.figs.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr))}
-.pane{position:relative;border-radius:var(--r);border:1px solid var(--line-2);background:linear-gradient(180deg,#0b1220,#070c15);padding:1rem 1.15rem 1.1rem;font:400 .82rem/1.65 var(--mono);color:var(--ink-2);overflow-x:auto;box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
-.pane::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:.6;background:linear-gradient(120deg,rgba(168,119,255,.5),rgba(49,217,255,.55) 50%,rgba(88,231,173,.4));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.pane .bar3{display:flex;gap:6px;margin-bottom:.8rem}
-.pane .bar3 i{width:9px;height:9px;border-radius:50%;background:rgba(167,180,201,.18)}
-.pane .bar3 i:first-child{background:rgba(255,143,143,.5)}.pane .bar3 i:nth-child(2){background:rgba(255,205,120,.45)}.pane .bar3 i:nth-child(3){background:rgba(88,231,173,.5)}
-.pane div.ln{white-space:pre-wrap;word-break:break-word;padding:.12rem 0}
-.pane .k{color:var(--accent)} .pane .g{color:var(--green)} .pane .v{color:var(--violet)} .pane .d{color:var(--ink-3)} .pane .r{color:var(--red)} .pane .w{color:var(--ink)}
-.pane + .cap{margin-top:.75rem}
-.pick .card{background-image:radial-gradient(60% 50% at 0% 0%,rgba(49,217,255,.10),transparent 70%),linear-gradient(180deg,var(--surface-2),var(--surface))}
-.pick .card:nth-child(2){background-image:radial-gradient(60% 50% at 0% 0%,rgba(88,231,173,.09),transparent 70%),linear-gradient(180deg,var(--surface-2),var(--surface))}
-.ribbon{margin-top:clamp(2rem,4vw,3rem)}
-@media (prefers-reduced-motion:reduce){.wire{display:none}.hero .glow2{opacity:.3;animation:none}.shot,.shot.tilt{transform:none;transition:none}}
-@media print{.wire{display:none}}
 """
 
 JS = r"""
@@ -370,7 +329,7 @@ document.documentElement.classList.add('js');
     (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(play);
     setTimeout(play, 900);
   }
-  var nav = document.querySelector('.nav'), bar = document.querySelector('.bar'), wire = document.querySelector('.wire');
+  var nav = document.querySelector('.nav'), bar = document.querySelector('.bar');
   var noSDA = !(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll(root block)'));
   var tick = false;
   function onScroll(){
@@ -378,7 +337,7 @@ document.documentElement.classList.add('js');
     requestAnimationFrame(function(){
       var y = window.scrollY || document.documentElement.scrollTop;
       nav.classList.toggle('solid', y > 24);
-      if (noSDA) { var max = document.documentElement.scrollHeight - innerHeight, p = (max > 0 ? Math.min(y / max, 1) : 0); if (bar) bar.style.transform = 'scaleX(' + p + ')'; if (wire) wire.style.transform = 'scaleY(' + p + ')'; }
+      if (noSDA && bar) { var max = document.documentElement.scrollHeight - innerHeight; bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')'; }
       tick = false;
     });
   }

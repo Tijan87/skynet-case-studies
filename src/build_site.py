@@ -43,35 +43,8 @@ def head(s, accent="cyan"):
 def points(ps):
     return '<ul class="points" data-stagger>' + "".join(f'<li class="rv">{E(p)}</li>' for p in ps) + "</ul>"
 
-def shot(name, cap, tilt=False):
-    return f'<figure class="rv" style="margin:0"><div class="shot{" tilt" if tilt else ""}"><img src="{img_uri(name)}" alt="{E(cap)}"></div><figcaption class="cap">{E(cap)}</figcaption></figure>'
-
-def pane(lines, cap=None):
-    out = []
-    for ln in lines:
-        # markup: [k]..[/k] cyan, [g] green, [v] violet, [d] dim, [r] red, [w] white
-        t = E(ln)
-        for tag in ("k", "g", "v", "d", "r", "w"):
-            t = t.replace(f"[{tag}]", f'<span class="{tag}">').replace(f"[/{tag}]", "</span>")
-        out.append(f'<div class="ln">{t}</div>')
-    c = f'<p class="cap">{E(cap)}</p>' if cap else ""
-    return f'<div class="rv"><div class="pane"><div class="bar3"><i></i><i></i><i></i></div>{"".join(out)}</div>{c}</div>'
-
-def fig_loop(stages):
-    W, H = 760, 96; n = len(stages); gap = (W - 150) / (n - 1)
-    s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six stages of the loop; the three decisions that are mine are highlighted">'
-    s += '<defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#a877ff"/><stop offset=".55" stop-color="#31d9ff"/><stop offset="1" stop-color="#58e7ad"/></linearGradient><filter id="gl"><feGaussianBlur stdDeviation="3"/></filter></defs>'
-    s += f'<line x1="75" x2="{W-75}" y1="34" y2="34" stroke="url(#lg)" stroke-width="1.5" opacity=".9"/>'
-    for i, (t, p, mine, ev) in enumerate(stages):
-        x = 75 + i * gap
-        if mine:
-            s += f'<circle cx="{x:.1f}" cy="34" r="11" fill="#31d9ff" opacity=".35" filter="url(#gl)"/><circle cx="{x:.1f}" cy="34" r="6" fill="#31d9ff"/>'
-        else:
-            s += f'<circle cx="{x:.1f}" cy="34" r="5.5" fill="#05080f" stroke="#a7b4c9" stroke-width="1.5"/>'
-        s += f'<text x="{x:.1f}" y="66" text-anchor="middle" font-size="11" fill="{"#f2f6ff" if mine else "#a7b4c9"}" font-family="IBM Plex Sans,sans-serif">{E(t)}</text>'
-        if mine: s += f'<text x="{x:.1f}" y="84" text-anchor="middle" font-size="9.5" fill="#31d9ff" font-family="JetBrains Mono,monospace" letter-spacing="1">MY DECISION</text>'
-    s += "</svg>"
-    return f'<div class="fig rv ribbon">{s}</div>'
+def shot(name, cap):
+    return f'<figure class="rv" style="margin:0"><div class="shot"><img src="{img_uri(name)}" alt="{E(cap)}"></div><figcaption class="cap">{E(cap)}</figcaption></figure>'
 
 # ------------------------------------------------------------------ svg figures
 def fig_bytes():
@@ -140,13 +113,12 @@ def fig_journey():
     mx = max(d["analytics_c"] + d["engine_c"] + d["program_c"] for d in data)
     sc = (H - B - 20) / mx
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Commits per month across three repositories">'
-    s += '<defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#31d9ff"/><stop offset="1" stop-color="#31d9ff" stop-opacity=".55"/></linearGradient><linearGradient id="g2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#a877ff"/><stop offset="1" stop-color="#a877ff" stop-opacity=".55"/></linearGradient><linearGradient id="g3" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#58e7ad"/><stop offset="1" stop-color="#58e7ad" stop-opacity=".55"/></linearGradient></defs>'
     for t in range(0, mx + 1, 200):
         y = H - B - t * sc
         s += f'<line x1="{L}" x2="{W}" y1="{y:.1f}" y2="{y:.1f}" stroke="rgba(255,255,255,.06)"/><text x="{L-6}" y="{y+4:.1f}" text-anchor="end" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{t}</text>'
     for i, d in enumerate(data):
         x = L + i * gw + 2; w = gw - 4; y = H - B
-        for key, col in (("analytics_c", "url(#g1)"), ("engine_c", "url(#g2)"), ("program_c", "url(#g3)")):
+        for key, col in (("analytics_c", "#31d9ff"), ("engine_c", "#a877ff"), ("program_c", "#58e7ad")):
             h = d[key] * sc
             if h > 0:
                 s += f'<rect x="{x:.1f}" y="{y-h:.1f}" width="{w:.1f}" height="{max(h-1.5,0):.1f}" rx="2" fill="{col}"/>'
@@ -168,12 +140,12 @@ def fig_growth():
     def X(t): return L + (t - t0) / (t1 - t0) * (W - L - 12)
     def Y(v): return H - B - v / mx * (H - B - 24)
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lines in the workflow file over time">'
-    s += '<defs><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#31d9ff" stop-opacity=".25"/><stop offset="1" stop-color="#31d9ff" stop-opacity="0"/></linearGradient><filter id="gf"><feGaussianBlur stdDeviation="4"/></filter></defs>'
+    s += '<defs><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#31d9ff" stop-opacity=".25"/><stop offset="1" stop-color="#31d9ff" stop-opacity="0"/></linearGradient></defs>'
     for v in (0, 4000, 8000, 12000):
         s += f'<line x1="{L}" x2="{W}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="rgba(255,255,255,.06)"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{v//1000}k</text>'
     path = " ".join(f'{"M" if i==0 else "L"}{X(t):.1f},{Y(v):.1f}' for i, (t, v) in enumerate(pts))
     area = path + f' L{X(pts[-1][0]):.1f},{Y(0):.1f} L{X(pts[0][0]):.1f},{Y(0):.1f} Z'
-    s += f'<path d="{path}" fill="none" stroke="#31d9ff" stroke-width="6" stroke-linejoin="round" opacity=".18" filter="url(#gf)"/><path d="{area}" fill="url(#ga)"/><path d="{path}" fill="none" stroke="#31d9ff" stroke-width="2" stroke-linejoin="round"/>'
+    s += f'<path d="{area}" fill="url(#ga)"/><path d="{path}" fill="none" stroke="#31d9ff" stroke-width="2" stroke-linejoin="round"/>'
     for t, v in pts:
         s += f'<circle cx="{X(t):.1f}" cy="{Y(v):.1f}" r="3.5" fill="#05080f" stroke="#31d9ff" stroke-width="1.5"/>'
     for i, (k, lab) in enumerate(C.GROWTH_FLAGS):
@@ -189,11 +161,11 @@ def fig_growth():
 def r_cover(s, study):
     right = ""
     if s.get("shot"):
-        right = shot(s["shot"], s["shot_caption"], tilt=True)
+        right = shot(s["shot"], s["shot_caption"])
     elif s.get("runs"):
-        lines = ["[d]AUDIT_TASK_RUN_TRACKER.md · the latest six run headers, shortened[/d]"] + [f"[k]run {n}[/k]  [w]{t}[/w]  [d]{sub} · {d}[/d]" for n, d, t, sub in s["runs"]]
-        right = pane(lines, s["runs_caption"])
-    return f'''<section class="hero" id="{s["id"]}"><div class="glow"></div><div class="glow2"></div><div class="wrap" data-stagger>
+        li = "".join(f'<li><span class="n">{E(n)}</span><span class="t">{E(t)}</span><span class="s">{E(sub)} · {E(d)}</span></li>' for n, d, t, sub in s["runs"])
+        right = f'<div class="rv"><div class="label">Recent change history · latest six of 134 runs</div><ul class="runs" style="margin-top:.9rem">{li}</ul><p class="cap" style="margin-top:.9rem">{E(s["runs_caption"])}</p></div>'
+    return f'''<section class="hero" id="{s["id"]}"><div class="glow"></div><div class="wrap" data-stagger>
 <div class="rv">{kicker(s["kicker"])}</div><h1 class="rv">{E(s["h1"])}</h1><p class="lead rv">{E(s["lead"])}</p>
 <div class="actions rv"><a class="btn primary" href="#{s["first"]}">Start reading <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
 </div></section>
@@ -208,8 +180,7 @@ def r_journey(s):
 
 def r_four(s):
     cards = "".join(f'<div class="card rv"><div class="label">{E(t)}</div><div class="stat" style="border:0;padding:0"><span class="n" style="font-size:clamp(1.75rem,1.2vw+1.4rem,2.5rem)">{E(n)}</span><span class="l">{E(l)}</span></div><p>{E(p)}</p></div>' for t, n, l, p in s["cards"])
-    sh = f'<div style="margin-top:clamp(2rem,4vw,3rem)">{shot(s["shot"], s["shot_caption"])}</div>' if s.get("shot") else ""
-    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="cards c4" data-stagger>{cards}</div>{sh}{note(E(s["note"]))}</div></section>'
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="cards c4" data-stagger>{cards}</div>{note(E(s["note"]))}</div></section>'
 
 def r_infra(s):
     def node(cls, kick, title, sub, items):
@@ -229,13 +200,8 @@ def r_points(s, accent="cyan"):
     elif s.get("visual") == "cube": vis = fig_cube()
     elif s.get("shot"): vis = shot(s["shot"], s["shot_caption"])
     body = f'<div class="grid2"><div>{points(s["points"])}</div><div>{vis}</div></div>' if vis else points(s["points"])
-    extra = ""
-    figs = []
-    if s.get("visual2") == "bytes": figs.append(fig_bytes())
-    for nm, cp in s.get("shots", []): figs.append(shot(nm, cp))
-    if figs: extra = f'<div class="figs two" data-stagger>{"".join(figs)}</div>'
     return f'''<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}
-{body}{extra}{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>'''
+{body}{metrics(s.get("metrics"))}{fn(s.get("fn"))}{note(E(s["note"])) if s.get("note") else ""}</div></section>'''
 
 def r_controls(s):
     keys = ""
@@ -280,7 +246,7 @@ def r_loop(s):
         pill = '<span class="pill me">My decision</span>' if mine else ""
         st += f'<div class="card stage rv">{pill}<div class="idx">0{i+1}</div><h3>{E(t)}</h3><p>{E(p)}</p><div class="ev"><b>Evidence left behind</b>{E(ev)}</div></div>'
     routes = '<div class="routes rv">' + "".join(f"<span><b>{E(a)}</b> · {E(b)}</span>" for a, b in s["routes"]) + "</div>"
-    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}{fig_loop(s["stages"])}<div class="loop" data-stagger>{st}</div>{routes}{note(E(s["note"]))}</div></section>'
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="loop" data-stagger>{st}</div>{routes}{note(E(s["note"]))}</div></section>'
 
 def r_reviewers(s):
     lanes = ""
@@ -296,8 +262,7 @@ def r_knowledge(s):
     for t, sub, items in s["columns"]:
         li = "".join(f"<li>{E(i)}</li>" for i in items)
         cols += f'<div class="col rv"><h3>{E(t)}</h3><div class="sub">{E(sub)}</div><ul>{li}</ul></div>'
-    pn = pane(s["pane"], s.get("pane_cap")) if s.get("pane") else ""
-    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="cols" data-stagger>{cols}</div><div class="grid2 rev" style="margin-top:clamp(2rem,4vw,3.5rem)"><div>{points(s["points"])}</div>{pn}</div>{metrics(s["metrics"])}</div></section>'
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="cols" data-stagger>{cols}</div><div style="margin-top:clamp(2rem,4vw,3.5rem)">{points(s["points"])}</div>{metrics(s["metrics"])}</div></section>'
 
 def r_scorecards(s):
     rows = ""
@@ -312,15 +277,13 @@ def r_scorecards(s):
 
 def r_gates(s):
     g = "".join(f'<div class="card gate rv"><div class="lab">The claim</div><div class="claim">{E(c)}</div><div class="lab">What the workflow does</div><div class="does">{E(d)}</div></div>' for c, d in s["gates"])
-    pn = f'<div style="margin-top:clamp(2rem,4vw,3rem)">{pane(s["pane"], s.get("pane_cap"))}</div>' if s.get("pane") else ""
-    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="gates" data-stagger>{g}</div>{pn}{metrics(s["metrics"])}{note(E(s["note"]))}</div></section>'
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="gates" data-stagger>{g}</div>{metrics(s["metrics"])}{note(E(s["note"]))}</div></section>'
 
 def r_memory(s):
     ch = "".join(f'<div class="c rv"><h3>{E(t)}</h3><p>{E(p)}</p></div>' for t, p in s["chain"])
     gl = "".join(f"<li><b>{E(a)}</b>{E(b)}</li>" for a, b in s["gap"])
     return f'''<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="chain" data-stagger>{ch}</div>
-<div class="card gaplife rv"><div class="label">{E(s["gap_caption"])}</div><ol>{gl}</ol></div>
-<div style="margin-top:14px">{pane(s["pane"], s.get("pane_cap")) if s.get("pane") else ""}</div>{metrics(s["metrics"])}{note(E(s["note"]))}</div></section>'''
+<div class="card gaplife rv"><div class="label">{E(s["gap_caption"])}</div><ol>{gl}</ol></div>{metrics(s["metrics"])}{note(E(s["note"]))}</div></section>'''
 
 RENDER = dict(journey=r_journey, four=r_four, infra=r_infra, points=r_points, controls=r_controls, beforeafter=r_beforeafter,
               tiles=r_tiles, growth=r_growth, loop=r_loop, reviewers=r_reviewers, knowledge=r_knowledge, scorecards=r_scorecards,
@@ -359,7 +322,7 @@ def page(title, body, current, desc, cls=""):
 <meta name="color-scheme" content="dark"><meta name="theme-color" content="#05080f"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2331d9ff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>{CSS}</style></head><body class="{cls}"><div class="ground"></div>{nav(current)}<div class="wire" aria-hidden="true"></div><main id="content">{body}</main>{footer()}<script>{JS}</script></body></html>'''
+<style>{CSS}</style></head><body class="{cls}"><div class="ground"></div>{nav(current)}<main id="content">{body}</main>{footer()}<script>{JS}</script></body></html>'''
 
 def study_page(S):
     parts = []
@@ -377,7 +340,7 @@ def landing():
     for c in L["cards"]:
         nums = "".join(f'<div><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in c["nums"])
         cards += f'''<a class="card rv" href="{LINKS[c["href"]]}"><div class="label">Case study {c["n"]} · {E(c["who"])}</div><h2>{E(c["title"])}</h2><p>{E(c["text"])}</p><div class="nums">{nums}</div><span class="arrow">Open case study {c["n"][-1]} <span class="a">→</span></span></a>'''
-    body = f'''<section class="hero"><div class="glow"></div><div class="glow2"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv" style="margin-top:1rem">{E(L["boundary"])}</p>
+    body = f'''<section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv" style="margin-top:1rem">{E(L["boundary"])}</p>
 <div class="actions rv"><a class="btn primary" href="{LINKS["the-system.html"]}">01 · The system <span class="a">→</span></a><a class="btn" href="{LINKS["how-i-ship.html"]}">02 · How I ship <span class="a">→</span></a></div></div></section>
 <section class="sec"><div class="wrap">{stats(L["stats"])}{fn(L["fn"])}</div></section>
 <section class="sec"><div class="wrap">{who()}</div></section>
