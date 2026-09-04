@@ -182,7 +182,7 @@ def fig_growth():
     for t, v in pts:
         s += f'<circle cx="{X(t):.1f}" cy="{Y(v):.1f}" r="3.5" fill="#05080f" stroke="#31d9ff" stroke-width="1.5"/>'
     for i, (k, lab) in enumerate(C.GROWTH_FLAGS):
-        x = X(ts(k)); lvl = i % 2; yt = (16, 38)[lvl]
+        x = X(ts(k)); yt = (14, 34, 54, 14, 34, 14)[i % 6]
         anchor = "end" if x > W * 0.72 else "start"; dx = -4 if anchor == "end" else 4
         s += f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{Y(0):.1f}" y2="{yt+4}" stroke="rgba(255,255,255,.12)" stroke-dasharray="2 3"/>'
         s += f'<text x="{x+dx:.1f}" y="{yt}" text-anchor="{anchor}" font-size="10.5" fill="#a7b4c9" font-family="JetBrains Mono,monospace">{E(lab)}</text>'

@@ -434,7 +434,7 @@ details.more .inner{grid-template-columns:1fr}
 /* banners */
 .banner{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,#0a1018,#070c15)}
 .banner svg{width:100%;height:auto;display:block}
-@media (max-width:640px){.banner{overflow-x:auto;-webkit-overflow-scrolling:touch}.banner svg{min-width:560px}.banner.mini svg{min-width:0}}
+@media (max-width:640px){.banner{overflow-x:auto;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}.banner svg{min-width:560px}.banner.mini{mask-image:none;-webkit-mask-image:none}.banner.mini svg{min-width:0}}
 .banner.mini{border:0;border-radius:10px;margin:-.25rem 0 1rem;background:rgba(255,255,255,.02)}
 .pick .card > .banner{margin-top:0}
 </style></head><body class=""><div class="ground"></div><a class="skip" href="#content">Skip to content</a><nav class="nav" aria-label="Primary"><div class="wrap"><a class="brand" href="index.html"><b>Lukasz Rodzen</b><span class="x"> · case studies</span></a>

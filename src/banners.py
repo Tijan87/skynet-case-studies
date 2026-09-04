@@ -106,7 +106,7 @@ def loop():
         if anchor == "end": lx -= 4
         b += label(f"{lx:.0f}", f"{ly+3:.0f}", n, INK2, anchor, 9)
     b += f'<text x="{cx}" y="{cy-2}" text-anchor="middle" font-size="11" font-weight="500" fill="{INK}" font-family="{SANS}">run ID + evidence</text><text x="{cx}" y="{cy+14}" text-anchor="middle" font-size="9" fill="{INK3}" font-family="{MONO}">ON DISK, NOT IN MEMORY</text>'
-    b += chip(p, 40, 30, "memory reset", RED, 110) + wire(p, [(150, 40), (200, 40), (262, 62)], dashed=True) + label(40, 64, "the model forgets", INK3, "start", 8.5) + label(40, 80, "the run does not", INK3, "start", 8.5)
+    b += chip(p, 40, 118, "memory reset", RED, 110) + wire(p, [(150, 128), (200, 128), (268, 112)], dashed=True) + label(40, 152, "the model forgets", INK3, "start", 8.5) + label(40, 168, "the run does not", INK3, "start", 8.5)
     b += chip(p, 566, 128, "2-day runs", GR, 96) + label(566, 162, "30 h · 28 h · 4 days", INK3, "start", 8.5)
     return wrap(svg(p, W, H, b, "Five commands passing one run's state around a loop"))
 
