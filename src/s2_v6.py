@@ -9,13 +9,13 @@ S2 = dict(
     sections=[
     dict(id="cover", kind="cover",
          kicker="Case study 2 of 2 · how I ship",
-         h1="AI models build every change. Nothing ships until I approve it.",
+         h1="I architect and release every change. AI agents build it inside a workflow I designed.",
          lead=("One AI coordinates the job. Specialist agents research, plan, implement and test it. Models from two other vendors challenge the work before "
                "anything risky can ship. The whole thing runs on written rules that grew out of 112 documented runs, and every failure is kept."),
-         metrics=[("112", "documented runs"), ("93", "of them declared complex"), ("4 days", "longest run, start to ship")],
-         fn="Runs from 26 March to 1 September 2026, numbered 1 to 134 (22 numbers were skipped or abandoned). Complexity split 93 complex, 16 moderate, 1 simple, 2 unstated. Longest single session about 30 hours; longest calendar span 4 days (run 130). Measured " + DATE + ".",
+         metrics=[("112", "documented runs"), ("3", "AI vendors on every review panel"), ("4 days", "longest run, start to ship")],
+         fn="The system this workflow ships trades only my own funds: no client assets, no investment service, no advice. Runs from 26 March to 1 September 2026, numbered 1 to 134 (22 numbers were skipped or abandoned). Complexity split 93 complex, 16 moderate, 1 simple, 2 unstated. Longest single session about 30 hours; longest calendar span 4 days (run 130). Measured " + DATE + ".",
          first="grew", other=("Case study 1 · The system", "the-system.html"),
-         ribbon=[("Understand", "", False, ""), ("Route", "", True, ""), ("Research and plan", "", False, ""), ("Implement", "", True, ""), ("Review", "", False, ""), ("Decide and verify", "", True, "")]),
+         ribbon=[("Understand", "", False, ""), ("Route", "", True, ""), ("Research and plan", "", False, ""), ("Approve, then build", "", True, ""), ("Review", "", False, ""), ("Decide and verify", "", True, "")]),
 
     dict(id="grew", kind="growth",
          kicker="How it grew",
@@ -41,13 +41,15 @@ S2 = dict(
          lead=("The most important design choice is not the number of reviewers. It is the documentation system that tells each new AI where it is, "
                "what the surrounding system does, and which evidence controls the answer. Without it, agents spend their time blindly analysing 400,000 lines of code."),
          boxes=[
-            ("Always loaded", "The constitution", "A rules file every agent reads on every turn. Its first rule: architecture before code, and the real code wins whenever the documentation disagrees."),
-            ("2,110 lines", "The navigation index", "Maps every component to the section of the architecture map that explains it, generated from stable markers so an agent loads 200 lines, not 20,000."),
-            ("19,514 lines", "The architecture map", "How the system works today: flows, tables, endpoints, contracts. No dates, no history, no debate. Rewritten after every change as if the feature had always existed."),
-            ("3 contracts", "The canonical contracts", "Background jobs and tables, on-chain decoders, and tenant isolation each have one source of truth that must be updated in the same change as the code."),
-            ("The code", "Source of truth", "Every plan, review and archive ends at the real files. A validator strips any line number or value that does not exist there."),
+            ("Always loaded", "The constitution", "Architecture before code, and the real code wins when the documentation disagrees."),
+            ("2,110 lines", "The navigation index", "Points every component at the one section of the map that explains it."),
+            ("19,514 lines", "The architecture map", "How the system works today. No dates, no history, no debate."),
+            ("3 contracts", "The canonical contracts", "Jobs and tables, on-chain decoders, operator-view separation: one source of truth each."),
+            ("The code", "Source of truth", "Every plan, review and archive ends at the real files."),
          ],
+         more_label="How the map works", banner="layers",
          points=[
+            "The constitution is a rules file every agent reads on every turn. The navigation index is generated from stable section markers, so an agent loads 200 lines instead of 20,000. The map is rewritten after every change as if the feature had always existed. Each contract must be updated in the same change as the code it governs, and a validator strips any line number or value that does not exist in the real files.",
             "An auditor starts at the navigation index, reads the one architecture section that matters, then the code. Three reads instead of a blind search across three repositories.",
             "After a run ships, the archive rewrites the affected architecture section and regenerates the navigation index. History goes into reports and archives; the map stays a map.",
             "A separate documentation audit has run 16 times since March 2026. It hunts undocumented code, obsolete statements, history creeping into the map, broken navigation and secrets, with a final adversarial pass over the documentation diff itself.",
@@ -67,7 +69,7 @@ S2 = dict(
     dict(id="reviewers", kind="matrix",
          kicker="Who reviews",
          h1="Different vendors, different questions, and a record of who caught what",
-         lead=("Lane count is not lane diversity. The panel mixes three model lineages, two blind roles and deterministic scripts, and every lane is scored, so the ledger shows which ones earn their place."),
+         lead=("Lane count is not lane diversity. The panel mixes models from three vendors, two blind roles and deterministic scripts, and every lane is scored, so the ledger shows which ones earn their place."),
          strip=[("Claude Opus", "#31d9ff", "plans, implements, reviews"), ("Claude Sonnet", "#31d9ff", "coordinates, fact-checks"), ("OpenAI Codex", "#a877ff", "bug hunter · external round"), ("xAI Grok", "#58e7ad", "independent bug hunter"), ("Data-flow tracer", "#7d8ba3", "blind to other findings"), ("Scripts", "#7d8ba3", "deterministic gates"), ("Me", "#f2f6ff", "scope, release, retirement")],
          cols=["Lane", "Role", "Independence", "In the ledger"],
          rows=[
@@ -76,7 +78,7 @@ S2 = dict(
             ("OpenAI Codex", "#a877ff", "Internal review lanes, a second data-flow trace, and the separately run external round", "Different vendor; the external round runs outside the workflow on a frozen commit", "Present in 111 of 112 runs; scored 9.33 of 10 across 51 scored runs; caught 15 critical findings in run 49 that Claude reviewers had approved"),
             ("xAI Grok", "#58e7ad", "Independent bug hunter on plan and code, added July 2026", "Third vendor; started non-blocking while it earned its place", "13 runs, 8.22 of 10 across 9 scored; run 128: contradicted a maximum-effort Claude critical, and the source proved Grok right"),
             ("Data-flow tracer", "#7d8ba3", "Compares the promised data path with the code, at plan time and again in the code", "Forbidden from reading the other reviewers' findings", "30 recorded passes, up to 35 of 35 assertions"),
-            ("Scripts", "#7d8ba3", "Existence gates, schema checks, linters, brief redaction, prompt gate, routing", "Deterministic; no judgment, no fatigue", "144 hard-block markers; a gate stays red until it has executed on representative data"),
+            ("Scripts", "#7d8ba3", "Existence gates, schema checks, linters, brief redaction, prompt gate, routing", "Deterministic; no judgment, no fatigue", "146 hard-block instructions; a gate stays red until it has executed on representative data"),
             ("Me", "#f2f6ff", "Scope, route, plan approval, release, verification sign-off, retirement of recommendations", "The only party that can authorise a deploy or retire a red finding", "Two of the six failures on this page were caught by me, not by any model"),
          ],
          points=[
@@ -84,13 +86,14 @@ S2 = dict(
             "External catches are counted per run. The field “external caught what internal missed” reads yes 78 times and no 14 times across the recorded rows, with a recorded streak of 40 consecutive runs.",
             "More reviewers did not always mean more truth. The latest run records four deployments and eleven review rounds in which nobody opened the page; the fix was a live round trip through the real screen, not another reviewer.",
          ],
-         metrics=[("3", "model vendors on the panel"), ("2", "blind roles"), ("78 / 92", "recorded external catches, yes / total")],
-         fn="Scores are the workflow's own progress reviews, kept in the run ledger. They are an internal quality record, not an independent certification."),
+         metrics=[("3", "model vendors on the panel"), ("2", "blind roles"), ("78 / 92", "runs where the external review found what internal reviews missed")],
+         fn="78 of the 92 runs that record the field; 20 of the 112 runs do not record it, and the ledger does not break these catches down by severity. Scores are the workflow's own progress reviews, kept in the run ledger: an internal quality record, not an independent certification."),
 
     dict(id="skills", kind="flow",
          kicker="Skills and harnesses",
          h1="Official references first, and proof they were used",
          lead=("Twenty-two skill packages, mostly official vendor documentation, are injected into every agent that needs them. Citing a skill is worth nothing on its own; a seven-checkpoint chain follows each one from plan to code to review."),
+         more_label="How use is proven", banner="chain",
          boxes=[
             ("Checkpoint 1–2", "The planner cites", "The plan names the skills it used and the rules it applied. The plan auditor verifies each citation exists and says what the plan claims."),
             ("Checkpoint 3–4", "The implementer applies", "The implementation report maps each skill rule to a file and line in the diff. The coordinator checks the rule applied to this task at all."),
@@ -109,6 +112,7 @@ S2 = dict(
          kicker="One machinery, five commands",
          h1="How a run survives the model losing its memory, and lasts for days",
          lead=("The durable unit is not the conversation. It is the run ID plus its evidence on disk. Five commands hand that state to each other, which is why a run can span two days, several sessions and two or three memory resets."),
+         more_label="How a run survives memory loss", banner="loop",
          boxes=[
             ("audit-task", "The run", "The state machine described above: assess, research, plan, review, implement, review again, deploy, verify."),
             ("audit-task-handover", "The save file", "Before the model's memory is compacted, a timestamped handover records run identity, plan revision, phase, pending reviewers, the live to-do list and every owed gate."),
@@ -120,7 +124,7 @@ S2 = dict(
          points=[
             "Run 49 ran about 30 hours across two memory resets. Run 51, the workflow auditing itself, ran about 28 hours over two days across two resets and two handovers. Run 134 took three days and about 26 review passes.",
             "A run once dropped six findings that its first two handovers had deliberately recorded, because the review swept only the last handover. I caught it. The rule since: every handover in the chain is swept, and each carries machine-readable durable findings.",
-            "678 handover files sit in the archives. Twelve are live on disk right now, belonging to two runs in flight.",
+            "678 handover files sit in the archives, one for every time a run paused, compacted or changed sessions.",
          ],
          metrics=[("30 h", "longest single session, run 49"), ("4 days", "longest calendar span, run 130"), ("678", "archived handover files")]),
 
@@ -153,7 +157,7 @@ S2 = dict(
                    ("xAI Grok", "independent bug hunter, added July 2026; 8.22 of 10 across 9 scored runs"),
                    ("Data-flow tracer", "checks the promised data path at plan time and again in the code; 30 passes recorded, up to 35 of 35 assertions")],
          note=("The rubric has five tiers: 17 coordinator gates, 16 reviewer checks, 8 security and verification checks, 9 Solana gates, 6 harness-health rows. Each reviewer lane gets a plain-English grade, star to silent, and exactly one is named star performer. The best signal of a reviewer's value is its unique catches: findings nobody else found. A “no” is a gap by definition; every post-deploy bug is classified as preventable, partly preventable or new and mapped to the gate that should have caught it."),
-         metrics=[("121", "written progress reviews"), ("5", "lineages graded per run"), ("30", "data-flow passes · up to 35/35")]),
+         metrics=[("121", "written progress reviews"), ("5", "reviewer lanes graded per run"), ("30", "data-flow passes · up to 35/35")]),
 
     dict(id="gaps", kind="funnel",
          kicker="Gaps",
@@ -183,7 +187,7 @@ S2 = dict(
                 ("“The plan uses this piece of data.”", "That data does not exist in the database. Blocked before a line is written."),
                 ("Transaction-critical code, no record that the tests ran.", "No deploy. The test record must exist and match this run."),
                 ("The external brief contains a server address.", "Hard block. The brief never leaves the machine."),
-                ("Fewer than four of five reviewers finished.", "Deployment blocked. A thinner panel is not a panel."),
+                ("Fewer than three of the four core reviewers finished.", "No verdict, no deployment. A thinner panel is not a panel."),
                 ("The external verdict is not back yet.", "Wait. There is no timeout. The point of the gate is the independent opinion.")],
          pane=["[d].claude/commands/audit-task.md · four of the 34 gates, shortened[/d]",
                "[v]Step 8.6[/v]  Live-execution gate, stage A: detect write + datetime trigger files; dry-run first; [r]HARD BLOCK[/r] on dry-run failure  [d](Run 46)[/d]",
@@ -192,7 +196,7 @@ S2 = dict(
                "[v]Step 9A.1.5[/v]  Prompt gate: fires before every external auditor handoff; [r]HARD BLOCKs[/r] on a dirty brief",
                "[d]…[/d]  [w]\"Zero insertions or deletions means the implementer's claim is false.\"[/w]"],
          pane_cap="From the runbook, lightly shortened. Each gate carries the run that needed it.",
-         metrics=[("34", "catalogued gates"), ("144", "“hard block” markers in the runbook")],
+         metrics=[("34", "catalogued gates"), ("146", "hard-block instructions in the runbook")],
          note="Each gate is traceable to the run that needed it."),
 
     dict(id="economics", kind="points",
@@ -205,8 +209,8 @@ S2 = dict(
             "Review cost is routed, not capped. A lighter fork of the whole workflow saves 40 to 55 percent of Claude tokens on moderate work by dropping duplicate lanes, and it never drops the external round. Since July 2026 a deterministic policy picks the model and effort per lane by complexity. In the measured A/B, deep reviews used 84.8 percent fewer tokens and standard runs 57.5 percent fewer, with zero missed high or critical findings across three samples.",
             "Money-moving work never routes cheaper: it always runs the full high-effort fleet. And no monetary budget is enforced anywhere in the workflow; the only budgets in the routing code are wall-clock timeouts. Endurance comes from handovers and archives, not from spending more.",
          ],
-         metrics=[("−84.8%", "tokens on deep reviews after routing"), ("−57.5%", "on standard runs"), ("0", "missed high or critical findings, 3 samples")],
-         fn="Subscription costs are the operator's statement. Token savings are from the routing A/B recorded in the repository. A control run before routing consumed about 13.4 million tokens; the routing canary cost about 268 thousand."),
+         metrics=[("−84.8%", "tokens on deep reviews after routing"), ("−57.5%", "on standard runs"), ("0", "missed high or critical findings in the three A/B samples")],
+         fn="Subscription costs are the operator's statement. Token savings are from the routing A/B recorded in the repository: three samples, which is enough to enable a route, not to certify it; one missed high or critical finding rolls a route back. A control run before routing consumed about 13.4 million tokens."),
 
     dict(id="measured", kind="tiles",
          kicker="Measured · " + DATE,

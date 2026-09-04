@@ -19,16 +19,16 @@ LANDING = dict(
           "Two case studies: one for product and engineering readers, one for anyone hiring AI-native builders."),
     boundary="Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.",
     stats=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution"), ("112", "documented delivery runs")],
-    fn="2,843 on-chain signatures behind the trades, verifiable on any explorer. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured " + DATE + ".",
+    fn="A trade here is one position. 2,843 on-chain signatures stand behind the 1,300 positions, 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured " + DATE + ".",
     cards=[
         dict(n="01", title="The system", who="for product and engineering readers", href="the-system.html", accent="cyan",
              text=("A production system that turns public market signals into capped, auditable trades in about 1.3 seconds, with my own funds only. "
                    "Two servers, a custom Rust engine, and on-chain limits a trading key cannot bypass."),
              nums=[("1.3 s", "median from signal to landed trade"), ("2,843", "on-chain signatures, verifiable")]),
         dict(n="02", title="How I ship", who="for anyone hiring AI-native builders", href="how-i-ship.html", accent="green",
-             text=("Six stages. Five model reviews on every plan, up to seven on every code change, then a separately run review. Fail-closed gates. "
+             text=("Six stages. Five model reviews on every plan, up to seven on every code change, then a separately run review. Gates that stop the run. "
                    "A memory loop that turns failures into rules: 112 runs, 235 recorded gaps, and the controls they produced."),
-             nums=[("112", "documented runs"), ("235", "recorded gaps, 87 now rules")]),
+             nums=[("112", "documented runs"), ("3", "AI vendors on every review")]),
     ],
 )
 
@@ -43,7 +43,7 @@ S1 = dict(
          lead=("SKYNET turns Telegram calls and tracked wallets into ranked strategies and executes them on Solana "
                "in about 1.3 seconds, from a Rust engine I specified, had built, tested and hardened."),
          metrics=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution")],
-         fn="2,843 on-chain signatures behind the 1,300 trades: 1,685 buys, 1,158 sells. 1.3 s is the median across all 1,303 timed trades (1,300 of them confirmed round trips); 927 ms on the enhanced path (n=117). Measured " + DATE + ".",
+         fn="A trade is one position. 2,843 on-chain signatures stand behind the 1,300 confirmed positions: 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Measured " + DATE + ".",
          first="journey", other=("Case study 2 · How I ship", "how-i-ship.html"),
          shot="health.webp", shot_caption="Operator home · live services, host vitals and database"),
     dict(id="journey", kind="journey",
@@ -64,6 +64,7 @@ S1 = dict(
     dict(id="what", kind="four",
          kicker="What it does",
          h1="From a chat message to an on-chain trade, unattended",
+         banner="pipeline",
          lead="Four jobs, one dashboard. I choose which public signals to follow with my own funds; the system listens, ranks, executes inside fixed caps and contains the damage when something goes wrong.",
          cards=[
             ("Listen", "149", "sources watched: 63 groups, 86 wallets, 4 chains", "Every message and every wallet transaction, around the clock."),
@@ -163,8 +164,8 @@ S1 = dict(
          h1="Measured, with the populations printed",
          lead="Six numbers from the live database, each with the population it was measured on.",
          tiles=[
-            ("1,300", "confirmed trades", "2,843 on-chain signatures, verifiable on any explorer: 1,685 buys, 1,158 sells."),
-            ("1.3 s", "median · all 1,303 timed trades", "927 ms on the enhanced path (n=117). 1,303 trades carry stage timings; 1,300 are confirmed round trips."),
+            ("1,300", "confirmed trades, one per position", "2,843 on-chain signatures behind them, verifiable on any explorer: 1,685 buy legs, 1,158 sell legs."),
+            ("1.3 s", "median · all 1,303 timed trades", "927 ms on the enhanced path (n=117). 1,303 positions carry stage timings; 1,300 of them confirmed."),
             ("40,908", "contracts tracked · 4 chains", "SOL 34,215 · BSC 3,060 · ETH 2,870 · Base 763"),
             ("12.3M", "rows in TimescaleDB", "28 GB · 95 tables"),
             ("1,245", "engine test functions", "32K lines of tests"),
@@ -183,8 +184,8 @@ S1 = dict(
 
 # ---------------------------------------------------------------- case study 2
 GROWTH = [("2025-11-26", 284), ("2025-11-30", 1162), ("2025-12", 4533), ("2026-01", 5302), ("2026-02", 5386), ("2026-03", 5386), ("2026-04", 6292), ("2026-05", 10307), ("2026-06", 10405), ("2026-07", 10700), ("2026-08", 10837), ("2026-09-03", 11009)]
-GROWTH_FLAGS = [("2025-11-26", "born, 284 lines"), ("2026-02-22", "sub-agents"), ("2026-03-27", "skills, Codex lanes, progress reviews"),
-                ("2026-05-05", "the workflow audits itself"), ("2026-07-12", "dynamic model routing"), ("2026-09-03", "run 134")]
+GROWTH_FLAGS = [("2025-11-26", "born · 284 lines"), ("2026-02-22", "sub-agents"), ("2026-04-14", "harness + progress review"),
+                ("2026-05-05", "skills · self-audit"), ("2026-07-13", "third vendor · routing"), ("2026-09-03", "run 134 · 11,009")]
 
 S2 = dict(
     slug="how-i-ship", num="02", title="How I ship", tab="How I ship",
