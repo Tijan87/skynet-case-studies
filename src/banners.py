@@ -4,9 +4,9 @@ from html import escape as E
 CY, VI, GR, INK, INK2, INK3, RED = "#31d9ff", "#a877ff", "#58e7ad", "#f2f6ff", "#a7b4c9", "#7d8ba3", "#ff8f8f"
 MONO = "JetBrains Mono,monospace"; SANS = "IBM Plex Sans,sans-serif"
 
-def defs(p):
-    return (f'<defs><linearGradient id="{p}w" x1="0" x2="1"><stop offset="0" stop-color="{VI}"/><stop offset=".55" stop-color="{CY}"/><stop offset="1" stop-color="{GR}"/></linearGradient>'
-            f'<linearGradient id="{p}h" x1="0" x2="1"><stop offset="0" stop-color="{VI}" stop-opacity=".7"/><stop offset=".5" stop-color="{CY}" stop-opacity=".8"/><stop offset="1" stop-color="{GR}" stop-opacity=".6"/></linearGradient>'
+def defs(p, W=720):
+    return (f'<defs><linearGradient id="{p}w" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{W}" y2="0"><stop offset="0" stop-color="{VI}"/><stop offset=".55" stop-color="{CY}"/><stop offset="1" stop-color="{GR}"/></linearGradient>'
+            f'<linearGradient id="{p}h" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{W}" y2="0"><stop offset="0" stop-color="{VI}" stop-opacity=".7"/><stop offset=".5" stop-color="{CY}" stop-opacity=".8"/><stop offset="1" stop-color="{GR}" stop-opacity=".6"/></linearGradient>'
             f'<radialGradient id="{p}g"><stop offset="0" stop-color="{CY}" stop-opacity=".22"/><stop offset="1" stop-color="{CY}" stop-opacity="0"/></radialGradient>'
             f'<radialGradient id="{p}gv"><stop offset="0" stop-color="{VI}" stop-opacity=".18"/><stop offset="1" stop-color="{VI}" stop-opacity="0"/></radialGradient>'
             f'<filter id="{p}b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>'
@@ -48,7 +48,7 @@ def label(x, y, text, c=INK3, anchor="start", size=9.5):
     return f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-size="{size}" letter-spacing="1" fill="{c}" font-family="{MONO}">{E(text.upper())}</text>'
 
 def svg(p, W, H, body, aria):
-    return f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{E(aria)}">{defs(p)}{body}</svg>'
+    return f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{E(aria)}">{defs(p, W)}{body}</svg>'
 
 def wrap(inner, cls="banner"):
     return f'<div class="{cls} rv">{inner}</div>'
@@ -59,9 +59,9 @@ def pipeline():
     b = field(p, W, H)
     b += chip(p, 24, 44, "Telegram", VI, 90) + chip(p, 24, 90, "Tracked wallets", VI, 120) + chip(p, 24, 136, "Live prices", VI, 100)
     b += wire(p, [(114, 54), (150, 54), (176, 100), (200, 100)]) + wire(p, [(144, 100), (200, 100)]) + wire(p, [(124, 146), (150, 146), (176, 100)])
-    b += box(p, 200, 66, 150, 68, "Detect and rank", "8 workers · 17 strategies")
-    b += wire(p, [(350, 100), (392, 100)]) + box(p, 392, 66, 150, 68, "Rust engine", "~1.3 s to a landed trade")
-    b += wire(p, [(542, 100), (584, 100)]) + box(p, 584, 66, 112, 68, "Solana", "on-chain · caps", GR)
+    b += box(p, 200, 66, 166, 68, "Detect and rank", "8 workers · 17 strategies")
+    b += wire(p, [(366, 100), (404, 100)]) + box(p, 404, 66, 150, 68, "Rust engine", "~1.3 s to landed")
+    b += wire(p, [(554, 100), (592, 100)]) + box(p, 592, 66, 104, 68, "Solana", "on-chain · caps", GR)
     b += dot(p, 696, 100, GR, 3)
     b += f'<path d="M200,152 L696,152" stroke="{INK3}" stroke-opacity=".35" stroke-dasharray="2 4"/>' + label(448, 172, "kill switch · per-trade and daily caps · circuit breakers, fail closed", INK3, "middle")
     return wrap(svg(p, W, H, b, "Signals in, a ranked and contained trade out"))
@@ -71,17 +71,17 @@ def servers():
     b = field(p, W, H, ((0.32, 0.5, "g"), (0.66, 0.5, "g")))
     b += chip(p, 20, 34, "Telegram", VI, 84) + chip(p, 20, 64, "Wallet stream", VI, 108) + chip(p, 20, 94, "Price stream", VI, 100) + chip(p, 20, 124, "Market data", VI, 100)
     for y in (44, 74, 104, 134): b += wire(p, [(128 if y != 44 else 104, y), (150, y), (168, 90), (190, 90)])
-    b += box(p, 190, 46, 170, 92, "Finland · the brain", "Python · TimescaleDB · dashboard")
-    b += f'<line x1="360" x2="418" y1="92" y2="92" stroke="{CY}" stroke-width="6" stroke-opacity=".12"/>' + wire(p, [(360, 92), (418, 92)], dashed=True) + label(389, 80, "WireGuard", CY, "middle", 8.5)
-    b += box(p, 418, 46, 170, 92, "Nuremberg · the hands", "Rust engine · signed signals")
-    b += wire(p, [(588, 92), (630, 92)]) + box(p, 630, 60, 72, 64, "Solana", "mainnet", GR, small=True)
+    b += box(p, 186, 46, 176, 92, "Finland · the brain", "Python · TimescaleDB")
+    b += f'<line x1="362" x2="420" y1="92" y2="92" stroke="{CY}" stroke-width="6" stroke-opacity=".12"/>' + wire(p, [(362, 92), (420, 92)], dashed=True) + label(391, 78, "WireGuard", CY, "middle", 7.5)
+    b += box(p, 420, 46, 172, 92, "Nuremberg · the hands", "Rust · signed signals")
+    b += wire(p, [(592, 92), (630, 92)]) + box(p, 630, 60, 72, 64, "Solana", "mainnet", GR, small=True)
     b += label(275, 166, "analysis, heavy and chatty", INK3, "middle", 8.5) + label(503, 166, "execution, fast and quiet", INK3, "middle", 8.5)
     return wrap(svg(p, W, H, b, "Two servers joined by an encrypted tunnel, and the chain"))
 
 def layers():
     p, W, H = "ly", 720, 200
     b = field(p, W, H, ((0.5, 0.5, "g"),))
-    names = [("Constitution", "always loaded"), ("Navigation index", "2,110 lines"), ("Architecture map", "19,514 lines"), ("Three contracts", "same-change updates"), ("The code", "source of truth")]
+    names = [("Constitution", "always loaded"), ("Navigation index", "2,110 lines"), ("Architecture map", "19,514 lines"), ("Three contracts", "one truth each"), ("The code", "source of truth")]
     for i, (n, s) in enumerate(names):
         x = 60 + i * 132; y = 60 + (i % 2) * 8
         acc = GR if i == 4 else (VI if i == 0 else CY)
@@ -113,7 +113,7 @@ def loop():
 def chain():
     p, W, H = "ch", 720, 200
     b = field(p, W, H, ((0.15, 0.5, "gv"), (0.8, 0.5, "g")))
-    b += box(p, 24, 68, 118, 64, "A skill", "official vendor docs", VI, small=True)
+    b += box(p, 24, 68, 118, 64, "A skill", "vendor docs", VI, small=True)
     b += wire(p, [(142, 100), (190, 100)])
     xs = [190 + i * 82 for i in range(7)]
     b += wire(p, [(xs[0], 100), (xs[-1], 100)])
@@ -136,7 +136,7 @@ def gate():
     b += chip(p, 40, 130, "claim + receipt", INK2, 150) + wire(p, [(190, 140), (330, 140)])
     b += f'<rect x="336" y="116" width="4" height="20" rx="2" fill="{GR}"/><rect x="336" y="144" width="4" height="20" rx="2" fill="{GR}"/>'
     b += wire(p, [(346, 140), (560, 140)]) + dot(p, 560, 140, GR, 4) + label(352, 180, "evidence verified · passes", GR, "start", 8.5)
-    b += box(p, 580, 44, 116, 112, "34 gates", "146 hard-block\ninstructions", CY, small=True).replace("146 hard-block\ninstructions", "146 hard blocks")
+    b += box(p, 580, 68, 116, 64, "34 gates", "146 hard blocks", CY, small=True)
     return wrap(svg(p, W, H, b, "A claim without evidence stops; a claim with a receipt passes"))
 
 def pulse():
@@ -168,4 +168,23 @@ def mini_loop():
     b += label(xs[0], 30, "three decisions are mine", INK3, "start", 8.5)
     return wrap(svg(p, W, H, b, "Six stages, three of them my decision"), "banner mini")
 
-BANNERS = dict(pipeline=pipeline, servers=servers, layers=layers, loop=loop, chain=chain, gate=gate, pulse=pulse)
+def shards():
+    p, W, H = "sh", 720, 200
+    b = field(p, W, H, ((0.35, 0.5, "g"),))
+    counts = [70, 68, 71, 69, 70, 67, 69, 68]
+    x0, gap, bw = 36, 58, 36
+    b += f'<line x1="{x0-12}" x2="{x0+7*gap+bw+12}" y1="56" y2="56" stroke="{RED}" stroke-opacity=".6" stroke-dasharray="3 4"/>' + label(x0 - 12, 46, "provider cap · 100 per connection", RED, "start", 8.5)
+    for i, c in enumerate(counts):
+        x = x0 + i * gap; h = c * 1.0; y = 156 - h
+        b += f'<rect x="{x}" y="56" width="{bw}" height="100" rx="8" fill="#0b1220" fill-opacity=".9" stroke="url(#{p}h)" stroke-opacity=".55"/>'
+        b += f'<rect x="{x+4}" y="{y:.0f}" width="{bw-8}" height="{h:.0f}" rx="6" fill="{CY}" fill-opacity=".22"/><rect x="{x+4}" y="{y:.0f}" width="{bw-8}" height="1.5" fill="{CY}"/>'
+        b += label(x + bw / 2, 176, f"s{i+1}", INK3, "middle", 8) + f'<text x="{x+bw/2}" y="{y-5:.0f}" text-anchor="middle" font-size="8.5" fill="{INK2}" font-family="{MONO}">{c}</text>'
+    # restart demonstration, right side
+    rx = 528
+    b += box(p, rx, 56, 168, 100, "Placed by hash", "SHA-256, not salted", GR, small=True)
+    b += dot(p, rx + 40, 122, GR, 3.5) + f'<path d="M{rx+40},122 C {rx+60},96 {rx+100},96 {rx+120},122" fill="none" stroke="{GR}" stroke-opacity=".85" stroke-dasharray="3 3"/>' + dot(p, rx + 120, 122, GR, 3.5)
+    b += label(rx + 80, 142, "restart → same shard", GR, "middle", 8)
+    b += label(x0 - 12, 194, "552 contracts · 8 connections · 6 needed, 2 headroom", INK3, "start", 8.5)
+    return wrap(svg(p, W, H, b, "552 contracts spread over 8 connections under a 100-address cap; placement survives restarts"))
+
+BANNERS = dict(pipeline=pipeline, servers=servers, layers=layers, loop=loop, chain=chain, gate=gate, pulse=pulse, shards=shards)

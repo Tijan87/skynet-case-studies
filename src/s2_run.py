@@ -13,8 +13,8 @@ def st(id, title, sub, what, who, reads=None, leaves=None, block=None, mine=None
 RUN = dict(id="run", kind="steps",
     kicker="The run, step by step",
     h1="One typed sentence in. A gated, recorded release out.",
-    lead=("The six stages on the cover unfold into ten phases plus a final one, below, in the order the runbook's own to-do list executes them for a complex change. "
-          "Open a phase, then a step, to see who acts, what they must read first, what evidence they leave, and what stops the run. Step numbers are the runbook's own."),
+    lead=("Six stages a person can hold in their head; eleven phases and 62 steps a script executes, in the runbook's own order for a complex change. "
+          "Open a phase, then a step, to see who acts, what they must read first, what evidence they leave, and what stops the run."),
     phases=[
         dict(num="Phase 0", title="Pre-flight", who="Scripts and the coordinator, before the request is even read", steps=[
             st("0.A", "Are the reference books intact?", "A broken skill link silently degrades every reviewer downstream", 

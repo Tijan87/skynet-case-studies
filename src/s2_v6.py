@@ -10,19 +10,18 @@ S2 = dict(
     dict(id="cover", kind="cover",
          kicker="Case study 2 of 2 · how I ship",
          h1="I architect and release every change. AI agents build it inside a workflow I designed.",
-         lead=("One AI coordinates the job. Specialist agents research, plan, implement and test it. Models from two other vendors challenge the work before "
-               "anything risky can ship. The whole thing runs on written rules that grew out of 112 documented runs, and every failure is kept."),
+         lead=("One AI coordinates the job; specialist agents research, plan, build and test it; models from two other vendors challenge the work before anything risky ships. "
+               "The rules grew out of 112 documented runs, and every failure is kept."),
          metrics=[("112", "documented runs"), ("3", "AI vendors on every review panel"), ("4 days", "longest run, start to ship")],
          fn="The system this workflow ships trades only my own funds: no client assets, no investment service, no advice. Runs from 26 March to 1 September 2026, numbered 1 to 134 (22 numbers were skipped or abandoned). Complexity split 93 complex, 16 moderate, 1 simple, 2 unstated. Longest single session about 30 hours; longest calendar span 4 days (run 130). Measured " + DATE + ".",
          first="grew", other=("Case study 1 · The system", "the-system.html"),
-         ribbon=[("Understand", "", False, ""), ("Route", "", True, ""), ("Research and plan", "", False, ""), ("Approve, then build", "", True, ""), ("Review", "", False, ""), ("Decide and verify", "", True, "")]),
+         ribbon=[("Understand", "", False, ""), ("Route", "", True, ""), ("Plan", "", False, ""), ("Build", "", True, ""), ("Review", "", False, ""), ("Decide", "", True, "")]),
 
     dict(id="grew", kind="growth",
          kicker="How it grew",
          h1="From a nine-line permissions file to an 11,009-line runbook",
-         lead=("April 2025: one Python script pasted from a Grok chat. October 2025: the first AI-workflow file is a nine-line permissions list. "
-               "26 November 2025: the delivery command is born at 284 lines, with an OpenAI reviewer written in from line one. "
-               "Today the same file is 11,009 lines across 93 commits, and each addition is dated to the run that needed it."),
+         lead=("October 2025: the first AI-workflow file is a nine-line permissions list. Today the delivery command is 11,009 lines across 93 commits, "
+               "and each addition is dated to the run that needed it."),
          milestones=[
             ("Oct 2025", "A nine-line permissions file. The whole AI workflow, on day one."),
             ("Nov 2025", "The delivery command, 284 lines. A second vendor's model reviews every plan from the first version."),
@@ -38,8 +37,8 @@ S2 = dict(
     dict(id="scope", kind="flow",
          kicker="Keeping AI in scope",
          h1="Three repositories, two servers, one map every agent must read first",
-         lead=("The most important design choice is not the number of reviewers. It is the documentation system that tells each new AI where it is, "
-               "what the surrounding system does, and which evidence controls the answer. Without it, agents spend their time blindly analysing 400,000 lines of code."),
+         lead=("The most important design choice is not the number of reviewers. It is the documentation system that tells each new AI where it is, what the surrounding system does, "
+               "and which evidence controls the answer."),
          boxes=[
             ("Always loaded", "The constitution", "Architecture before code, and the real code wins when the documentation disagrees."),
             ("2,110 lines", "The navigation index", "Points every component at the one section of the map that explains it."),
@@ -70,7 +69,7 @@ S2 = dict(
          kicker="Who reviews",
          h1="Different vendors, different questions, and a record of who caught what",
          lead=("Lane count is not lane diversity. The panel mixes models from three vendors, two blind roles and deterministic scripts, and every lane is scored, so the ledger shows which ones earn their place."),
-         strip=[("Claude Opus", "#31d9ff", "plans, implements, reviews"), ("Claude Sonnet", "#31d9ff", "coordinates, fact-checks"), ("OpenAI Codex", "#a877ff", "bug hunter · external round"), ("xAI Grok", "#58e7ad", "independent bug hunter"), ("Data-flow tracer", "#7d8ba3", "blind to other findings"), ("Scripts", "#7d8ba3", "deterministic gates"), ("Me", "#f2f6ff", "scope, release, retirement")],
+         strip=[("Claude Opus", "#31d9ff", "plans, implements, reviews"), ("Claude Sonnet", "#31d9ff", "coordinates, fact-checks"), ("OpenAI Codex", "#a877ff", "bug hunter · external round"), ("xAI Grok", "#58e7ad", "independent bug hunter"), ("Tracer", "#7d8ba3", "data flow, blind to other findings"), ("Scripts", "#7d8ba3", "deterministic gates"), ("Me", "#f2f6ff", "scope, release, retirement")],
          cols=["Lane", "Role", "Independence", "In the ledger"],
          rows=[
             ("Claude Opus", "#31d9ff", "Plans, implements, and reviews plan, code and architecture; maximum effort on complex runs", "Same lineage as the coordinator, different roles and contexts", "The most frequent lane; 16 plan rounds once blessed a feature flag that did not exist"),
@@ -86,7 +85,7 @@ S2 = dict(
             "External catches are counted per run. The field “external caught what internal missed” reads yes 78 times and no 14 times across the recorded rows, with a recorded streak of 40 consecutive runs.",
             "More reviewers did not always mean more truth. The latest run records four deployments and eleven review rounds in which nobody opened the page; the fix was a live round trip through the real screen, not another reviewer.",
          ],
-         metrics=[("3", "model vendors on the panel"), ("2", "blind roles"), ("78 / 92", "runs where the external review found what internal reviews missed")],
+         metrics=[("3", "model vendors on the panel"), ("2", "blind roles"), ("78 / 92", "runs where the outside reviewer caught what the panel missed: why that round is never skipped")],
          fn="78 of the 92 runs that record the field; 20 of the 112 runs do not record it, and the ledger does not break these catches down by severity. Scores are the workflow's own progress reviews, kept in the run ledger: an internal quality record, not an independent certification."),
 
     dict(id="skills", kind="flow",
@@ -111,7 +110,7 @@ S2 = dict(
     dict(id="machinery", kind="flow",
          kicker="One machinery, five commands",
          h1="How a run survives the model losing its memory, and lasts for days",
-         lead=("The durable unit is not the conversation. It is the run ID plus its evidence on disk. Five commands hand that state to each other, which is why a run can span two days, several sessions and two or three memory resets."),
+         lead=("The durable unit is not the conversation but the run ID plus its evidence on disk. Five commands hand that state to each other, which is why a run can span days and several memory resets."),
          more_label="How a run survives memory loss", banner="loop",
          boxes=[
             ("audit-task", "The run", "The state machine described above: assess, research, plan, review, implement, review again, deploy, verify."),
@@ -134,7 +133,7 @@ S2 = dict(
          lead="Six real failures from the run ledger, and the permanent control each one produced. Two of the six were caught by me, not by any model.",
          items=[
             ("The AI reported “done”. The file was unchanged.", "Every claimed edit is proven by the recorded changes before any reviewer sees it.", "Run 31", "Apr 2026"),
-            ("An agent declared a test tool “not installed” after one shell lookup. It was installed.", "A standing rule: never assert a tool is missing from one lookup; the check looks in every valid install location.", "4 Jun", "2026"),
+            ("An agent declared a test tool “not installed” after one shell lookup. It was installed.", "A standing rule: never assert a tool is missing from one lookup; the check looks in every valid install location.", "Operator-caught", "Jun 2026"),
             ("A handover said the tests passed. The test record showed three failures, on transaction-critical code.", "Pass or fail is derived by a script from the test record, never from prose.", "Run 108", "Jul 2026"),
             ("Twelve external rounds said yes. The deploy locked the whole dashboard out for an hour: a refusal shipped before its data existed.", "A deploy-sequencing gate: populate before you enforce. Plans carry a release condition per feature.", "Run 127", "Aug 2026"),
             ("The safety test was green because its inputs were chosen where old and new code agree.", "Widened to 25 cases it went red: 28 production cases would have been handled wrongly. That corpus is now a gate.", "Run 132", "Aug 2026"),
@@ -162,7 +161,7 @@ S2 = dict(
     dict(id="gaps", kind="funnel",
          kicker="Gaps",
          h1="Not every gap becomes a rule. The ones that return, or are red, must.",
-         lead=("A gap is anything that should have fired and did not. Each gets a stable ID, a severity and a proposed fix. Then a triage rule decides what happens next, and it forces a decision rather than a fix."),
+         lead=("A gap is anything that should have fired and did not; each gets a stable ID, a severity and a proposed fix. A triage rule then forces a decision, not necessarily a fix."),
          rows=[("235", "gap IDs recorded since March 2026", 100), ("87", "cited inside a step, gate, script or test", 37), ("36", "open today", 15)],
          points=[
             "Red “must fix” recommendations must be dispositioned before the run can end: shipped, with file evidence, or retired, with my own words quoted verbatim. The coordinator may not paraphrase or infer a retirement. Yellow and green stay advisory.",
@@ -196,7 +195,7 @@ S2 = dict(
                "[v]Step 9A.1.5[/v]  Prompt gate: fires before every external auditor handoff; [r]HARD BLOCKs[/r] on a dirty brief",
                "[d]…[/d]  [w]\"Zero insertions or deletions means the implementer's claim is false.\"[/w]"],
          pane_cap="From the runbook, lightly shortened. Each gate carries the run that needed it.",
-         metrics=[("34", "catalogued gates"), ("146", "hard-block instructions in the runbook")],
+         metrics=[("34", "catalogued gates"), ("146", "hard-block instructions in the runbook"), ("62", "steps a script or a model executes")],
          note="Each gate is traceable to the run that needed it."),
 
     dict(id="economics", kind="points",
@@ -234,6 +233,7 @@ S2 = dict(
          sessions=[("One archived change, end to end", "A real run from the archive: the request, the plan, the review decisions and fix rounds, the separate review's verdict, my release decision, and what production showed afterwards."),
                    ("One live product flow", "The system this loop built, running: a signal arriving, the engine executing, the record it leaves, and the numbers behind case study 1.")],
          team="In a team I would own: scope and acceptance criteria, the review gates, release decisions, and the retrospective loop. Engineers own the code; the workflow makes their review load smaller, not larger.",
+         boundary="Where I would not use this: a security-critical change under time pressure, or anything a regulator would need to sign. Those get a human specialist and a slower path, not a review panel.",
          next=("Case study 1 · The system", "the-system.html")),
     ],
 )

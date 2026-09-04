@@ -74,7 +74,7 @@ def fig_loop(stages):
         else:
             s += f'<circle cx="{x:.1f}" cy="34" r="5.5" fill="#05080f" stroke="#a7b4c9" stroke-width="1.5"/>'
         s += f'<text x="{x:.1f}" y="66" text-anchor="middle" font-size="11" fill="{"#f2f6ff" if mine else "#a7b4c9"}" font-family="IBM Plex Sans,sans-serif">{E(t)}</text>'
-        if mine: s += f'<text x="{x:.1f}" y="84" text-anchor="middle" font-size="9.5" fill="#31d9ff" font-family="JetBrains Mono,monospace" letter-spacing="1">MY DECISION</text>'
+        if mine: s += f'<text x="{x:.1f}" y="86" text-anchor="middle" font-size="11" fill="#31d9ff" font-family="JetBrains Mono,monospace" letter-spacing="1">MY DECISION</text>'
     s += "</svg>"
     lst = '<ol class="ribbon-list">' + "".join(f'<li{" class=me" if mine else ""}><span>{E(t)}</span>{"<b>my decision</b>" if mine else ""}</li>' for t, p, mine, ev in stages) + "</ol>"
     return f'<div class="fig rv ribbon">{s}{lst}</div>'
@@ -130,7 +130,7 @@ def fig_cube():
 <g stroke="rgba(255,255,255,.14)"><line x1="40" y1="70" x2="160" y2="130"/><line x1="80" y1="50" x2="200" y2="110"/><line x1="60" y1="120" x2="180" y2="60"/><line x1="0" y1="150" x2="120" y2="210"/><line x1="0" y1="180" x2="120" y2="240"/><line x1="120" y1="180" x2="240" y2="120"/><line x1="120" y1="210" x2="240" y2="150"/><line x1="120" y1="240" x2="240" y2="180"/><line x1="40" y1="110" x2="40" y2="230"/><line x1="80" y1="130" x2="80" y2="250"/><line x1="160" y1="130" x2="160" y2="250"/><line x1="200" y1="110" x2="200" y2="230"/></g>
 </g>
 <g font-family="JetBrains Mono,monospace" font-size="11" fill="#a7b4c9">
-<text x="330" y="60"><tspan fill="#31d9ff" font-size="20">300+</tspan> sources</text>
+<text x="330" y="60"><tspan fill="#31d9ff" font-size="20">300+</tspan> sources ever tracked</text>
 <text x="330" y="110"><tspan fill="#a877ff" font-size="20">17</tspan> exit strategies</text>
 <text x="330" y="160"><tspan fill="#58e7ad" font-size="20">5</tspan> chains × <tspan fill="#58e7ad" font-size="20">4</tspan> market regimes</text>
 <line x1="330" x2="700" y1="185" y2="185" stroke="rgba(255,255,255,.16)"/>
@@ -240,7 +240,7 @@ def r_controls(s):
     keys = ""
     for title, can, col in s["keys"]:
         li = "".join(f"<li>{E(c)}</li>" for c in can)
-        no = f'<div class="no">{E(s["forbidden"])}</div>' if col == "cyan" else ""
+        no = f'<div class="no">{E(s["forbidden"])}</div>' if col == "cyan" else '<div class="no ok">the only key that can move funds</div>'
         keys += f'<div class="key {col[0]} rv"><h3>{E(title)}</h3><ul>{li}</ul>{no}</div>'
     rules = '<div class="rules rv"><div class="lab">Rules enforced by the program, not by policy</div>' + "".join(f"<span>{E(r)}</span>" for r in s["rules"]) + "</div>"
     return f'''<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}
@@ -250,8 +250,8 @@ def r_controls(s):
 def r_beforeafter(s):
     cards = ""
     for broke, now, n, l in s["items"]:
-        big = (f'<div class="big"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' if not n.startswith("Run") and not n[0].isdigit() or "×" in n or "," in n
-               else f'<div class="big"><span class="when">{E(n)} · {E(l)}</span></div>')
+        big = (f'<div class="big"><span class="when">{E(n)} · {E(l)}</span></div>' if "2026" in l
+               else f'<div class="big"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>')
         cards += f'<div class="card rv"><div class="broke"><div class="lab">What broke</div>{E(broke)}</div><div class="now"><div class="lab">What exists now</div>{E(now)}</div>{big}</div>'
     return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="ba" data-stagger>{cards}</div>{note(E(s["note"]))}</div></section>'
 
@@ -266,7 +266,7 @@ def r_close(s, study):
     return f'''<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}
 <div style="margin-top:clamp(2rem,4vw,3rem)">{BN.pulse()}</div>
 <div class="sessions" data-stagger style="margin-top:14px">{ss}</div>
-{note('<span class="kicker">the boundary</span>' + E(C.BOUNDARY))}{team}
+{note('<span class="kicker">the boundary</span>' + E(s.get("boundary", C.BOUNDARY)))}{team}
 <div style="margin-top:clamp(2.5rem,5vw,4rem)">{who()}</div>
 <div class="nextlink rv"><a class="card" href="{LINKS[nh]}"><div><div class="label">Next</div><h3 style="margin-top:.5rem">{E(nt)}</h3></div><span class="arrow">Open <span class="a">→</span></span></a></div>
 </div></section>'''
@@ -422,6 +422,7 @@ def r_points(s, accent=None):
     elif s.get("visual") == "stages": vis = fig_stages()
     elif s.get("visual") == "cube": vis = fig_cube()
     elif s.get("visual") == "routing": vis = fig_routing()
+    elif s.get("banner"): vis = BN.BANNERS[s["banner"]]()
     elif s.get("shot"): vis = shot(s["shot"], s["shot_caption"])
     figs = []
     if s.get("visual2") == "bytes": figs.append(fig_bytes())
@@ -492,7 +493,7 @@ def r_scorecards(s):
         rows += f'<div class="row{" part" if a < b else ""}"><span class="l">{E(l)}</span><span class="v">{a} / {b}</span><div class="b"><i style="--w:{pct:.0f}%"></i></div>{f"<span class=s>{E(sub)}</span>" if sub else ""}</div>'
     lin = "".join(f"<li><b>{E(a)}</b><span>{E(b)}</span></li>" for a, b in s["lineages"])
     hidden = f'<div><div class="label" style="margin-bottom:.5rem">Who does what · five model lineages</div><ul class="lineage">{lin}</ul></div>' + notes(s)
-    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head8(s)}<div class="grid2" style="margin-top:clamp(2rem,4vw,3rem)"><div class="card rv"><div class="label">{E(s["card_caption"])}</div><div class="score" style="margin-top:1rem">{rows}</div></div><div>{metrics(s.get("metrics")).replace("margin-top:clamp(2rem,4vw,3.5rem)", "")}</div></div>{more(hidden, "The rubric and the lineages")}</div></section>'
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head8(s)}<div class="grid2" style="margin-top:clamp(2rem,4vw,3rem)"><div class="card rv"><div class="label">{E(s["card_caption"])}</div><div class="score" style="margin-top:1rem">{rows}</div></div><div class="rv"><div class="label" style="margin-bottom:.5rem">Who does what · five lanes</div><ul class="lineage">{lin}</ul></div></div>{metrics(s.get("metrics"))}{more(notes(s), "How the rubric works")}</div></section>'
 
 def r_gates(s):
     g = "".join(f'<div class="card gate rv"><div class="lab">The claim</div><div class="claim">{E(c)}</div><div class="lab">What the workflow does</div><div class="does">{E(d)}</div></div>' for c, d in s["gates"][:3])
@@ -512,7 +513,7 @@ def r_steps(s):
             if st_.get("block"): dl += f'<dt>Stops the run when</dt><dd class="block">{E(st_["block"])}</dd>'
             if st_.get("mine"): dl += f'<dt>My decision</dt><dd class="me">{E(st_["mine"])}</dd>'
             items += ('<details class="acc"><summary><span class="i">' + E(st_["id"]) + '</span><span class="t">' + E(st_["title"]) + '<small>' + E(st_.get("sub", "")) + '</small></span><span class="c" aria-hidden="true"></span></summary>'
-                      '<div class="dbody"><div><div class="in"><div><p>' + E(st_["what"]) + '</p><div style="margin-top:.6rem">' + tags + '</div></div><dl>' + dl + '</dl></div></div></div></details>')
+                      '<div class="dbody"><div><div class="in' + ('' if dl else ' one') + '"><div><p>' + E(st_["what"]) + '</p><div style="margin-top:.6rem">' + tags + '</div></div>' + ('<dl>' + dl + '</dl>' if dl else '') + '</div></div></div></details>')
         n = len(ph["steps"])
         out.append(f'<details class="phase-acc rv"><summary><span class="num">{E(ph["num"])}</span><h3>{E(ph["title"])}</h3><span class="owner">{E(ph.get("who", ""))}</span><span class="cnt">{n} steps</span><span class="chev" aria-hidden="true"></span></summary><div class="dbody"><div>{items}</div></div></details>')
     ribbon = fig_loop(s["ribbon"]) if s.get("ribbon") else ""
@@ -557,7 +558,7 @@ def nav(current):
 <div class="tabs">{tab("index.html", "Home", "")}{tab("the-system.html", "01", "The system")}{tab("how-i-ship.html", "02", "How I ship")}</div></div><div class="bar"></div></nav>'''
 
 def footer():
-    return f'''<footer class="foot"><div class="wrap"><p>Specified, reviewed and released by {E(C.NAME)}. Implemented by AI models under the delivery workflow in case study 2. Numbers measured on the production system, the run archive and git, {E(C.DATE)}. Replay and simulation figures are analytical outputs, not returns.</p><p>{C.CONTACT_HTML} · {E(C.LOCATION)} · NELLAI · 2026</p></div></footer>'''
+    return f'''<footer class="foot"><div class="wrap"><p>Specified, reviewed and released by {E(C.NAME)}. Implemented by AI models under the delivery workflow in case study 2. Numbers measured on the production system, the run archive and git, {E(C.DATE)}. Replay and simulation figures are analytical outputs, not returns.</p><p>{C.CONTACT_HTML} · {E(C.LOCATION)} · 2026</p></div></footer>'''
 
 BASE = None  # public base URL, e.g. https://tijan87.github.io/skynet-case-studies ; set with --base-url
 INDEX = True  # --index removes the noindex robots meta
@@ -598,9 +599,9 @@ def landing():
         mini = BN.mini_system() if c["n"] == "01" else BN.mini_loop()
         cards += f'''<a class="card rv" href="{LINKS[c["href"]]}">{mini}<div class="label">Case study {c["n"]} · {E(c["who"])}</div><h2>{E(c["title"])}</h2><p>{E(c["text"])}</p><div class="nums">{nums}</div><span class="arrow">Open case study {c["n"][-1]} <span class="a">→</span></span></a>'''
     body = f'''<section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv" style="margin-top:1rem">{E(L["boundary"])}</p>
+<div class="stats hero-stats rv" style="margin-top:2rem">{"".join(f'<div class="stat"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in L["stats"])}</div>
 <div class="actions rv"><a class="btn primary" href="{LINKS["the-system.html"]}">01 · The system <span class="a">→</span></a><a class="btn" href="{LINKS["how-i-ship.html"]}">02 · How I ship <span class="a">→</span></a></div></div></section>
-<section class="sec"><div class="wrap">{stats(L["stats"])}{fn(L["fn"])}</div></section>
-<section class="sec"><div class="wrap">{who()}</div></section>
+<section class="sec"><div class="wrap">{who()}{more(fn(L["fn"]), "Populations and dates")}</div></section>
 <section class="sec"><div class="wrap"><div class="pick" data-stagger>{cards}</div></div></section>'''
     return page(f"{C.NAME} · Case studies", body, "index.html", "Two case studies: a live Solana trading system, and the AI delivery workflow that ships it.", "land")
 
