@@ -60,7 +60,7 @@ def pipeline():
     b += chip(p, 24, 44, "Telegram", VI, 90) + chip(p, 24, 90, "Tracked wallets", VI, 120) + chip(p, 24, 136, "Live prices", VI, 100)
     b += wire(p, [(114, 54), (150, 54), (176, 100), (200, 100)]) + wire(p, [(144, 100), (200, 100)]) + wire(p, [(124, 146), (150, 146), (176, 100)])
     b += box(p, 200, 66, 166, 68, "Detect and rank", "8 workers · 17 strategies")
-    b += wire(p, [(366, 100), (404, 100)]) + box(p, 404, 66, 150, 68, "Rust engine", "~1.3 s to landed")
+    b += wire(p, [(366, 100), (404, 100)]) + box(p, 404, 66, 150, 68, "Rust engine", "66 ms engine time")
     b += wire(p, [(554, 100), (592, 100)]) + box(p, 592, 66, 104, 68, "Solana", "on-chain · caps", GR)
     b += f'<path d="M200,152 L696,152" stroke="{INK3}" stroke-opacity=".35" stroke-dasharray="2 4"/>' + label(448, 172, "kill switch · per-trade and daily caps · circuit breakers, fail closed", INK3, "middle")
     return wrap(svg(p, W, H, b, "Signals in, a ranked and contained trade out"))
@@ -151,7 +151,7 @@ def mini_system():
     p, W, H = "ms", 560, 120
     b = field(p, W, H, ((0.2, 0.5, "gv"), (0.85, 0.5, "g")))
     b += chip(p, 20, 50, "signals", VI, 76) + wire(p, [(96, 60), (140, 60)]) + box(p, 140, 32, 130, 56, "Two servers", "Python · Rust", CY, small=True)
-    b += wire(p, [(270, 60), (312, 60)]) + box(p, 312, 32, 120, 56, "Rust engine", "~1.3 s", CY, small=True) + wire(p, [(432, 60), (470, 60)]) + box(p, 470, 32, 72, 56, "Solana", "capped", GR, small=True)
+    b += wire(p, [(270, 60), (312, 60)]) + box(p, 312, 32, 120, 56, "Rust engine", "66 ms", CY, small=True) + wire(p, [(432, 60), (470, 60)]) + box(p, 470, 32, 72, 56, "Solana", "capped", GR, small=True)
     return wrap(svg(p, W, H, b, "Signals to a capped on-chain trade"), "banner mini")
 
 def mini_loop():

@@ -18,13 +18,13 @@ LANDING = dict(
     lead=("I designed and operate an automated trading system that runs on Solana with my own funds, and the AI delivery workflow that ships every change to it. "
           "Two case studies: one for product and engineering readers, one for anyone hiring AI-native builders."),
     boundary="Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.",
-    stats=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution"), ("112", "documented delivery runs")],
-    fn="A trade here is one position. 2,843 on-chain signatures stand behind the 1,300 positions, 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured " + DATE + ".",
+    stats=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("66 ms", "engine time per trade, median"), ("112", "documented delivery runs")],
+    fn="A trade here is one position. 2,843 on-chain signatures stand behind the 1,300 positions, 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. Engine time is the engine's own work per trade, from price quote to submitted transaction; 66 ms is the median across the 1,228 buys with stage timings, 90% of them under 200 ms. From signal to confirmation on chain the median is 1.3 s, most of it the blockchain's own confirmation (625 ms median) and the message's delivery from Telegram. Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured " + DATE + ".",
     cards=[
         dict(n="01", title="The system", who="for product and engineering readers", href="the-system.html", accent="cyan",
-             text=("A production system that turns public market signals into capped, auditable trades in about 1.3 seconds, with my own funds only. "
+             text=("A production system that turns public market signals into capped, auditable on-chain trades, with my own funds only: 66 ms of engine time per trade, about 1.3 seconds from signal to confirmation. "
                    "Two servers, a custom Rust engine, and on-chain limits a trading key cannot bypass."),
-             nums=[("1.3 s", "median from signal to landed trade"), ("2,843", "on-chain signatures, verifiable")]),
+             nums=[("66 ms", "engine time per trade, median"), ("2,843", "on-chain signatures, verifiable")]),
         dict(n="02", title="How I ship", who="for anyone hiring AI-native builders", href="how-i-ship.html", accent="green",
              text=("One AI coordinates the job; specialist agents research, plan, build and test it; models from two other vendors challenge the work before anything risky ships. "
                    "Ten phases, 62 steps, 34 gates, and a memory loop that turns failures into rules, across 112 documented runs."),
@@ -41,9 +41,9 @@ S1 = dict(
          kicker="Case study 1 of 2 · the system",
          h1="One person. Two servers. A live trading system with my own money on-chain.",
          lead=("SKYNET turns Telegram calls and tracked wallets into ranked strategies and executes them on Solana "
-               "in about 1.3 seconds, from a Rust engine I specified, had built, tested and hardened."),
-         metrics=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("1.3 s", "median trade execution")],
-         fn="A trade is one position. 2,843 on-chain signatures stand behind the 1,300 confirmed positions: 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. 1.3 s is the median across all 1,303 timed trades; 927 ms on the enhanced path (n=117). Measured " + DATE + ".",
+               "with 66 ms of engine time per trade, from a Rust engine I specified, had built, tested and hardened."),
+         metrics=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("66 ms", "engine time per trade, median")],
+         fn="A trade is one position. 2,843 on-chain signatures stand behind the 1,300 confirmed positions: 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. Engine time is the engine's own work per trade, from price quote to submitted transaction, the dashboard's Bot Speed: 66 ms median across the 1,228 buys with stage timings, 90% under 200 ms. From signal to confirmation on chain the median is 1.3 s, most of it the blockchain's confirmation (625 ms median) and delivery from Telegram. Measured " + DATE + ".",
          first="journey", other=("Case study 2 · How I ship", "how-i-ship.html"),
          shot="health.webp", shot_caption="Operator home · live services, host vitals and database"),
     dict(id="journey", kind="journey",
@@ -69,7 +69,7 @@ S1 = dict(
          cards=[
             ("Listen", "149", "live sources: 63 groups, 86 wallets, 4 chains", "Every message and every wallet transaction, around the clock."),
             ("Rank", "17", "exit strategies replayed per source, per regime", "Every source scored by what each strategy would have done."),
-            ("Execute", "1.3 s", "median, all 1,303 timed trades", "A Rust engine on its own server builds the transaction itself and manages the exit."),
+            ("Execute", "66 ms", "engine time per trade, median of 1,228", "A Rust engine on its own server builds the transaction itself, from quote to submit, and manages the exit. The chain then takes about 0.6 s to confirm."),
             ("Contain", "4", "fail-closed control layers", "Kill switch, per-trade and daily caps, circuit breakers."),
          ],
          note="I choose which public signals to follow with my own funds. Execution stays inside fixed caps, and every step is observable on one dashboard."),
@@ -101,8 +101,8 @@ S1 = dict(
             "Exit prices are decoded from the pool's own bytes on-chain, 8 venues at exact byte offsets, with the router only as fallback. Signals cross the tunnel HMAC-signed with a freshness window and an idempotency cache, so a duplicate message is designed never to become a duplicate buy.",
          ],
          visual="stages",
-         metrics=[("1,245", "test functions in the engine"), ("8", "pool layouts decoded on-chain"), ("≤10", "slots landing target")],
-         fn="Every control fails closed: kill switch on entries, a 30 SOL cap enforced in three independent places, sizing that refuses on a missing SOL/USD price, a sell circuit breaker at three retries. 32K lines of tests."),
+         metrics=[("66 ms", "engine time per trade, median"), ("196 ms", "90th percentile"), ("1,245", "test functions in the engine")],
+         fn="Engine time counts the engine's own work per trade: price quote, route, transaction build and submit. Median 66 ms and 90th percentile 196 ms across the 1,228 buys with stage timings; 90% under 200 ms. The chain's confirmation adds a median 625 ms on top. Every control fails closed: kill switch on entries, a 30 SOL cap enforced in three independent places, sizing that refuses on a missing SOL/USD price, a sell circuit breaker at three retries. 32K lines of tests."),
     dict(id="data", kind="points",
          kicker="Real-time data",
          h1="The price provider caps a connection at 100 addresses. I needed 552.",
@@ -166,7 +166,7 @@ S1 = dict(
          lead="Six numbers from the live database, each with the population it was measured on.",
          tiles=[
             ("1,300", "confirmed trades, one per position", "2,843 on-chain signatures behind them, verifiable on any explorer: 1,685 buy legs, 1,158 sell legs."),
-            ("1.3 s", "median · all 1,303 timed trades", "927 ms on the enhanced path (n=117). 1,303 positions carry stage timings; 1,300 of them confirmed."),
+            ("66 ms", "engine time per trade · median of 1,228 buys", "Quote to submitted transaction, the dashboard's Bot Speed; 90% under 200 ms. Signal to on-chain confirmation: 1.3 s median, of which the chain's confirmation is 625 ms."),
             ("40,908", "contracts tracked · 4 chains", "SOL 34,215 · BSC 3,060 · ETH 2,870 · Base 763"),
             ("12.3M", "rows in TimescaleDB", "28 GB · 95 tables"),
             ("1,245", "engine test functions", "32K lines of tests"),
