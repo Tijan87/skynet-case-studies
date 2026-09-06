@@ -4,7 +4,7 @@ DATE = "3 September 2026"
 NAME = "Lukasz Rodzen"
 ROLE = "architect · release owner · operator"
 CONTACT = "[ADD LINKEDIN / EMAIL]"
-CONTACT_HTML = "[ADD LINKEDIN / EMAIL]"  # becomes <a href=mailto:..> and a profile link once supplied
+CONTACT_HTML = ""  # contact details live on the CV that links here; fill in later if wanted
 LOCATION = "Poland · remote"
 OPMODEL = ("I own the architecture, the acceptance criteria, the controls, the release decision and production verification. "
            "AI models write the implementation inside a delivery workflow I built; I review the evidence, adjudicate their disagreements "

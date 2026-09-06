@@ -37,7 +37,7 @@ def stats(ms):
     return '<div class="stats" data-stagger>' + "".join(f'<div class="stat rv"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in ms) + "</div>"
 
 def who(cls="who"):
-    return f'<div class="{cls} rv"><div><div class="name">{E(C.NAME)}</div><div class="role">{E(C.ROLE)}</div><div class="contact">{C.CONTACT_HTML} · {E(C.LOCATION)}</div></div><p>{E(C.OPMODEL)}</p></div>'
+    return f'<div class="{cls} rv"><div><div class="name">{E(C.NAME)}</div><div class="role">{E(C.ROLE)}</div><div class="contact">{(C.CONTACT_HTML + " · ") if C.CONTACT_HTML else ""}{E(C.LOCATION)}</div></div><p>{E(C.OPMODEL)}</p></div>'
 
 def head(s, accent="cyan"):
     lead = f'<p class="lead rv">{E(s["lead"])}</p>' if s.get("lead") else ""
@@ -45,6 +45,10 @@ def head(s, accent="cyan"):
 
 def points(ps):
     return '<ul class="points" data-stagger>' + "".join(f'<li class="rv">{E(p)}</li>' for p in ps) + "</ul>"
+
+def figbox(svg, tail="", cls="fig rv"):
+    """Figure = a scrolling band (.figs-x) plus a static tail (legend, caption)."""
+    return f'<div class="{cls}"><div class="figs-x">{svg}</div>{tail}</div>'
 
 def shot(name, cap, tilt=False):
     return f'<figure class="rv" style="margin:0"><div class="shot{" tilt" if tilt else ""}"><img src="{img_uri(name)}" alt="{E(cap)}"></div><figcaption class="cap">{E(cap)}</figcaption></figure>'
@@ -77,7 +81,7 @@ def fig_loop(stages):
         if mine: s += f'<text x="{x:.1f}" y="86" text-anchor="middle" font-size="11" fill="#31d9ff" font-family="JetBrains Mono,monospace" letter-spacing="1">MY DECISION</text>'
     s += "</svg>"
     lst = '<ol class="ribbon-list">' + "".join(f'<li{" class=me" if mine else ""}><span>{E(t)}</span>{"<b>my decision</b>" if mine else ""}</li>' for t, p, mine, ev in stages) + "</ol>"
-    return f'<div class="fig rv ribbon">{s}{lst}</div>'
+    return figbox(s, lst, "fig rv ribbon")
 
 
 def fig_bytes():
@@ -103,22 +107,23 @@ def fig_bytes():
     s += f'<text x="{lim_x-4:.1f}" y="168" text-anchor="end" font-size="11" fill="#ff8f8f" font-family="JetBrains Mono,monospace">1,232-byte wire limit</text>'
     s += f'<text x="{W}" y="168" text-anchor="end" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">→ over</text>'
     s += "</svg>"
-    return f'<div class="fig rv">{s}<div class="cap">Illustrative composition. Each account referenced through a lookup table costs 1 byte instead of 32.</div></div>'
+    return figbox(s, '<div class="cap">Illustrative composition. Each account referenced through a lookup table costs 1 byte instead of 32.</div>')
 
 def fig_stages():
     rows = [("Route quote from Jupiter", 13), ("Build and sign the transaction", 4), ("Submit through Helius Sender", 14),
             ("On-chain program checks", 80), ("Wait for the blockchain to confirm", 621), ("Not instrumented per stage", 292)]
-    W = 720; total = 1024; lx = 250; bw = W - lx - 70; H = 34 * len(rows) + 10
+    W = 720; total = 1024; lx = 250; bw = W - lx - 20; H = 34 * len(rows) + 10
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One production trade stage by stage, 1,024 ms end to end">'
     for i, (n, ms) in enumerate(rows):
         y = i * 34 + 6; w = max(2, ms / total * bw)
         col = "#6b7a94" if "Not" in n else ("#58e7ad" if "confirm" in n else "#31d9ff")
         s += f'<text x="0" y="{y+15}" font-size="12" fill="#a7b4c9" font-family="IBM Plex Sans,sans-serif">{E(n)}</text>'
         s += f'<rect x="{lx}" y="{y+2}" width="{bw}" height="18" rx="3" fill="rgba(255,255,255,.04)"/>'
-        s += f'<rect x="{lx}" y="{y+2}" width="{w:.1f}" height="18" rx="3" fill="{col}"{" opacity=.55" if "Not" in n else ""}/>'
+        dim = ' opacity="0.55"' if "Not" in n else ""
+        s += f'<rect x="{lx}" y="{y+2}" width="{w:.1f}" height="18" rx="3" fill="{col}"{dim}/>'
         s += f'<text x="{lx+w+8:.1f}" y="{y+15}" font-size="12" fill="#f2f6ff" font-family="JetBrains Mono,monospace">{ms} ms</text>'
     s += "</svg>"
-    return f'<div class="fig rv">{s}<div class="cap">One production trade, stage by stage · 1,024 ms end to end, of which 292 ms is not instrumented per stage · latest confirmed trade. 31 ms of the engine\'s own work; 621 ms waiting for the chain.</div></div>'
+    return figbox(s, '<div class="cap">One production trade, stage by stage · 1,024 ms end to end, of which 292 ms is not instrumented per stage · latest confirmed trade. 31 ms of the engine\'s own work; 621 ms waiting for the chain.</div>')
 
 def fig_cube():
     s = '''<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The replay cube: sources by strategies by chains by regimes">
@@ -137,11 +142,11 @@ def fig_cube():
 <text x="330" y="222"><tspan fill="#f2f6ff" font-size="26">6.2M</tspan> precomputed rows</text>
 <text x="330" y="252" fill="#6b7a94">17,820 tasks · about 25 minutes · every night</text>
 </g></svg>'''
-    return f'<div class="fig rv">{s}<div class="cap">The replay cube · one cell per source × strategy × chain × regime · 6.2M rows, refilled by 17,820 replay tasks a night</div></div>'
+    return figbox(s, '<div class="cap">The replay cube · one cell per source × strategy × chain × regime · 6.2M rows, refilled by 17,820 replay tasks a night</div>')
 
 def fig_journey():
     data = json.load(open(JOURNEY))
-    W, H, L, B = 760, 260, 36, 34
+    W, H, L, B = 760, 260, 28, 34
     n = len(data); gw = (W - L - 10) / n
     mx = max(d["analytics_c"] + d["engine_c"] + d["program_c"] for d in data)
     sc = (H - B - 20) / mx
@@ -160,7 +165,7 @@ def fig_journey():
             s += f'<text x="{x+w/2:.1f}" y="{H-B+16}" text-anchor="middle" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{d["m"][2:4]}·{d["m"][5:]}</text>'
     s += "</svg>"
     leg = '<div class="legend"><span><i style="background:#31d9ff"></i>Analytics · Python</span><span><i style="background:#a877ff"></i>Execution engine · Rust</span><span><i style="background:#58e7ad"></i>On-chain program · Anchor</span></div>'
-    return f'<div class="fig rv">{s}{leg}<div class="cap">Commits per month, from git across the three repositories · Apr 2025 to Sep 2026</div></div>'
+    return figbox(s, leg + '<div class="cap">Commits per month, from git across the three repositories · Apr 2025 to Sep 2026</div>')
 
 def fig_growth():
     import datetime as dt
@@ -169,7 +174,7 @@ def fig_growth():
         return dt.date(y, m, d).toordinal()
     pts = [(ts(k), v) for k, v in C.GROWTH]
     t0, t1 = pts[0][0], ts("2026-09-10"); mx = 14000
-    W, H, L, B = 760, 260, 44, 30
+    W, H, L, B = 760, 260, 30, 30
     def X(t): return L + (t - t0) / (t1 - t0) * (W - L - 12)
     def Y(v): return H - B - v / mx * (H - B - 24)
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lines in the workflow file over time">'
@@ -189,7 +194,7 @@ def fig_growth():
     for k, lab in (("2025-12-01", "Dec 25"), ("2026-03-01", "Mar 26"), ("2026-06-01", "Jun 26"), ("2026-09-01", "Sep 26")):
         s += f'<text x="{X(ts(k)):.1f}" y="{H-8}" text-anchor="middle" font-size="11" fill="#7d8ba3" font-family="JetBrains Mono,monospace">{lab}</text>'
     s += "</svg>"
-    return f'<div class="fig rv">{s}<div class="cap">Lines in the workflow file, from git · growth is rules added after failures, not features</div></div>'
+    return figbox(s, '<div class="cap">Lines in the workflow file, from git · growth is rules added after failures, not features</div>')
 
 # ------------------------------------------------------------------ section renderers
 def r_cover(s, study):
@@ -212,7 +217,7 @@ def r_journey(s):
 <div class="tl" data-stagger>{tl}</div>{note(E(s["note"]))}</div></section>'''
 
 def r_four(s):
-    cards = "".join(f'<div class="card rv"><div class="label">{E(t)}</div><div class="stat" style="border:0;padding:0"><span class="n" style="font-size:clamp(1.75rem,1.2vw+1.4rem,2.5rem)">{E(n)}</span><span class="l">{E(l)}</span></div><p>{E(p)}</p></div>' for t, n, l, p in s["cards"])
+    cards = "".join(f'<div class="card rv"><div class="label">{E(t)}</div><div class="stat" style="border:0;padding:0"><span class="n" style="font-size:clamp(1.75rem,1.2vw + 1.4rem,2.5rem)">{E(n)}</span><span class="l">{E(l)}</span></div><p>{E(p)}</p></div>' for t, n, l, p in s["cards"])
     return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}<div class="cards c4" data-stagger>{cards}</div>{note(E(s["note"]))}</div></section>'
 
 def r_infra(s):
@@ -398,7 +403,7 @@ def r_journey(s):
     return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head8(s)}<div class="fig">{fig_journey()}</div>{more(f"<div class=tl data-stagger>{tl}</div>" + notes(s), "The milestones")}</div></section>'
 
 def r_four(s):
-    cards = "".join(f'<div class="card rv"><div class="label">{E(t)}</div><div class="stat" style="border:0;padding:0"><span class="n" style="font-size:clamp(1.75rem,1.2vw+1.4rem,2.5rem)">{E(n)}</span><span class="l">{E(l)}</span></div><p>{E(p)}</p></div>' for t, n, l, p in s["cards"])
+    cards = "".join(f'<div class="card rv"><div class="label">{E(t)}</div><div class="stat" style="border:0;padding:0"><span class="n" style="font-size:clamp(1.75rem,1.2vw + 1.4rem,2.5rem)">{E(n)}</span><span class="l">{E(l)}</span></div><p>{E(p)}</p></div>' for t, n, l, p in s["cards"])
     sh = shot(s["shot"], s["shot_caption"]) if s.get("shot") else ""
     bn = BN.BANNERS[s["banner"]]() if s.get("banner") else ""
     return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head8(s)}<div style="margin-top:clamp(2rem,4vw,3rem)">{bn}</div><div class="cards c4" data-stagger style="margin-top:14px">{cards}</div>{more(sh + notes(s), "See it on the dashboard")}</div></section>'
@@ -522,7 +527,7 @@ def r_steps(s):
 
 def fig_routing():
     rows = [("Before routing: every lane at maximum", 100, "#7d8ba3", "100%"), ("Standard runs after routing", 42.5, "#31d9ff", "42.5%"), ("Deep reviews after routing", 15.2, "#a877ff", "15.2%"), ("Money-moving work, always", 100, "#58e7ad", "100%")]
-    W, lx, bw = 720, 270, 320; H = 34 * len(rows) + 10
+    W, lx, bw = 720, 270, 380; H = 34 * len(rows) + 10
     s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Review cost before and after routing">'
     for i, (n, pct, col, lab) in enumerate(rows):
         y = i * 34 + 6; w = pct / 100 * bw
@@ -530,7 +535,7 @@ def fig_routing():
         s += f'<rect x="{lx}" y="{y+2}" width="{bw}" height="18" rx="3" fill="rgba(255,255,255,.04)"/><rect x="{lx}" y="{y+2}" width="{w:.1f}" height="18" rx="3" fill="{col}"/>'
         s += f'<text x="{lx+bw+10}" y="{y+15}" font-size="12" fill="#f2f6ff" font-family="JetBrains Mono,monospace">{E(lab)}</text>'
     s += "</svg>"
-    return f'<div class="fig rv">{s}<div class="cap">Token use per review as a share of the pre-routing control run, which consumed about 13.4 million tokens. From the routing A/B recorded in the repository.</div></div>'
+    return figbox(s, '<div class="cap">Token use per review as a share of the pre-routing control run, which consumed about 13.4 million tokens. From the routing A/B recorded in the repository.</div>')
 
 def r_cover(s, study):
     right = ""
@@ -558,7 +563,7 @@ def nav(current):
 <div class="tabs">{tab("index.html", "Home", "")}{tab("the-system.html", "01", "The system")}{tab("how-i-ship.html", "02", "How I ship")}</div></div><div class="bar"></div></nav>'''
 
 def footer():
-    return f'''<footer class="foot"><div class="wrap"><p>Specified, reviewed and released by {E(C.NAME)}. Implemented by AI models under the delivery workflow in case study 2. Numbers measured on the production system, the run archive and git, {E(C.DATE)}. Replay and simulation figures are analytical outputs, not returns.</p><p>{C.CONTACT_HTML} · {E(C.LOCATION)} · 2026</p></div></footer>'''
+    return f'''<footer class="foot"><div class="wrap"><p>Specified, reviewed and released by {E(C.NAME)}. Implemented by AI models under the delivery workflow in case study 2. Numbers measured on the production system, the run archive and git, {E(C.DATE)}. Replay and simulation figures are analytical outputs, not returns.</p><p>{(C.CONTACT_HTML + " · ") if C.CONTACT_HTML else ""}{E(C.LOCATION)} · 2026</p></div></footer>'''
 
 BASE = None  # public base URL, e.g. https://tijan87.github.io/skynet-case-studies ; set with --base-url
 INDEX = True  # --index removes the noindex robots meta

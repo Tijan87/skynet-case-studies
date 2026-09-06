@@ -62,7 +62,6 @@ def pipeline():
     b += box(p, 200, 66, 166, 68, "Detect and rank", "8 workers · 17 strategies")
     b += wire(p, [(366, 100), (404, 100)]) + box(p, 404, 66, 150, 68, "Rust engine", "~1.3 s to landed")
     b += wire(p, [(554, 100), (592, 100)]) + box(p, 592, 66, 104, 68, "Solana", "on-chain · caps", GR)
-    b += dot(p, 696, 100, GR, 3)
     b += f'<path d="M200,152 L696,152" stroke="{INK3}" stroke-opacity=".35" stroke-dasharray="2 4"/>' + label(448, 172, "kill switch · per-trade and daily caps · circuit breakers, fail closed", INK3, "middle")
     return wrap(svg(p, W, H, b, "Signals in, a ranked and contained trade out"))
 
@@ -83,12 +82,12 @@ def layers():
     b = field(p, W, H, ((0.5, 0.5, "g"),))
     names = [("Constitution", "always loaded"), ("Navigation index", "2,110 lines"), ("Architecture map", "19,514 lines"), ("Three contracts", "one truth each"), ("The code", "source of truth")]
     for i, (n, s) in enumerate(names):
-        x = 60 + i * 132; y = 60 + (i % 2) * 8
+        x = 37 + i * 132
         acc = GR if i == 4 else (VI if i == 0 else CY)
-        b += box(p, x, 62, 118, 60, n, s, acc, small=True)
-        if i < 4: b += wire(p, [(x + 118, 92), (x + 132, 92)])
-    b += f'<path d="M60,150 L698,150" stroke="url(#{p}w)" stroke-opacity=".5"/>' + label(379, 172, "one read path, every agent, every run: map before code, code wins", INK3, "middle", 8.5)
-    b += dot(p, 60, 150, VI, 3) + dot(p, 698, 150, GR, 3)
+        b += box(p, x, 52, 118, 60, n, s, acc, small=True)
+        if i < 4: b += wire(p, [(x + 118, 82), (x + 132, 82)])
+    b += f'<path d="M37,140 L683,140" stroke="url(#{p}w)" stroke-opacity=".5"/>' + label(360, 162, "one read path, every agent, every run: map before code, code wins", INK3, "middle", 8.5)
+    b += dot(p, 37, 140, VI, 3) + dot(p, 683, 140, GR, 3)
     return wrap(svg(p, W, H, b, "The reading order every agent follows"))
 
 def loop():
@@ -106,8 +105,8 @@ def loop():
         if anchor == "end": lx -= 4
         b += label(f"{lx:.0f}", f"{ly+3:.0f}", n, INK2, anchor, 9)
     b += f'<text x="{cx}" y="{cy-2}" text-anchor="middle" font-size="11" font-weight="500" fill="{INK}" font-family="{SANS}">run ID + evidence</text><text x="{cx}" y="{cy+14}" text-anchor="middle" font-size="9" fill="{INK3}" font-family="{MONO}">ON DISK, NOT IN MEMORY</text>'
-    b += chip(p, 40, 118, "memory reset", RED, 110) + wire(p, [(150, 128), (200, 128), (268, 112)], dashed=True) + label(40, 152, "the model forgets", INK3, "start", 8.5) + label(40, 168, "the run does not", INK3, "start", 8.5)
-    b += chip(p, 566, 128, "2-day runs", GR, 96) + label(566, 162, "30 h · 28 h · 4 days", INK3, "start", 8.5)
+    b += chip(p, 40, 118, "memory reset", RED, 110) + wire(p, [(150, 128), (206, 128), (291, 107)], dashed=True) + label(40, 152, "the model forgets", INK3, "start", 8.5) + label(40, 168, "the run does not", INK3, "start", 8.5)
+    b += chip(p, 566, 118, "2-day runs", GR, 96) + label(566, 152, "30 h · 28 h · 4 days", INK3, "start", 8.5)
     return wrap(svg(p, W, H, b, "Five commands passing one run's state around a loop"))
 
 def chain():
@@ -129,13 +128,13 @@ def gate():
     p, W, H = "gt", 720, 200
     b = field(p, W, H, ((0.5, 0.5, "g"),))
     # lane 1: claim without evidence stops
-    b += chip(p, 40, 50, "“I edited the file”", INK2, 150) + wire(p, [(190, 60), (330, 60)])
-    b += f'<rect x="336" y="36" width="4" height="48" rx="2" fill="{RED}"/><rect x="336" y="36" width="4" height="48" rx="2" fill="{RED}" filter="url(#{p}b)" fill-opacity=".8"/>'
-    b += f'<line x1="346" x2="470" y1="60" y2="60" stroke="{INK3}" stroke-opacity=".25" stroke-dasharray="2 4"/>' + label(352, 100, "diff shows zero changes · hard block", RED, "start", 8.5)
+    b += chip(p, 20, 50, "“I edited the file”", INK2, 150) + wire(p, [(170, 60), (310, 60)])
+    b += f'<rect x="316" y="36" width="4" height="48" rx="2" fill="{RED}"/><rect x="316" y="36" width="4" height="48" rx="2" fill="{RED}" filter="url(#{p}b)" fill-opacity=".8"/>'
+    b += f'<line x1="326" x2="450" y1="60" y2="60" stroke="{INK3}" stroke-opacity=".25" stroke-dasharray="2 4"/>' + label(332, 100, "diff shows zero changes · hard block", RED, "start", 8.5)
     # lane 2: claim with receipt passes
-    b += chip(p, 40, 130, "claim + receipt", INK2, 150) + wire(p, [(190, 140), (330, 140)])
-    b += f'<rect x="336" y="116" width="4" height="20" rx="2" fill="{GR}"/><rect x="336" y="144" width="4" height="20" rx="2" fill="{GR}"/>'
-    b += wire(p, [(346, 140), (560, 140)]) + dot(p, 560, 140, GR, 4) + label(352, 180, "evidence verified · passes", GR, "start", 8.5)
+    b += chip(p, 20, 130, "claim + receipt", INK2, 150) + wire(p, [(170, 140), (310, 140)])
+    b += f'<rect x="316" y="116" width="4" height="20" rx="2" fill="{GR}"/><rect x="316" y="144" width="4" height="20" rx="2" fill="{GR}"/>'
+    b += wire(p, [(326, 140), (540, 140)]) + dot(p, 540, 140, GR, 4) + label(332, 180, "evidence verified · passes", GR, "start", 8.5)
     b += box(p, 580, 68, 116, 64, "34 gates", "146 hard blocks", CY, small=True)
     return wrap(svg(p, W, H, b, "A claim without evidence stops; a claim with a receipt passes"))
 
