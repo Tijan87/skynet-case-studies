@@ -449,6 +449,9 @@ details.more .inner{grid-template-columns:1fr}
 .pick .card > .banner{margin-top:0}
 /* phone type floor: nothing below 12px in HTML text */
 @media (max-width:480px){.acc .in dt,.matrix th,.ribbon-list li b{font-size:.75rem}}
+.authorship{margin-top:2rem;border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:12px;padding:1rem 1.25rem;max-inline-size:68ch;background:rgba(255,255,255,.02)}
+.authorship .label{margin-bottom:.4rem}
+.authorship p{color:var(--ink-2);font-size:var(--fs-cap);line-height:1.55}
 """
 
 JS = r"""

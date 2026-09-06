@@ -2,23 +2,24 @@
 # .claude/future_plans/2026-09-03_builder_case_study_v2.md and the deck-2 copy doc (3 Sep 2026).
 DATE = "3 September 2026"
 NAME = "Lukasz Rodzen"
-ROLE = "architect · release owner · operator"
+ROLE = "product owner · release owner · operator"
 CONTACT = "[ADD LINKEDIN / EMAIL]"
 CONTACT_HTML = ""  # contact details live on the CV that links here; fill in later if wanted
 LOCATION = "Poland · remote"
-OPMODEL = ("I own the architecture, the acceptance criteria, the controls, the release decision and production verification. "
-           "AI models write the implementation inside a delivery workflow I built; I review the evidence, adjudicate their disagreements "
-           "and sign every deploy. Nothing ships that I have not reviewed and accepted.")
+OPMODEL = ("I own the product intent, the system boundaries and constraints, the acceptance criteria, the release decision and production verification. "
+           "AI agents provide much of the implementation-level technical depth: they research, propose designs, write the code and review one another independently. "
+           "I resolve their disagreements through evidence and decide what ships. I do not claim the unaided technical depth of a senior backend or Rust engineer.")
+AUTHORSHIP = ("I am not a backend, Rust or smart-contract engineer and do not represent myself as one. I define what the system must do, its boundaries and acceptance criteria; I direct coding agents through research, design, implementation and review; I validate the resulting behaviour and own the release decision. The implementation-level expertise described below is substantially agent-mediated.")
 BOUNDARY = ("And I will tell you where the boundary is: the changes I would not make this way, "
             "and who I would bring in instead.")
 
 LANDING = dict(
-    kicker="Architect · AI delivery owner · Poland, remote",
-    h1="One person built a live trading system, then the workflow that ships it.",
+    kicker="AI-native builder · release owner · Poland, remote",
+    h1="One person and coding agents built a live trading system, then the workflow that ships it.",
     lead=("I designed and operate an automated trading system that runs on Solana with my own funds, and the AI delivery workflow that ships every change to it. "
           "Two case studies: one for product and engineering readers, one for anyone hiring AI-native builders."),
     boundary="Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.",
-    stats=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("66 ms", "engine time per trade, median"), ("112", "documented delivery runs")],
+    stats=[("16", "months · one human, agents build"), ("1,300", "confirmed trades, my own funds"), ("66 ms", "engine time per trade, median"), ("112", "documented delivery runs")],
     fn="A trade here is one position. 2,843 on-chain signatures stand behind the 1,300 positions, 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. Engine time is the engine's own work per trade, from price quote to submitted transaction; 66 ms is the median across the 1,228 buys with stage timings, 90% of them under 200 ms. From signal to confirmation on chain the median is 1.3 s, most of it the blockchain's own confirmation (625 ms median) and the message's delivery from Telegram. Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured " + DATE + ".",
     cards=[
         dict(n="01", title="The system", who="for product and engineering readers", href="the-system.html", accent="cyan",
@@ -39,10 +40,10 @@ S1 = dict(
     sections=[
     dict(id="cover", kind="cover",
          kicker="Case study 1 of 2 · the system",
-         h1="One person. Two servers. A live trading system with my own money on-chain.",
+         h1="One person. Coding agents. Two servers. A live trading system with my own money on-chain.",
          lead=("SKYNET turns Telegram calls and tracked wallets into ranked strategies and executes them on Solana "
-               "with 66 ms of engine time per trade, from a Rust engine I specified, had built, tested and hardened."),
-         metrics=[("16", "months, one architect"), ("1,300", "confirmed trades, my own funds"), ("66 ms", "engine time per trade, median")],
+               "with 66 ms of engine time per trade, from a Rust engine built by coding agents to my specification, tested and hardened under my direction."),
+         metrics=[("16", "months · one human, agents build"), ("1,300", "confirmed trades, my own funds"), ("66 ms", "engine time per trade, median")],
          fn="A trade is one position. 2,843 on-chain signatures stand behind the 1,300 confirmed positions: 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. Engine time is the engine's own work per trade, from price quote to submitted transaction, the dashboard's Bot Speed: 66 ms median across the 1,228 buys with stage timings, 90% under 200 ms. From signal to confirmation on chain the median is 1.3 s, most of it the blockchain's confirmation (625 ms median) and delivery from Telegram. Measured " + DATE + ".",
          first="journey", other=("Case study 2 · How I ship", "how-i-ship.html"),
          shot="health.webp", shot_caption="Operator home · live services, host vitals and database"),
@@ -160,6 +161,20 @@ S1 = dict(
              "7.97×", "faster, and a boot-time assertion"),
          ],
          note="These three failures are retained as regression gates. Each now fails a build before it can reach production."),
+    dict(id="stops", kind="flow",
+         kicker="Where AI verification stops",
+         h1="Agent consensus is not correctness",
+         lead="I do not assume that agreement between agents means the code is right. For high-consequence components the check moves outside the agent system, and that escalation is written into the workflow, not left to judgment on the day.",
+         boxes=[
+            ("Key custody", "Human specialist, formal audit", "Changes to custody or withdrawal authority never go through the agent panel alone."),
+            ("Money-moving code", "Must run before it ships", "A runtime test on a fork of mainnet is required for every fund-moving change. Reading the code does not count as running it."),
+            ("Every risky change", "A model from another vendor, run by me", "The external review reads a frozen commit cold. Without a code and runtime receipt, its findings stay open."),
+         ],
+         more_label="What this means in practice",
+         points=[
+            "The order is: agents implement, independent agents challenge, I validate the behaviour in production, and external specialists validate where the consequences justify it.",
+            "The panel's own ledger records that on 78 of the 92 runs where it was measured, the outside review found something the internal lanes had missed. That number is why the outside check exists.",
+         ]),
     dict(id="measured", kind="tiles",
          kicker="Measured on the production system · " + DATE,
          h1="Measured, with the populations printed",

@@ -206,6 +206,7 @@ def r_cover(s, study):
     return f'''<section class="hero" id="{s["id"]}"><div class="glow"></div><div class="wrap" data-stagger>
 <div class="rv">{kicker(s["kicker"])}</div><h1 class="rv">{E(s["h1"])}</h1><p class="lead rv">{E(s["lead"])}</p>
 <div class="actions rv"><a class="btn primary" href="#{s["first"]}">Start reading <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
+<div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div>
 </div></section>
 <section class="sec" style="border-top:0;padding-top:0"><div class="wrap">{stats(s["metrics"])}{fn(s.get("fn"))}
 {f'<div style="margin-top:clamp(2.5rem,5vw,4rem)">{right}</div>' if right else ""}</div></section>'''
@@ -605,7 +606,8 @@ def landing():
         cards += f'''<a class="card rv" href="{LINKS[c["href"]]}">{mini}<div class="label">Case study {c["n"]} · {E(c["who"])}</div><h2>{E(c["title"])}</h2><p>{E(c["text"])}</p><div class="nums">{nums}</div><span class="arrow">Open case study {c["n"][-1]} <span class="a">→</span></span></a>'''
     body = f'''<section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv" style="margin-top:1rem">{E(L["boundary"])}</p>
 <div class="stats hero-stats rv" style="margin-top:2rem">{"".join(f'<div class="stat"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in L["stats"])}</div>
-<div class="actions rv"><a class="btn primary" href="{LINKS["the-system.html"]}">01 · The system <span class="a">→</span></a><a class="btn" href="{LINKS["how-i-ship.html"]}">02 · How I ship <span class="a">→</span></a></div></div></section>
+<div class="actions rv"><a class="btn primary" href="{LINKS["the-system.html"]}">01 · The system <span class="a">→</span></a><a class="btn" href="{LINKS["how-i-ship.html"]}">02 · How I ship <span class="a">→</span></a></div>
+<div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div></div></section>
 <section class="sec"><div class="wrap">{who()}{more(fn(L["fn"]), "Populations and dates")}</div></section>
 <section class="sec"><div class="wrap"><div class="pick" data-stagger>{cards}</div></div></section>'''
     return page(f"{C.NAME} · Case studies", body, "index.html", "Two case studies: a live Solana trading system, and the AI delivery workflow that ships it.", "land")

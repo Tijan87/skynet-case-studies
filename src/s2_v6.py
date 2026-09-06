@@ -9,7 +9,7 @@ S2 = dict(
     sections=[
     dict(id="cover", kind="cover",
          kicker="Case study 2 of 2 · how I ship",
-         h1="I architect and release every change. AI agents build it inside a workflow I designed.",
+         h1="I direct and release every change. Coding agents build it inside a workflow I designed.",
          lead=("One AI coordinates the job; specialist agents research, plan, build and test it; models from two other vendors challenge the work before anything risky ships. "
                "The rules grew out of 112 documented runs, and every failure is kept."),
          metrics=[("112", "documented runs"), ("3", "AI vendors on every review panel"), ("4 days", "longest run, start to ship")],
