@@ -545,6 +545,7 @@ def r_cover(s, study):
     return f'''<section class="hero" id="{s["id"]}"><div class="glow"></div><div class="wrap" data-stagger>
 <div class="rv">{kicker(s["kicker"])}</div><h1 class="rv">{E(s["h1"])}</h1><p class="lead rv">{E(s["lead"])}</p>
 <div class="actions rv"><a class="btn primary" href="#{s["first"]}">Start reading <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
+<div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div>
 </div></section>
 <section class="sec" style="border-top:0;padding-top:0"><div class="wrap">{stats(s["metrics"])}{more(fn(s.get("fn")), "Populations and dates")}
 {f'<div style="margin-top:clamp(2.5rem,5vw,4rem)">{right}</div>' if right else ""}</div></section>'''
