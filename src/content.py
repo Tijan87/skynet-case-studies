@@ -15,18 +15,18 @@ BOUNDARY = ("And I will tell you where the boundary is: the changes I would not 
 
 LANDING = dict(
     kicker="AI-native builder · release owner · Poland, remote",
-    h1="One person and coding agents built a live trading system, then the workflow that ships it.",
-    lead=("I designed and operate an automated trading system that runs on Solana with my own funds, and the AI delivery workflow that ships every change to it. "
-          "Two case studies: one for product and engineering readers, one for anyone hiring AI-native builders."),
+    h1="One person and coding agents built a live trading system. The workflow that builds it grew with it.",
+    lead=("I operate an automated trading system on Solana with my own funds. Coding agents built it through a delivery workflow that started as a nine-line file "
+          "and grew, run by run and failure by failure, into a system of its own. Two case studies: the product, and the workflow."),
     boundary="Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.",
     stats=[("16", "months · one human, agents build"), ("1,300", "confirmed trades, my own funds"), ("66 ms", "engine time per trade, median"), ("112", "documented delivery runs")],
     fn="A trade here is one position. 2,843 on-chain signatures stand behind the 1,300 positions, 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. Engine time is the engine's own work per trade, from price quote to submitted transaction; 66 ms is the median across the 1,228 buys with stage timings, 90% of them under 200 ms. From signal to confirmation on chain the median is 1.3 s, most of it the blockchain's own confirmation (625 ms median) and the message's delivery from Telegram. Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured " + DATE + ".",
     cards=[
-        dict(n="01", title="The system", who="for product and engineering readers", href="the-system.html", accent="cyan",
+        dict(n="01", title="The system", who="the product, for product and engineering readers", href="the-system.html", accent="cyan",
              text=("A production system that turns public market signals into capped, auditable on-chain trades, with my own funds only: 66 ms of engine time per trade, about 1.3 seconds from signal to confirmation. "
                    "Two servers, a custom Rust engine, and on-chain limits a trading key cannot bypass."),
              nums=[("66 ms", "engine time per trade, median"), ("2,843", "on-chain signatures, verifiable")]),
-        dict(n="02", title="How I ship", who="for anyone hiring AI-native builders", href="how-i-ship.html", accent="green",
+        dict(n="02", title="How I ship", who="the workflow, for anyone hiring AI-native builders", href="how-i-ship.html", accent="green",
              text=("One AI coordinates the job; specialist agents research, plan, build and test it; models from two other vendors challenge the work before anything risky ships. "
                    "Ten phases, 62 steps, 34 gates, and a memory loop that turns failures into rules, across 112 documented runs."),
              nums=[("112", "documented runs"), ("3", "AI vendors on every review")]),
