@@ -2,7 +2,7 @@
 """Responsive, animated case-study site. Usage: python3 build_site.py [--links links.json] [--out DIR]"""
 import base64, html, json, os, sys
 import content as C
-import minimal_diagrams as BN
+import banners as BN
 import s2_v6
 C.S2 = s2_v6.S2
 
@@ -17,10 +17,6 @@ def img_uri(name):
 
 # ------------------------------------------------------------------ tokens + css
 from theme import CSS, JS
-from minimal import CSS as REFINEMENT_CSS, schematic, title as display_title, bar_chart
-from minimal import JS as REFINEMENT_JS
-CSS += REFINEMENT_CSS
-JS += REFINEMENT_JS
 
 # ------------------------------------------------------------------ helpers
 def kicker(t, accent=None, plain=False):
@@ -116,8 +112,18 @@ def fig_bytes():
 def fig_stages():
     rows = [("Route quote from Jupiter", 13), ("Build and sign the transaction", 4), ("Submit through Helius Sender", 14),
             ("On-chain program checks", 80), ("Wait for the blockchain to confirm", 621), ("Not instrumented per stage", 292)]
-    data = [(n, ms, f"{ms} ms", "#7b8fa9" if "Not" in n else ("#77d9b4" if "confirm" in n else "#79d7eb")) for n,ms in rows]
-    return bar_chart(data, 1024, "One trade, end to end", "1,024 ms · measured example", "One production trade, stage by stage · 1,024 ms end to end, of which 292 ms is not instrumented per stage · latest confirmed trade. 31 ms of the engine's own work; 621 ms waiting for the chain.")
+    W = 720; total = 1024; lx = 250; bw = W - lx - 20; H = 34 * len(rows) + 10
+    s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One production trade stage by stage, 1,024 ms end to end">'
+    for i, (n, ms) in enumerate(rows):
+        y = i * 34 + 6; w = max(2, ms / total * bw)
+        col = "#6b7a94" if "Not" in n else ("#58e7ad" if "confirm" in n else "#31d9ff")
+        s += f'<text x="0" y="{y+15}" font-size="12" fill="#a7b4c9" font-family="IBM Plex Sans,sans-serif">{E(n)}</text>'
+        s += f'<rect x="{lx}" y="{y+2}" width="{bw}" height="18" rx="3" fill="rgba(255,255,255,.04)"/>'
+        dim = ' opacity="0.55"' if "Not" in n else ""
+        s += f'<rect x="{lx}" y="{y+2}" width="{w:.1f}" height="18" rx="3" fill="{col}"{dim}/>'
+        s += f'<text x="{lx+w+8:.1f}" y="{y+15}" font-size="12" fill="#f2f6ff" font-family="JetBrains Mono,monospace">{ms} ms</text>'
+    s += "</svg>"
+    return figbox(s, '<div class="cap">One production trade, stage by stage · 1,024 ms end to end, of which 292 ms is not instrumented per stage · latest confirmed trade. 31 ms of the engine\'s own work; 621 ms waiting for the chain.</div>')
 
 def fig_cube():
     s = '''<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The replay cube: sources by strategies by chains by regimes">
@@ -264,6 +270,7 @@ def r_close(s, study):
     team = f'<p class="note rv">{E(s["team"])}</p>' if s.get("team") else ""
     nt, nh = s["next"]
     return f'''<section class="sec" id="{s["id"]}"><div class="wrap">{head(s)}
+<div style="margin-top:clamp(2rem,4vw,3rem)">{BN.pulse()}</div>
 <div class="sessions" data-stagger style="margin-top:14px">{ss}</div>
 {note('<span class="kicker">the boundary</span>' + E(s.get("boundary", C.BOUNDARY)))}{team}
 <div style="margin-top:clamp(2.5rem,5vw,4rem)">{who()}</div>
@@ -419,7 +426,7 @@ def r_points(s, accent=None):
     vis = ""
     if s.get("visual") == "bytes": vis = fig_bytes()
     elif s.get("visual") == "stages": vis = fig_stages()
-    elif s.get("visual") == "cube": vis = BN.replay()
+    elif s.get("visual") == "cube": vis = fig_cube()
     elif s.get("visual") == "routing": vis = fig_routing()
     elif s.get("banner"): vis = BN.BANNERS[s["banner"]]()
     elif s.get("shot"): vis = shot(s["shot"], s["shot_caption"])
@@ -483,7 +490,7 @@ def r_matrix(s):
 def r_funnel(s):
     fr = "".join(f'<div class="fr"><span class="n">{E(n)}</span><div class="b"><i style="--w:{p}%"></i></div><span class="l">{E(l)}</span></div>' for n, l, p in s["rows"])
     hidden = points(s["points"]) + (pane(s["pane"], s.get("pane_cap")) if s.get("pane") else "") + notes(s)
-    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head8(s)}<div class="rv" style="margin-top:clamp(2rem,4vw,3rem)"><div class="funnel">{fr}</div></div>{more(hidden, "The triage rule, and four gaps that became rules", two=True)}</div></section>'
+    return f'<section class="sec" id="{s["id"]}"><div class="wrap">{head8(s)}<div class="rv" style="margin-top:clamp(2rem,4vw,3rem);max-width:44rem"><div class="funnel">{fr}</div></div>{more(hidden, "The triage rule, and four gaps that became rules", two=True)}</div></section>'
 
 def r_scorecards(s):
     rows = ""
@@ -521,21 +528,27 @@ def r_steps(s):
 
 def fig_routing():
     rows = [("Before routing: every lane at maximum", 100, "#7d8ba3", "100%"), ("Standard runs after routing", 42.5, "#31d9ff", "42.5%"), ("Deep reviews after routing", 15.2, "#a877ff", "15.2%"), ("Money-moving work, always", 100, "#58e7ad", "100%")]
-    return bar_chart([(n,pct,lab,col) for n,pct,col,lab in rows], 100, "Review cost before and after routing", "Token use / baseline = 100%", "Token use per review as a share of the pre-routing control run, which consumed about 13.4 million tokens. From the routing A/B recorded in the repository.")
+    W, lx, bw = 720, 270, 380; H = 34 * len(rows) + 10
+    s = f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Review cost before and after routing">'
+    for i, (n, pct, col, lab) in enumerate(rows):
+        y = i * 34 + 6; w = pct / 100 * bw
+        s += f'<text x="0" y="{y+15}" font-size="12" fill="#a7b4c9" font-family="IBM Plex Sans,sans-serif">{E(n)}</text>'
+        s += f'<rect x="{lx}" y="{y+2}" width="{bw}" height="18" rx="3" fill="rgba(255,255,255,.04)"/><rect x="{lx}" y="{y+2}" width="{w:.1f}" height="18" rx="3" fill="{col}"/>'
+        s += f'<text x="{lx+bw+10}" y="{y+15}" font-size="12" fill="#f2f6ff" font-family="JetBrains Mono,monospace">{E(lab)}</text>'
+    s += "</svg>"
+    return figbox(s, '<div class="cap">Token use per review as a share of the pre-routing control run, which consumed about 13.4 million tokens. From the routing A/B recorded in the repository.</div>')
 
 def r_cover(s, study):
     right = ""
     if s.get("shot"): right = shot(s["shot"], s["shot_caption"], tilt=True)
     elif s.get("ribbon"): right = fig_loop(s["ribbon"])
-    dashboard = more(right, "View the operator dashboard").replace('class="more rv"', 'class="more rv dashboard-detail"') if s.get("shot") else right
-    graphic = schematic("workflow" if study["slug"] == "how-i-ship" else "system")
-    return f'''<section class="hero" id="{s["id"]}"><div class="wrap hero-grid" data-stagger>
-<div class="hero-copy"><div class="rv">{kicker(s["kicker"])}</div><h1 class="rv">{display_title(s["h1"])}</h1><p class="lead rv">{E(s["lead"])}</p>
+    return f'''<section class="hero" id="{s["id"]}"><div class="glow"></div><div class="wrap" data-stagger>
+<div class="rv">{kicker(s["kicker"])}</div><h1 class="rv">{E(s["h1"])}</h1><p class="lead rv">{E(s["lead"])}</p>
 <div class="actions rv"><a class="btn primary" href="#{s["first"]}">Start reading <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
-</div>{graphic}{stats(s["metrics"])}<div class="hero-notes">
 <div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div>
-{more(fn(s.get("fn")), "Populations and dates")}{dashboard}
-</div></div></section>'''
+</div></section>
+<section class="sec" style="border-top:0;padding-top:0"><div class="wrap">{stats(s["metrics"])}{more(fn(s.get("fn")), "Populations and dates")}
+{f'<div style="margin-top:clamp(2.5rem,5vw,4rem)">{right}</div>' if right else ""}</div></section>'''
 
 RENDER.update(dict(journey=r_journey, four=r_four, infra=r_infra, points=r_points, controls=r_controls, beforeafter=r_beforeafter,
                    tiles=r_tiles, growth=r_growth, flow=r_flow, matrix=r_matrix, funnel=r_funnel, scorecards=r_scorecards, gates=r_gates, steps=r_steps))
@@ -590,13 +603,14 @@ def landing():
     cards = ""
     for c in L["cards"]:
         nums = "".join(f'<div><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in c["nums"])
-        cards += f'''<a class="case-entry rv" href="{LINKS[c["href"]]}"><span class="case-index">{c["n"]}</span><div class="case-entry-heading"><div class="label">{E(c["who"])}</div><h2>{E(c["title"])}</h2><div class="case-highlights">{nums}</div></div><div class="case-entry-body"><p>{E(c["text"])}</p><span class="arrow">Open case study {c["n"][-1]} <span class="a">↗</span></span></div></a>'''
-    body = f'''<section class="hero"><div class="wrap hero-grid" data-stagger><div class="hero-copy"><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{display_title(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv">{E(L["boundary"])}</p>
+        mini = BN.mini_system() if c["n"] == "01" else BN.mini_loop()
+        cards += f'''<a class="card rv" href="{LINKS[c["href"]]}">{mini}<div class="label">Case study {c["n"]} · {E(c["who"])}</div><h2>{E(c["title"])}</h2><p>{E(c["text"])}</p><div class="nums">{nums}</div><span class="arrow">Open case study {c["n"][-1]} <span class="a">→</span></span></a>'''
+    body = f'''<section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv" style="margin-top:1rem">{E(L["boundary"])}</p>
+<div class="stats hero-stats rv" style="margin-top:2rem">{"".join(f'<div class="stat"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in L["stats"])}</div>
 <div class="actions rv"><a class="btn primary" href="{LINKS["the-system.html"]}">01 · The system <span class="a">→</span></a><a class="btn" href="{LINKS["how-i-ship.html"]}">02 · How I ship <span class="a">→</span></a></div>
-</div>{schematic()}<div class="stats hero-stats rv">{"".join(f'<div class="stat"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in L["stats"])}</div>
-<div class="hero-notes"><div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div>{more(fn(L["fn"]), "Populations and dates")}</div></div></section>
-<section class="sec case-selection"><div class="wrap"><div class="selection-title"><div class="label">Explore the work</div><p>Two connected case studies</p></div><div class="case-list" data-stagger>{cards}</div></div></section>
-<section class="sec about-section"><div class="wrap">{who()}</div></section>'''
+<div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div></div></section>
+<section class="sec"><div class="wrap">{who()}{more(fn(L["fn"]), "Populations and dates")}</div></section>
+<section class="sec"><div class="wrap"><div class="pick" data-stagger>{cards}</div></div></section>'''
     return page(f"{C.NAME} · Case studies", body, "index.html", "Two case studies: a live Solana trading system, and the AI delivery workflow that ships it.", "land")
 
 def main():
