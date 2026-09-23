@@ -541,7 +541,7 @@ def fig_routing():
 
 def r_cover(s, study):
     first_href = "overview" if s.get("video") else s["first"]
-    first_label = "Watch the 60-second overview" if s.get("video") else "Start reading"
+    first_label = "Watch the 50-second overview" if s.get("video") else "Start reading"
     right = ""
     if s.get("video"): right = overview.player(s["video"])
     elif s.get("shot"): right = shot(s["shot"], s["shot_caption"], tilt=True)

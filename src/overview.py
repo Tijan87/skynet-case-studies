@@ -2,27 +2,28 @@
 from html import escape
 
 TRANSCRIPT = [
-    "Here's Skynet. Research, strategy, sizing, and execution, connected in one workspace.",
-    "Start with a source. See how its strategies behave in bull, bear, and sideways markets.",
-    "Now change the sizing. This preset excludes smaller tokens and increases selected position sizes. The historical replay turns positive. These are simulated results before trading costs.",
-    "Move into the terminal to check balances, approve a Phantom swap, or follow automated strategies and open positions.",
-    "Then open a recorded trade. The engine work took eighty-one milliseconds. The displayed end-to-end time was two point four seconds. You can inspect the stages behind those numbers.",
-    "That's Skynet. From the signal to the evidence.",
+    'I built SKYNET to bring trading intelligence and execution into one platform.',
+    'It tracks Telegram signals and on-chain wallet activity, with rankings that make their historical performance easier to compare.',
+    'Wallet profiles reveal trading results and behavior, while market intelligence adds context about changing conditions.',
+    'The strategy engine lets you replay historical signals with different exit rules and position sizes.',
+    'The trading terminal brings together Phantom wallet swaps, automated copy trading through my custom Rust engine, and live position monitoring.',
+    'Detailed transaction timelines show the journey from the source signal through execution to on-chain confirmation.',
+    'SKYNET connects the research, the trade, and the evidence behind it.',
 ]
 
 def player(config):
     src, poster, captions = (escape(config[k], quote=True) for k in ('src', 'poster', 'captions'))
     transcript = ''.join('<p>' + escape(p) + '</p>' for p in TRANSCRIPT)
     return f'''<figure class="overview rv" id="overview" aria-labelledby="overview-title">
-<div class="overview-heading"><div><div class="kicker">A recorded walkthrough</div><h2 id="overview-title">From signal to evidence.</h2></div><span class="overview-duration">01:00 <span>/ overview</span></span></div>
+<div class="overview-heading"><div><div class="kicker">A system overview</div><h2 id="overview-title">Trading intelligence, connected.</h2></div><span class="overview-duration">00:50 <span>/ overview</span></span></div>
 <div class="overview-screen">
 <video id="system-overview" src="{src}" controls playsinline preload="none" width="1920" height="1080" poster="{poster}" aria-label="SKYNET system overview" aria-describedby="overview-caption">
 <track kind="captions" src="{captions}" srclang="en" label="English">
-Your browser cannot play this video. <a href="{src}">Open the 60-second overview</a> or read the transcript below.
+Your browser cannot play this video. <a href="{src}">Open the 50-second overview</a> or read the transcript below.
 </video>
-<button class="overview-play" type="button" aria-label="Play the 60-second system overview" aria-controls="system-overview" hidden><span class="overview-play-inner"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M11 6.5 26 16 11 25.5Z" fill="currentColor"/></svg><span class="overview-play-label">Play overview</span></span></button>
+<button class="overview-play" type="button" aria-label="Play the 50-second system overview" aria-controls="system-overview" hidden><span class="overview-play-inner"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M11 6.5 26 16 11 25.5Z" fill="currentColor"/></svg><span class="overview-play-label">Play overview</span></span></button>
 </div>
-<figcaption id="overview-caption" class="overview-caption"><span>Research. Sizing. Execution. The record behind the trade.</span><a href="{src}">Open video <span aria-hidden="true">↗</span></a></figcaption>
+<figcaption id="overview-caption" class="overview-caption"><span>Telegram signals. On-chain wallets. Research and execution.</span><a href="{src}">Open video <span aria-hidden="true">↗</span></a></figcaption>
 <p class="overview-error" role="status" hidden>The video could not load. Try Play again, or use the Open video link.</p>
 <details class="overview-transcript"><summary>Read the transcript</summary><div>{transcript}</div></details>
 </figure>'''
@@ -91,7 +92,7 @@ JS = r'''
   video.addEventListener('ended', function(){
     button.hidden = false;
     label.textContent = 'Replay overview';
-    button.setAttribute('aria-label','Replay the 60-second system overview');
+    button.setAttribute('aria-label','Replay the 50-second system overview');
   });
   video.addEventListener('error', function(){
     video.controls = true;

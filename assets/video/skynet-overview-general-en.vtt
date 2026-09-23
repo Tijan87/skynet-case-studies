@@ -1,0 +1,46 @@
+WEBVTT
+
+00:00:00.600 --> 00:00:02.840
+I built SKYNET to bring trading intelligence
+
+00:00:02.880 --> 00:00:05.290
+and execution into one platform.
+
+00:00:05.820 --> 00:00:09.130
+It tracks Telegram signals and on-chain wallet activity,
+
+00:00:09.400 --> 00:00:13.030
+with rankings that make their historical performance easier to compare.
+
+00:00:14.160 --> 00:00:16.810
+Wallet profiles reveal trading results and behavior,
+
+00:00:18.100 --> 00:00:21.590
+while market intelligence adds context about changing conditions.
+
+00:00:22.020 --> 00:00:24.880
+The strategy engine lets you replay historical signals
+
+00:00:24.920 --> 00:00:27.770
+with different exit rules and position sizes.
+
+00:00:28.600 --> 00:00:31.670
+The trading terminal brings together Phantom wallet swaps,
+
+00:00:31.980 --> 00:00:34.580
+automated copy trading through my custom Rust engine,
+
+00:00:34.620 --> 00:00:36.810
+and live position monitoring.
+
+00:00:37.620 --> 00:00:40.080
+Detailed transaction timelines show the journey
+
+00:00:40.120 --> 00:00:43.590
+from the source signal through execution to on-chain confirmation.
+
+00:00:44.600 --> 00:00:46.680
+SKYNET connects the research, the trade,
+
+00:00:46.720 --> 00:00:48.630
+and the evidence behind it.
