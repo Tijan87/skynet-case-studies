@@ -17,6 +17,7 @@ def img_uri(name):
 
 # ------------------------------------------------------------------ tokens + css
 from theme import CSS, JS
+import overview
 
 # ------------------------------------------------------------------ helpers
 def kicker(t, accent=None, plain=False):
@@ -539,12 +540,15 @@ def fig_routing():
     return figbox(s, '<div class="cap">Token use per review as a share of the pre-routing control run, which consumed about 13.4 million tokens. From the routing A/B recorded in the repository.</div>')
 
 def r_cover(s, study):
+    first_href = "overview" if s.get("video") else s["first"]
+    first_label = "Watch the 60-second overview" if s.get("video") else "Start reading"
     right = ""
-    if s.get("shot"): right = shot(s["shot"], s["shot_caption"], tilt=True)
+    if s.get("video"): right = overview.player(s["video"])
+    elif s.get("shot"): right = shot(s["shot"], s["shot_caption"], tilt=True)
     elif s.get("ribbon"): right = fig_loop(s["ribbon"])
     return f'''<section class="hero" id="{s["id"]}"><div class="glow"></div><div class="wrap" data-stagger>
 <div class="rv">{kicker(s["kicker"])}</div><h1 class="rv">{E(s["h1"])}</h1><p class="lead rv">{E(s["lead"])}</p>
-<div class="actions rv"><a class="btn primary" href="#{s["first"]}">Start reading <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
+<div class="actions rv"><a class="btn primary" href="#{first_href}">{first_label} <span class="a">↓</span></a><a class="btn" href="{LINKS[s["other"][1]]}">{E(s["other"][0])} <span class="a">→</span></a></div>
 <div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div>
 </div></section>
 <section class="sec" style="border-top:0;padding-top:0"><div class="wrap">{stats(s["metrics"])}{more(fn(s.get("fn")), "Populations and dates")}
@@ -581,12 +585,14 @@ def meta(title, desc, current):
     return m
 
 def page(title, body, current, desc, cls=""):
+    page_css = CSS + (overview.CSS if current == "the-system.html" else "")
+    page_js = JS + (overview.JS if current == "the-system.html" else "")
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">{meta(title, desc, current)}
 <meta name="color-scheme" content="dark"><meta name="theme-color" content="#05080f"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2331d9ff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>{CSS}</style></head><body class="{cls}"><div class="ground"></div>{nav(current)}<main id="content">{body}</main>{footer()}<script>{JS}</script></body></html>'''
+<style>{page_css}</style></head><body class="{cls}"><div class="ground"></div>{nav(current)}<main id="content">{body}</main>{footer()}<script>{page_js}</script></body></html>'''
 
 def study_page(S):
     parts = []
