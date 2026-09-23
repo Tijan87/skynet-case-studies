@@ -456,10 +456,80 @@ details.more .inner{grid-template-columns:1fr}
 .authorship{margin-top:2rem;border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:12px;padding:1rem 1.25rem;max-inline-size:68ch;background:rgba(255,255,255,.02)}
 .authorship .label{margin-bottom:.4rem}
 .authorship p{color:var(--ink-2);font-size:var(--fs-cap);line-height:1.55}
+
+.overview{margin:0;scroll-margin-top:80px}
+.overview-heading{margin-bottom:1.5rem}
+.overview-heading h2{margin-top:.65rem;max-inline-size:none;font-size:clamp(1.65rem,2.3vw,2.5rem)}
+.overview [hidden]{display:none!important}
+.overview-tabs{display:flex;gap:0;border-bottom:1px solid var(--line-2);margin:0 0 1rem}
+.overview-tabs button{position:relative;display:flex;align-items:center;gap:.85rem;min-height:52px;padding:.75rem 1.35rem;border:0;background:transparent;color:var(--ink-2);font:500 1rem/1.3 var(--body);cursor:pointer;transition:color .18s ease,background .18s ease}
+.overview-tabs button::after{position:absolute;inset:auto 0 -1px;height:2px;background:var(--accent);content:'';opacity:0;transition:opacity .18s ease}
+.overview-tabs button[aria-selected=true]{color:var(--ink);background:linear-gradient(0deg,rgba(49,217,255,.055),transparent)}
+.overview-tabs button[aria-selected=true]::after{opacity:1}
+.overview-tabs button span{font:400 .75rem/1.4 var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.overview-tabs button[aria-selected=true] span{color:var(--accent)}
+.overview-tabs button:hover{color:var(--ink);background:var(--surface-2)}
+.overview-tabs button:focus-visible,.overview-chapters button:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+.overview-panel:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+.overview-panel-title{display:flex;align-items:center;gap:1rem;margin:1.5rem 0 1rem;font:500 1.1rem/1.5 var(--body)}
+.overview-panel-title span{font:400 .8rem/1.5 var(--mono);color:var(--ink-3)}
+.overview-enhanced .overview-panel-title{display:none}
+.overview-screen{position:relative;isolation:isolate;aspect-ratio:16/9;border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden;background:var(--bg);box-shadow:0 24px 70px -40px rgba(0,0,0,.8)}
+.overview-screen video{display:block;width:100%;height:100%;object-fit:contain;background:var(--bg)}
+.overview-screen video:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+.overview-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;width:100%;border:0;padding:0;cursor:pointer;color:var(--ink);background:linear-gradient(180deg,transparent 30%,rgba(5,8,15,.12) 100%);font:500 .9rem/1 var(--body)}
+.overview-play-inner{display:flex;align-items:center;gap:10px;min-height:60px;padding:14px 22px 14px 16px;border:1px solid rgba(49,217,255,.5);border-radius:999px;background:rgba(5,8,15,.93);box-shadow:0 8px 40px rgba(0,0,0,.45);transition:border-color .18s ease,background .18s ease,transform .18s ease}
+.overview-play svg{color:var(--accent);flex-shrink:0}
+.overview-play:hover .overview-play-inner{background:#101d2b;border-color:var(--accent);transform:translateY(-2px)}
+.overview-play:focus-visible{outline:3px solid var(--accent);outline-offset:-5px;border-radius:var(--r)}
+.overview-caption{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-top:.9rem;font-size:var(--fs-cap);line-height:1.5;color:var(--ink-2)}
+.overview-caption a{flex-shrink:0;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line-2)}
+.overview-caption a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+.overview-error{margin-top:.75rem;color:var(--ink-2);font-size:var(--fs-cap)}
+.overview-transcript,.overview-chapters{margin-top:.7rem;border-top:1px solid var(--line);color:var(--ink-2)}
+.overview-transcript summary,.overview-chapters summary{width:fit-content;min-height:44px;padding:.85rem 0;cursor:pointer;font-size:var(--fs-cap);color:var(--ink-2)}
+.overview-transcript summary:hover,.overview-chapters summary:hover{color:var(--ink)}
+.overview-transcript>div{max-width:var(--w-prose);padding:.3rem 0 1rem}
+.overview-transcript p+p{margin-top:1rem}
+.overview-chapters summary span{margin-left:1rem;font:400 .7rem/1.5 var(--mono);color:var(--ink-3)}
+.overview-chapters nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.25rem 1rem;padding:.25rem 0 1rem}
+.overview-chapters button{display:flex;align-items:baseline;gap:.7rem;text-align:left;min-height:44px;padding:.6rem .5rem;border:0;border-radius:4px;background:transparent;color:var(--ink-2);font:400 .8rem/1.45 var(--body);cursor:pointer}
+.overview-chapters button span{flex-shrink:0;width:3.2em;color:var(--ink-3);font:400 .7rem/1.5 var(--mono)}
+.overview-chapters button:hover,.overview-chapters button[aria-current=true]{background:var(--surface-2);color:var(--ink)}
+.overview-chapters button[aria-current=true] span{color:var(--accent)}
+.overview-note{margin-top:1rem;font-size:.75rem;line-height:1.5;color:var(--ink-3)}
+@media(max-width:640px){.overview-heading .kicker{font-size:.75rem}.overview-tabs button{flex:1;justify-content:center;gap:.55rem;padding:.7rem .55rem;font-size:.9rem}.overview-tabs button span{font-size:.65rem}.overview-caption{display:block}.overview-caption a{display:flex;width:fit-content;margin-top:.25rem}.overview-play-inner{min-height:50px;padding:9px 16px 9px 11px}.overview-play svg{width:26px;height:26px}.overview-chapters nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:.25rem .5rem}}
+@media(max-width:360px){.overview-tabs button{font-size:.8rem;gap:.4rem}.overview-tabs button span{font-size:.6rem}.overview-chapters nav{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.overview-play-inner,.overview-tabs button,.overview-tabs button::after{transition:none}.overview-play:hover .overview-play-inner{transform:none}}
+.home-video{margin:clamp(2.25rem,4vw,3rem) 0 0}
+.home-video-kicker{margin-bottom:1rem}
+.home-video .overview-panel-title{display:none}
+.home-video .overview-caption{align-items:center}
+.home-video .overview-caption .btn.home-video-full{text-decoration:none;color:var(--ink-2);min-height:40px}
+.home-video .overview-caption .btn.home-video-full:hover{color:var(--accent)}
+@media(max-width:640px){.home-video .overview-caption>span{display:block}.home-video .overview-caption .btn.home-video-full{display:flex;width:fit-content;margin-top:.8rem}.home-video-verb{display:none}}
+@media print{.overview-play,.overview-tabs,.overview-chapters{display:none}.overview-screen{box-shadow:none}.overview-transcript>div{display:block}}
 </style></head><body class="land"><div class="ground"></div><a class="skip" href="#content">Skip to content</a><nav class="nav" aria-label="Primary"><div class="wrap"><a class="brand" href="index.html"><b>Lukasz Rodzen</b><span class="x"> · case studies</span></a>
 <div class="tabs"><a href="index.html" class="on" aria-label="Home" aria-current=page><span class="num">Home</span><span class="lbl"></span></a><a href="the-system.html" class="" aria-label="Case study 1: The system"><span class="num">01</span><span class="lbl">The system</span></a><a href="how-i-ship.html" class="" aria-label="Case study 2: How I ship"><span class="num">02</span><span class="lbl">How I ship</span></a></div></div><div class="bar"></div></nav><main id="content"><section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv"><div class="kicker">AI-native builder · release owner · Poland, remote</div></div><h1 class="rv">One person and coding agents built a live trading system. The workflow that builds it grew with it.</h1><p class="lead rv">I operate an automated trading system on Solana with my own funds. Coding agents built it through a delivery workflow that started as a nine-line file and grew, run by run and failure by failure, into a system of its own. Two case studies: the product, and the workflow.</p><p class="cap rv" style="margin-top:1rem">Personal engineering project. It trades only my own funds: no client assets, no investment service, no advice.</p>
 <div class="stats hero-stats rv" style="margin-top:2rem"><div class="stat"><span class="n">16</span><span class="l">months · one human, agents build</span></div><div class="stat"><span class="n">1,300</span><span class="l">confirmed trades, my own funds</span></div><div class="stat"><span class="n">66 ms</span><span class="l">engine time per trade, median</span></div><div class="stat"><span class="n">112</span><span class="l">documented delivery runs</span></div></div>
 <div class="actions rv"><a class="btn primary" href="the-system.html">01 · The system <span class="a">→</span></a><a class="btn" href="how-i-ship.html">02 · How I ship <span class="a">→</span></a></div>
+<figure class="overview overview-enhanced home-video rv" id="home-overview" aria-labelledby="home-overview-title">
+<div class="kicker home-video-kicker" id="home-overview-title">See it in 50 seconds</div>
+<section class="overview-panel" id="video-panel-home" aria-labelledby="video-title-home" data-video="home" data-title="overview">
+<h3 class="overview-panel-title" id="video-title-home">Overview <span>0:50</span></h3>
+<div class="overview-screen">
+<video id="system-home" src="assets/video/skynet-overview-v3-4k.mp4" controls playsinline preload="none" width="1920" height="1080" poster="assets/video/skynet-overview-v3-poster.webp" aria-label="SKYNET overview" aria-describedby="video-caption-home">
+<track kind="captions" src="assets/video/skynet-overview-general-en.vtt" srclang="en" label="English">
+Your browser cannot play this video. <a href="assets/video/skynet-overview-v3-4k.mp4">Open the overview</a> or read the transcript below.
+</video>
+<button class="overview-play" type="button" aria-label="Play overview" aria-controls="system-home" hidden><span class="overview-play-inner"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M11 6.5 26 16 11 25.5Z" fill="currentColor"/></svg><span class="overview-play-label">Play overview</span></span></button>
+</div>
+<div id="video-caption-home" class="overview-caption"><span>Telegram signals. On-chain wallets. Research and execution.</span><a class="btn home-video-full" href="the-system.html#walkthrough"><span class="home-video-verb">Watch the </span>full walkthrough · 8:31 <span class="a">→</span></a></div>
+<p class="overview-error" role="status" hidden>The video could not load. Try Play again, or use the Open video link.</p>
+
+<details class="overview-transcript"><summary>Read the transcript</summary><div><p>I built SKYNET to bring trading intelligence and execution into one platform.</p><p>It tracks Telegram signals and on-chain wallet activity, with rankings that make their historical performance easier to compare.</p><p>Wallet profiles reveal trading results and behavior, while market intelligence adds context about changing conditions.</p><p>The strategy engine lets you replay historical signals with different exit rules and position sizes.</p><p>The trading terminal brings together Phantom wallet swaps, automated copy trading through my custom Rust engine, and live position monitoring.</p><p>Detailed transaction timelines show the journey from the source signal through execution to on-chain confirmation.</p><p>SKYNET connects the research, the trade, and the evidence behind it.</p></div></details>
+</section>
+</figure>
 <div class="authorship rv"><div class="label">A note on authorship</div><p>I am not a backend, Rust or smart-contract engineer and do not represent myself as one. I define what the system must do, its boundaries and acceptance criteria; I direct coding agents through research, design, implementation and review; I validate the resulting behaviour and own the release decision. The implementation-level expertise described below is substantially agent-mediated.</p></div></div></section>
 <section class="sec"><div class="wrap"><div class="who rv"><div><div class="name">Lukasz Rodzen</div><div class="role">product owner · release owner · operator</div><div class="contact">Poland · remote</div></div><p>I own the product intent, the system boundaries and constraints, the acceptance criteria, the release decision and production verification. AI agents provide much of the implementation-level technical depth: they research, propose designs, write the code and review one another independently. I resolve their disagreements through evidence and decide what ships. I do not claim the unaided technical depth of a senior backend or Rust engineer.</p></div><details class="more rv"><summary><span class="def">Populations and dates</span><span class="alt">Show less</span><span class="c" aria-hidden="true"></span></summary><div class="dbody"><div><div class="inner"><p class="fn rv">A trade here is one position. 2,843 on-chain signatures stand behind the 1,300 positions, 1,685 buy legs and 1,158 sell legs, because a position can close in several legs. Engine time is the engine&#x27;s own work per trade, from price quote to submitted transaction; 66 ms is the median across the 1,228 buys with stage timings, 90% of them under 200 ms. From signal to confirmation on chain the median is 1.3 s, most of it the blockchain&#x27;s own confirmation (625 ms median) and the message&#x27;s delivery from Telegram. Runs from 26 March to 1 September 2026, numbered 1 to 134. Measured 3 September 2026.</p></div></div></div></details></div></section>
 <section class="sec"><div class="wrap"><div class="pick" data-stagger><a class="card rv" href="the-system.html"><div class="banner mini rv"><svg viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Signals to a capped on-chain trade"><defs><linearGradient id="msw" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="560" y2="0"><stop offset="0" stop-color="#a877ff"/><stop offset=".55" stop-color="#31d9ff"/><stop offset="1" stop-color="#58e7ad"/></linearGradient><linearGradient id="msh" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="560" y2="0"><stop offset="0" stop-color="#a877ff" stop-opacity=".7"/><stop offset=".5" stop-color="#31d9ff" stop-opacity=".8"/><stop offset="1" stop-color="#58e7ad" stop-opacity=".6"/></linearGradient><radialGradient id="msg"><stop offset="0" stop-color="#31d9ff" stop-opacity=".22"/><stop offset="1" stop-color="#31d9ff" stop-opacity="0"/></radialGradient><radialGradient id="msgv"><stop offset="0" stop-color="#a877ff" stop-opacity=".18"/><stop offset="1" stop-color="#a877ff" stop-opacity="0"/></radialGradient><filter id="msb" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter><pattern id="msd" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#a7b4c9" fill-opacity=".16"/></pattern></defs><rect width="560" height="120" fill="url(#msd)"/><circle cx="112" cy="60" r="108" fill="url(#msgv)"/><circle cx="476" cy="60" r="108" fill="url(#msg)"/><rect x="20" y="50" width="76" height="20" rx="10" fill="#0b1220" fill-opacity=".9" stroke="#a877ff" stroke-opacity=".45"/><text x="58" y="63.5" text-anchor="middle" font-size="9.5" letter-spacing="1" fill="#a877ff" font-family="JetBrains Mono,monospace">SIGNALS</text><polyline points="96,60 140,60" fill="none" stroke="url(#msw)" stroke-width="4.5" stroke-opacity=".18" filter="url(#msb)" stroke-linejoin="round"/><polyline points="96,60 140,60" fill="none" stroke="url(#msw)" stroke-width="1.5" stroke-linejoin="round"/><rect x="140" y="32" width="130" height="56" rx="10" fill="#0b1220" fill-opacity=".92" stroke="url(#msh)" stroke-opacity=".75"/><rect x="152" y="32" width="106" height="1" fill="#31d9ff" fill-opacity=".9"/><text x="154" y="54" font-size="11" font-weight="500" fill="#f2f6ff" font-family="IBM Plex Sans,sans-serif">Two servers</text><text x="154" y="70" font-size="9.5" fill="#7d8ba3" font-family="JetBrains Mono,monospace">Python · Rust</text><polyline points="270,60 312,60" fill="none" stroke="url(#msw)" stroke-width="4.5" stroke-opacity=".18" filter="url(#msb)" stroke-linejoin="round"/><polyline points="270,60 312,60" fill="none" stroke="url(#msw)" stroke-width="1.5" stroke-linejoin="round"/><rect x="312" y="32" width="120" height="56" rx="10" fill="#0b1220" fill-opacity=".92" stroke="url(#msh)" stroke-opacity=".75"/><rect x="324" y="32" width="96" height="1" fill="#31d9ff" fill-opacity=".9"/><text x="326" y="54" font-size="11" font-weight="500" fill="#f2f6ff" font-family="IBM Plex Sans,sans-serif">Rust engine</text><text x="326" y="70" font-size="9.5" fill="#7d8ba3" font-family="JetBrains Mono,monospace">66 ms</text><polyline points="432,60 470,60" fill="none" stroke="url(#msw)" stroke-width="4.5" stroke-opacity=".18" filter="url(#msb)" stroke-linejoin="round"/><polyline points="432,60 470,60" fill="none" stroke="url(#msw)" stroke-width="1.5" stroke-linejoin="round"/><rect x="470" y="32" width="72" height="56" rx="10" fill="#0b1220" fill-opacity=".92" stroke="url(#msh)" stroke-opacity=".75"/><rect x="482" y="32" width="48" height="1" fill="#58e7ad" fill-opacity=".9"/><text x="484" y="54" font-size="11" font-weight="500" fill="#f2f6ff" font-family="IBM Plex Sans,sans-serif">Solana</text><text x="484" y="70" font-size="9.5" fill="#7d8ba3" font-family="JetBrains Mono,monospace">capped</text></svg></div><div class="label">Case study 01 · the product, for product and engineering readers</div><h2>The system</h2><p>A production system that turns public market signals into capped, auditable on-chain trades, with my own funds only: 66 ms of engine time per trade, about 1.3 seconds from signal to confirmation. Two servers, a custom Rust engine, and on-chain limits a trading key cannot bypass.</p><div class="nums"><div><span class="n">66 ms</span><span class="l">engine time per trade, median</span></div><div><span class="n">2,843</span><span class="l">on-chain signatures, verifiable</span></div></div><span class="arrow">Open case study 1 <span class="a">→</span></span></a><a class="card rv" href="how-i-ship.html"><div class="banner mini rv"><svg viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Six stages, three of them my decision"><defs><linearGradient id="mlw" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="560" y2="0"><stop offset="0" stop-color="#a877ff"/><stop offset=".55" stop-color="#31d9ff"/><stop offset="1" stop-color="#58e7ad"/></linearGradient><linearGradient id="mlh" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="560" y2="0"><stop offset="0" stop-color="#a877ff" stop-opacity=".7"/><stop offset=".5" stop-color="#31d9ff" stop-opacity=".8"/><stop offset="1" stop-color="#58e7ad" stop-opacity=".6"/></linearGradient><radialGradient id="mlg"><stop offset="0" stop-color="#31d9ff" stop-opacity=".22"/><stop offset="1" stop-color="#31d9ff" stop-opacity="0"/></radialGradient><radialGradient id="mlgv"><stop offset="0" stop-color="#a877ff" stop-opacity=".18"/><stop offset="1" stop-color="#a877ff" stop-opacity="0"/></radialGradient><filter id="mlb" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter><pattern id="mld" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#a7b4c9" fill-opacity=".16"/></pattern></defs><rect width="560" height="120" fill="url(#mld)"/><circle cx="280" cy="60" r="108" fill="url(#mlg)"/><polyline points="60,60 500,60" fill="none" stroke="url(#mlw)" stroke-width="4.5" stroke-opacity=".18" filter="url(#mlb)" stroke-linejoin="round"/><polyline points="60,60 500,60" fill="none" stroke="url(#mlw)" stroke-width="1.5" stroke-linejoin="round"/><circle cx="60" cy="60" r="4" fill="#05080f" stroke="#a7b4c9" stroke-width="1.5"/><text x="60" y="86" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#7d8ba3" font-family="JetBrains Mono,monospace">UNDERSTAND</text><circle cx="148" cy="60" r="10.8" fill="#31d9ff" fill-opacity=".28" filter="url(#mlb)"/><circle cx="148" cy="60" r="4.5" fill="#31d9ff"/><text x="148" y="86" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#31d9ff" font-family="JetBrains Mono,monospace">ROUTE</text><circle cx="236" cy="60" r="4" fill="#05080f" stroke="#a7b4c9" stroke-width="1.5"/><text x="236" y="86" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#7d8ba3" font-family="JetBrains Mono,monospace">PLAN</text><circle cx="324" cy="60" r="10.8" fill="#31d9ff" fill-opacity=".28" filter="url(#mlb)"/><circle cx="324" cy="60" r="4.5" fill="#31d9ff"/><text x="324" y="86" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#31d9ff" font-family="JetBrains Mono,monospace">BUILD</text><circle cx="412" cy="60" r="4" fill="#05080f" stroke="#a7b4c9" stroke-width="1.5"/><text x="412" y="86" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#7d8ba3" font-family="JetBrains Mono,monospace">REVIEW</text><circle cx="500" cy="60" r="10.8" fill="#31d9ff" fill-opacity=".28" filter="url(#mlb)"/><circle cx="500" cy="60" r="4.5" fill="#31d9ff"/><text x="500" y="86" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#31d9ff" font-family="JetBrains Mono,monospace">DECIDE</text><text x="60" y="30" text-anchor="start" font-size="8.5" letter-spacing="1" fill="#7d8ba3" font-family="JetBrains Mono,monospace">THREE DECISIONS ARE MINE</text></svg></div><div class="label">Case study 02 · the workflow, for anyone hiring AI-native builders</div><h2>How I ship</h2><p>One AI coordinates the job; specialist agents research, plan, build and test it; models from two other vendors challenge the work before anything risky ships. Ten phases, 62 steps, 34 gates, and a memory loop that turns failures into rules, across 112 documented runs.</p><div class="nums"><div><span class="n">112</span><span class="l">documented runs</span></div><div><span class="n">3</span><span class="l">AI vendors on every review</span></div></div><span class="arrow">Open case study 2 <span class="a">→</span></span></a></div></div></section></main><footer class="foot"><div class="wrap"><p>Specified, reviewed and released by Lukasz Rodzen. Implemented by AI models under the delivery workflow in case study 2. Numbers measured on the production system, the run archive and git, 3 September 2026. Replay and simulation figures are analytical outputs, not returns.</p><p>Poland · remote · 2026</p></div></footer><script>
@@ -501,4 +571,48 @@ document.documentElement.classList.add('js');
 
 })();
 
+
+(function(){
+  const figure = document.getElementById('home-overview');
+  if (!figure) return;
+  const panel = figure.querySelector('.overview-panel');
+  const video = panel && panel.querySelector('video');
+  const button = panel && panel.querySelector('.overview-play');
+  if (!video || typeof video.play !== 'function' || !button) return;
+  const label = panel.querySelector('.overview-play-label');
+  const error = panel.querySelector('.overview-error');
+  const rest = () => {
+    const action = video.ended ? 'Replay' : video.currentTime > .1 ? 'Resume' : 'Play';
+    label.textContent = action + ' overview';
+    button.setAttribute('aria-label', action + ' overview');
+    button.disabled = false;
+  };
+  video.controls = false;
+  button.hidden = false;
+  rest();
+  button.addEventListener('click', async () => {
+    if (button.disabled) return;
+    button.disabled = true;
+    label.textContent = 'Loading…';
+    error.hidden = true;
+    if (video.ended) video.currentTime = 0;
+    if (video.error) video.load();
+    try {
+      await video.play();
+      button.hidden = true;
+      video.controls = true;
+      video.focus({preventScroll:true});
+    } catch (err) {
+      video.controls = true;
+      if (err.name === 'AbortError') rest();
+      else { label.textContent = 'Try again'; error.hidden = false; }
+    } finally { button.disabled = false; }
+  });
+  video.addEventListener('play', () => { button.hidden = true; video.controls = true; error.hidden = true; });
+  video.addEventListener('ended', () => { rest(); button.hidden = false; });
+  video.addEventListener('error', () => {
+    video.controls = true; button.hidden = false; button.disabled = false;
+    label.textContent = 'Try again'; error.hidden = false;
+  });
+})();
 </script></body></html>

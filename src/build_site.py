@@ -585,8 +585,8 @@ def meta(title, desc, current):
     return m
 
 def page(title, body, current, desc, cls=""):
-    page_css = CSS + (overview.CSS if current == "the-system.html" else "")
-    page_js = JS + (overview.JS if current == "the-system.html" else "")
+    page_css = CSS + (overview.CSS if current in ("the-system.html", "index.html") else "")
+    page_js = JS + {"the-system.html": overview.JS, "index.html": overview.HOME_JS}.get(current, "")
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">{meta(title, desc, current)}
 <meta name="color-scheme" content="dark"><meta name="theme-color" content="#05080f"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2331d9ff'/%3E%3C/svg%3E">
@@ -606,6 +606,7 @@ def study_page(S):
 
 def landing():
     L = C.LANDING
+    video = next(s["video"] for s in C.S1["sections"] if s.get("video"))
     cards = ""
     for c in L["cards"]:
         nums = "".join(f'<div><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in c["nums"])
@@ -614,6 +615,7 @@ def landing():
     body = f'''<section class="hero"><div class="glow"></div><div class="wrap" data-stagger><div class="rv">{kicker(L["kicker"])}</div><h1 class="rv">{E(L["h1"])}</h1><p class="lead rv">{E(L["lead"])}</p><p class="cap rv" style="margin-top:1rem">{E(L["boundary"])}</p>
 <div class="stats hero-stats rv" style="margin-top:2rem">{"".join(f'<div class="stat"><span class="n">{E(n)}</span><span class="l">{E(l)}</span></div>' for n, l in L["stats"])}</div>
 <div class="actions rv"><a class="btn primary" href="{LINKS["the-system.html"]}">01 · The system <span class="a">→</span></a><a class="btn" href="{LINKS["how-i-ship.html"]}">02 · How I ship <span class="a">→</span></a></div>
+{overview.home(video, LINKS["the-system.html"] + "#walkthrough")}
 <div class="authorship rv"><div class="label">A note on authorship</div><p>{E(C.AUTHORSHIP)}</p></div></div></section>
 <section class="sec"><div class="wrap">{who()}{more(fn(L["fn"]), "Populations and dates")}</div></section>
 <section class="sec"><div class="wrap"><div class="pick" data-stagger>{cards}</div></div></section>'''

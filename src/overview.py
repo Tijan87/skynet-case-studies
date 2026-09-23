@@ -18,7 +18,7 @@ def timestamp(seconds):
     return f'{seconds // 60}:{seconds % 60:02}'
 
 
-def panel(key, config, title, duration, paragraphs, caption, chapters=()):
+def panel(key, config, title, duration, paragraphs, caption, chapters=(), link_html=None):
     src, poster, captions = (escape(config[k], quote=True) for k in ('src', 'poster', 'captions'))
     transcript = ''.join('<p>' + escape(p) + '</p>' for p in paragraphs)
     chapter_nav = ''
@@ -34,11 +34,21 @@ Your browser cannot play this video. <a href="{src}">Open the {title.lower()}</a
 </video>
 <button class="overview-play" type="button" aria-label="Play {title.lower()}" aria-controls="system-{key}" hidden><span class="overview-play-inner"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M11 6.5 26 16 11 25.5Z" fill="currentColor"/></svg><span class="overview-play-label">Play {title.lower()}</span></span></button>
 </div>
-<div id="video-caption-{key}" class="overview-caption"><span>{caption}</span><a href="{src}">Open video <span aria-hidden="true">↗</span></a></div>
+<div id="video-caption-{key}" class="overview-caption"><span>{caption}</span>{link_html or f'<a href="{src}">Open video <span aria-hidden="true">↗</span></a>'}</div>
 <p class="overview-error" role="status" hidden>The video could not load. Try Play again, or use the Open video link.</p>
 {chapter_nav}
 <details class="overview-transcript"><summary>Read the transcript</summary><div>{transcript}</div></details>
 </section>'''
+
+
+def home(config, full_href):
+    """Single overview video for the landing page, with a quiet link to the full walkthrough."""
+    link = f'<a class="btn home-video-full" href="{escape(full_href, quote=True)}"><span class="home-video-verb">Watch the </span>full walkthrough · {timestamp(DURATION)} <span class="a">→</span></a>'
+    video = panel('home', config, 'Overview', 50, TRANSCRIPT, 'Telegram signals. On-chain wallets. Research and execution.', link_html=link)
+    return f'''<figure class="overview overview-enhanced home-video rv" id="home-overview" aria-labelledby="home-overview-title">
+<div class="kicker home-video-kicker" id="home-overview-title">See it in 50 seconds</div>
+{video}
+</figure>'''
 
 
 def player(config):
@@ -103,6 +113,13 @@ CSS = r'''
 @media(max-width:640px){.overview-heading .kicker{font-size:.75rem}.overview-tabs button{flex:1;justify-content:center;gap:.55rem;padding:.7rem .55rem;font-size:.9rem}.overview-tabs button span{font-size:.65rem}.overview-caption{display:block}.overview-caption a{display:flex;width:fit-content;margin-top:.25rem}.overview-play-inner{min-height:50px;padding:9px 16px 9px 11px}.overview-play svg{width:26px;height:26px}.overview-chapters nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:.25rem .5rem}}
 @media(max-width:360px){.overview-tabs button{font-size:.8rem;gap:.4rem}.overview-tabs button span{font-size:.6rem}.overview-chapters nav{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.overview-play-inner,.overview-tabs button,.overview-tabs button::after{transition:none}.overview-play:hover .overview-play-inner{transform:none}}
+.home-video{margin:clamp(2.25rem,4vw,3rem) 0 0}
+.home-video-kicker{margin-bottom:1rem}
+.home-video .overview-panel-title{display:none}
+.home-video .overview-caption{align-items:center}
+.home-video .overview-caption .btn.home-video-full{text-decoration:none;color:var(--ink-2);min-height:40px}
+.home-video .overview-caption .btn.home-video-full:hover{color:var(--accent)}
+@media(max-width:640px){.home-video .overview-caption>span{display:block}.home-video .overview-caption .btn.home-video-full{display:flex;width:fit-content;margin-top:.8rem}.home-video-verb{display:none}}
 @media print{.overview-play,.overview-tabs,.overview-chapters{display:none}.overview-screen{box-shadow:none}.overview-transcript>div{display:block}}
 '''
 
@@ -239,5 +256,56 @@ JS = r'''
   figure.classList.add('overview-enhanced');
   figure.querySelector('.overview-tabs').hidden = false;
   select(0);
+  if (location.hash === '#walkthrough'){
+    select(1);
+    requestAnimationFrame(() => figure.scrollIntoView({block:'start'}));
+  }
+})();
+'''
+
+
+HOME_JS = r'''
+(function(){
+  const figure = document.getElementById('home-overview');
+  if (!figure) return;
+  const panel = figure.querySelector('.overview-panel');
+  const video = panel && panel.querySelector('video');
+  const button = panel && panel.querySelector('.overview-play');
+  if (!video || typeof video.play !== 'function' || !button) return;
+  const label = panel.querySelector('.overview-play-label');
+  const error = panel.querySelector('.overview-error');
+  const rest = () => {
+    const action = video.ended ? 'Replay' : video.currentTime > .1 ? 'Resume' : 'Play';
+    label.textContent = action + ' overview';
+    button.setAttribute('aria-label', action + ' overview');
+    button.disabled = false;
+  };
+  video.controls = false;
+  button.hidden = false;
+  rest();
+  button.addEventListener('click', async () => {
+    if (button.disabled) return;
+    button.disabled = true;
+    label.textContent = 'Loading…';
+    error.hidden = true;
+    if (video.ended) video.currentTime = 0;
+    if (video.error) video.load();
+    try {
+      await video.play();
+      button.hidden = true;
+      video.controls = true;
+      video.focus({preventScroll:true});
+    } catch (err) {
+      video.controls = true;
+      if (err.name === 'AbortError') rest();
+      else { label.textContent = 'Try again'; error.hidden = false; }
+    } finally { button.disabled = false; }
+  });
+  video.addEventListener('play', () => { button.hidden = true; video.controls = true; error.hidden = true; });
+  video.addEventListener('ended', () => { rest(); button.hidden = false; });
+  video.addEventListener('error', () => {
+    video.controls = true; button.hidden = false; button.disabled = false;
+    label.textContent = 'Try again'; error.hidden = false;
+  });
 })();
 '''
