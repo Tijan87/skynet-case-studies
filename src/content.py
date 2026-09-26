@@ -49,7 +49,7 @@ S1 = dict(
          video=dict(src="assets/video/skynet-overview-v3-4k.mp4",
                     poster="assets/video/skynet-overview-v3-poster.webp",
                     captions="assets/video/skynet-overview-general-en.vtt",
-                    walkthrough=dict(src="assets/video/skynet-full-walkthrough-v4.mp4",
+                    walkthrough=dict(src="assets/video/skynet-full-walkthrough-v5.mp4",
                                      poster="assets/video/skynet-full-walkthrough-v4-poster.webp",
                                      captions="assets/video/skynet-full-walkthrough-atlas-en.vtt"))),
     dict(id="journey", kind="journey",
