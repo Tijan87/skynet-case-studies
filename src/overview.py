@@ -20,6 +20,13 @@ def timestamp(seconds):
 
 def panel(key, config, title, duration, paragraphs, caption, chapters=(), link_html=None):
     src, poster, captions = (escape(config[k], quote=True) for k in ('src', 'poster', 'captions'))
+    # Optional high-quality copy hosted off-git (Cloudflare R2): offered to large screens first;
+    # phones and any load failure fall through to the in-repo copy.
+    hd = escape(config['src_hd'], quote=True) if config.get('src_hd') else None
+    video_src = '' if hd else f' src="{src}"'
+    sources = (f'<source src="{hd}" type="video/mp4" media="(min-width: 900px)">\n'
+               f'<source src="{src}" type="video/mp4">\n') if hd else ''
+    open_src = hd or src
     transcript = ''.join('<p>' + escape(p) + '</p>' for p in paragraphs)
     chapter_nav = ''
     if chapters:
@@ -28,13 +35,13 @@ def panel(key, config, title, duration, paragraphs, caption, chapters=(), link_h
     return f'''<section class="overview-panel" id="video-panel-{key}" aria-labelledby="video-title-{key}" data-video="{key}" data-title="{title.lower()}">
 <h3 class="overview-panel-title" id="video-title-{key}">{title} <span>{timestamp(duration)}</span></h3>
 <div class="overview-screen">
-<video id="system-{key}" src="{src}" controls playsinline preload="none" width="1920" height="1080" poster="{poster}" aria-label="SKYNET {title.lower()}" aria-describedby="video-caption-{key}">
-<track kind="captions" src="{captions}" srclang="en" label="English">
+<video id="system-{key}"{video_src} controls playsinline preload="none" width="1920" height="1080" poster="{poster}" aria-label="SKYNET {title.lower()}" aria-describedby="video-caption-{key}">
+{sources}<track kind="captions" src="{captions}" srclang="en" label="English">
 Your browser cannot play this video. <a href="{src}">Open the {title.lower()}</a> or read the transcript below.
 </video>
 <button class="overview-play" type="button" aria-label="Play {title.lower()}" aria-controls="system-{key}" hidden><span class="overview-play-inner"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M11 6.5 26 16 11 25.5Z" fill="currentColor"/></svg><span class="overview-play-label">Play {title.lower()}</span></span></button>
 </div>
-<div id="video-caption-{key}" class="overview-caption"><span>{caption}</span>{link_html or f'<a href="{src}">Open video <span aria-hidden="true">↗</span></a>'}</div>
+<div id="video-caption-{key}" class="overview-caption"><span>{caption}</span>{link_html or f'<a href="{open_src}">Open video <span aria-hidden="true">↗</span></a>'}</div>
 <p class="overview-error" role="status" hidden>The video could not load. Try Play again, or use the Open video link.</p>
 {chapter_nav}
 <details class="overview-transcript"><summary>Read the transcript</summary><div>{transcript}</div></details>
